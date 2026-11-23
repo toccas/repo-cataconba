@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assetpack/kenney_modular-cave-kit_1.0/Models/GLB format/corridor-transition.glb" id="1_7l6f2"]
+[ext_resource type="Shape3D" path="res://scenes/pezzi/corridor-transition_collisione.res" id="2_37qia"]
+
+[node name="CorridorTransition" type="Node3D" unique_id=1839370166]
+metadata/volume_size = Vector3(8, 4, 8)
+metadata/volume_offset = Vector3(-2, 2, 0)
+metadata/terra = true
+
+[node name="Modello" type="Node3D" parent="." unique_id=880900508 instance=ExtResource("1_7l6f2")]
+
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=2132289222]
+
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1604895157]
+shape = ExtResource("2_37qia")

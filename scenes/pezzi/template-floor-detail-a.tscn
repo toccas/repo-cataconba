@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assetpack/kenney_modular-cave-kit_1.0/Models/GLB format/template-floor-detail-a.glb" id="1_inl8d"]
+[ext_resource type="Shape3D" path="res://scenes/pezzi/template-floor-detail-a_collisione.res" id="2_qufsn"]
+
+[node name="TemplateFloorDetailA" type="Node3D" unique_id=625315662]
+
+[node name="Modello" type="Node3D" parent="." unique_id=492251737 instance=ExtResource("1_inl8d")]
+
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=1519605661]
+
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1642341885]
+shape = ExtResource("2_qufsn")

@@ -1,0 +1,251 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_pf23h"]
+[ext_resource type="Script" path="res://scripts/viewmodel.gd" id="2_dt7fs"]
+[ext_resource type="PackedScene" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/shovel.glb" id="3_wqfne"]
+[ext_resource type="Script" path="res://scripts/dig_sfx.gd" id="4_wnwbv"]
+[ext_resource type="AudioStream" path="res://audio/terra_1.tres" id="5_gl8cc"]
+[ext_resource type="AudioStream" path="res://audio/terra_2.tres" id="6_487ah"]
+[ext_resource type="AudioStream" path="res://audio/terra_3.tres" id="7_md1ol"]
+[ext_resource type="AudioStream" path="res://audio/terra_4.tres" id="8_bj30b"]
+[ext_resource type="AudioStream" path="res://audio/dura_1.tres" id="9_jc3p3"]
+[ext_resource type="AudioStream" path="res://audio/dura_2.tres" id="10_hax0n"]
+[ext_resource type="AudioStream" path="res://audio/dura_3.tres" id="11_t4otl"]
+[ext_resource type="AudioStream" path="res://audio/dura_4.tres" id="12_j2b1d"]
+[ext_resource type="AudioStream" path="res://audio/roccia_1.tres" id="13_cs1tg"]
+[ext_resource type="AudioStream" path="res://audio/roccia_2.tres" id="14_2dvfe"]
+[ext_resource type="AudioStream" path="res://audio/roccia_3.tres" id="15_giy8y"]
+[ext_resource type="AudioStream" path="res://audio/roccia_4.tres" id="16_fdfoy"]
+[ext_resource type="AudioStream" path="res://audio/pietra_1.tres" id="17_hhpqf"]
+[ext_resource type="AudioStream" path="res://audio/pietra_2.tres" id="18_g5jhy"]
+[ext_resource type="AudioStream" path="res://audio/pietra_3.tres" id="19_holxr"]
+[ext_resource type="AudioStream" path="res://audio/pietra_4.tres" id="20_mx1m4"]
+[ext_resource type="AudioStream" path="res://audio/monete_1.tres" id="21_4gjji"]
+[ext_resource type="AudioStream" path="res://audio/monete_2.tres" id="22_u2ulf"]
+[ext_resource type="AudioStream" path="res://audio/monete_3.tres" id="23_6e8lb"]
+[ext_resource type="AudioStream" path="res://audio/monete_4.tres" id="24_2gdjj"]
+[ext_resource type="AudioStream" path="res://audio/secchi_1.tres" id="25_sc3ue"]
+[ext_resource type="AudioStream" path="res://audio/secchi_2.tres" id="26_lxlsd"]
+[ext_resource type="AudioStream" path="res://audio/secchi_3.tres" id="27_ha2mi"]
+[ext_resource type="AudioStream" path="res://audio/secchi_4.tres" id="28_apa73"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_74r1k"]
+radius = 0.35
+height = 1.7
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8svfe"]
+albedo_color = Color(0.12, 0.1, 0.14, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_2a3c5"]
+top_radius = 0.045
+bottom_radius = 0.055
+height = 0.32
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_42b1b"]
+albedo_color = Color(0.62, 0.5, 0.42, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_h7ic4"]
+size = Vector3(0.085, 0.08, 0.11)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_au7lq"]
+albedo_color = Color(0.3, 0.19, 0.1, 1)
+roughness = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_nubpm"]
+top_radius = 0.018
+bottom_radius = 0.02
+height = 0.65
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ua5cf"]
+albedo_color = Color(0.32, 0.32, 0.35, 1)
+metallic = 0.7
+roughness = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_51ujp"]
+size = Vector3(0.045, 0.05, 0.42)
+
+[sub_resource type="PrismMesh" id="PrismMesh_tk41t"]
+size = Vector3(0.045, 0.1, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fuw3a"]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_8txt3"]
+material = SubResource("StandardMaterial3D_fuw3a")
+size = Vector3(0.05, 0.05, 0.05)
+
+[node name="Player" type="CharacterBody3D" unique_id=2007452859]
+script = ExtResource("1_pf23h")
+
+[node name="Collisione" type="CollisionShape3D" parent="." unique_id=1853290720]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+shape = SubResource("CapsuleShape3D_74r1k")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1339843590]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+fov = 80.0
+near = 0.03
+
+[node name="FiammaMagica" type="OmniLight3D" parent="Camera3D" unique_id=2146274358]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, -0.2, -0.3)
+light_color = Color(1, 0.62, 0.32, 1)
+light_energy = 1.6
+shadow_enabled = true
+omni_range = 11.0
+
+[node name="Viewmodel" type="Node3D" parent="Camera3D" unique_id=700524608]
+transform = Transform3D(0.9393727, -0.1175789, 0.32210883, 0, 0.9393727, 0.3428978, -0.3428978, -0.32210883, 0.8824211, 0.3, -0.34, -0.48)
+script = ExtResource("2_dt7fs")
+
+[node name="Mani" type="Node3D" parent="Camera3D/Viewmodel" unique_id=1327206508]
+
+[node name="Cylinder0" type="MeshInstance3D" parent="Camera3D/Viewmodel/Mani" unique_id=630224196]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0.12)
+material_override = SubResource("StandardMaterial3D_8svfe")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_2a3c5")
+
+[node name="Box1" type="MeshInstance3D" parent="Camera3D/Viewmodel/Mani" unique_id=1885408804]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, -0.08)
+material_override = SubResource("StandardMaterial3D_42b1b")
+cast_shadow = 0
+mesh = SubResource("BoxMesh_h7ic4")
+
+[node name="Pala" type="Node3D" parent="Camera3D/Viewmodel" unique_id=2030619666]
+
+[node name="Modello" type="Node3D" parent="Camera3D/Viewmodel/Pala" unique_id=1881198005 instance=ExtResource("3_wqfne")]
+transform = Transform3D(1.1, 0, 0, 0, -1.1, 9.616505e-08, 0, -9.616505e-08, -1.1, 0, 0.55, 0.03)
+
+[node name="Piccone" type="Node3D" parent="Camera3D/Viewmodel" unique_id=260112655]
+
+[node name="Cylinder0" type="MeshInstance3D" parent="Camera3D/Viewmodel/Piccone" unique_id=949215830]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18, 0)
+material_override = SubResource("StandardMaterial3D_au7lq")
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_nubpm")
+
+[node name="Box1" type="MeshInstance3D" parent="Camera3D/Viewmodel/Piccone" unique_id=1430020235]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.04)
+material_override = SubResource("StandardMaterial3D_ua5cf")
+cast_shadow = 0
+mesh = SubResource("BoxMesh_51ujp")
+
+[node name="Prism2" type="MeshInstance3D" parent="Camera3D/Viewmodel/Piccone" unique_id=135975767]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.5, -0.3)
+material_override = SubResource("StandardMaterial3D_ua5cf")
+cast_shadow = 0
+mesh = SubResource("PrismMesh_tk41t")
+
+[node name="Sfx" type="Node3D" parent="." unique_id=1067946588]
+top_level = true
+script = ExtResource("4_wnwbv")
+terra = Array[AudioStream]([ExtResource("5_gl8cc"), ExtResource("6_487ah"), ExtResource("7_md1ol"), ExtResource("8_bj30b")])
+dura = Array[AudioStream]([ExtResource("9_jc3p3"), ExtResource("10_hax0n"), ExtResource("11_t4otl"), ExtResource("12_j2b1d")])
+roccia = Array[AudioStream]([ExtResource("13_cs1tg"), ExtResource("14_2dvfe"), ExtResource("15_giy8y"), ExtResource("16_fdfoy")])
+pietra = Array[AudioStream]([ExtResource("17_hhpqf"), ExtResource("18_g5jhy"), ExtResource("19_holxr"), ExtResource("20_mx1m4")])
+monete = Array[AudioStream]([ExtResource("21_4gjji"), ExtResource("22_u2ulf"), ExtResource("23_6e8lb"), ExtResource("24_2gdjj")])
+secchi = Array[AudioStream]([ExtResource("25_sc3ue"), ExtResource("26_lxlsd"), ExtResource("27_ha2mi"), ExtResource("28_apa73")])
+
+[node name="Voce1" type="AudioStreamPlayer3D" parent="Sfx" unique_id=412602093]
+unit_size = 4.0
+
+[node name="Voce2" type="AudioStreamPlayer3D" parent="Sfx" unique_id=1991276688]
+unit_size = 4.0
+
+[node name="Voce3" type="AudioStreamPlayer3D" parent="Sfx" unique_id=596874503]
+unit_size = 4.0
+
+[node name="Voce4" type="AudioStreamPlayer3D" parent="Sfx" unique_id=742523564]
+unit_size = 4.0
+
+[node name="Voce5" type="AudioStreamPlayer3D" parent="Sfx" unique_id=1770967039]
+unit_size = 4.0
+
+[node name="Voce6" type="AudioStreamPlayer3D" parent="Sfx" unique_id=1512006549]
+unit_size = 4.0
+
+[node name="Schegge1" type="CPUParticles3D" parent="." unique_id=952223108]
+top_level = true
+emitting = false
+amount = 24
+lifetime = 0.9
+one_shot = true
+explosiveness = 0.9
+mesh = SubResource("BoxMesh_8txt3")
+emission_shape = 1
+emission_sphere_radius = 0.12
+direction = Vector3(0, 0, -1)
+spread = 55.0
+initial_velocity_min = 1.2
+initial_velocity_max = 3.2
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+damping_min = 0.5
+damping_max = 1.5
+scale_amount_min = 0.5
+scale_amount_max = 1.4
+
+[node name="Schegge2" type="CPUParticles3D" parent="." unique_id=1860908401]
+top_level = true
+emitting = false
+amount = 24
+lifetime = 0.9
+one_shot = true
+explosiveness = 0.9
+mesh = SubResource("BoxMesh_8txt3")
+emission_shape = 1
+emission_sphere_radius = 0.12
+direction = Vector3(0, 0, -1)
+spread = 55.0
+initial_velocity_min = 1.2
+initial_velocity_max = 3.2
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+damping_min = 0.5
+damping_max = 1.5
+scale_amount_min = 0.5
+scale_amount_max = 1.4
+
+[node name="Schegge3" type="CPUParticles3D" parent="." unique_id=944707390]
+top_level = true
+emitting = false
+amount = 24
+lifetime = 0.9
+one_shot = true
+explosiveness = 0.9
+mesh = SubResource("BoxMesh_8txt3")
+emission_shape = 1
+emission_sphere_radius = 0.12
+direction = Vector3(0, 0, -1)
+spread = 55.0
+initial_velocity_min = 1.2
+initial_velocity_max = 3.2
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+damping_min = 0.5
+damping_max = 1.5
+scale_amount_min = 0.5
+scale_amount_max = 1.4
+
+[node name="Schegge4" type="CPUParticles3D" parent="." unique_id=368480807]
+top_level = true
+emitting = false
+amount = 24
+lifetime = 0.9
+one_shot = true
+explosiveness = 0.9
+mesh = SubResource("BoxMesh_8txt3")
+emission_shape = 1
+emission_sphere_radius = 0.12
+direction = Vector3(0, 0, -1)
+spread = 55.0
+initial_velocity_min = 1.2
+initial_velocity_max = 3.2
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+damping_min = 0.5
+damping_max = 1.5
+scale_amount_min = 0.5
+scale_amount_max = 1.4

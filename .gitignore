@@ -1,0 +1,20 @@
+# Cache e import di Godot 4 (si rigenerano aprendo il progetto)
+.godot/
+/android/
+
+# Esportazioni
+/build/
+/export/
+*.exe
+*.pck
+
+# Risultati delle prove automatiche (shot.png resta: è lo screenshot del README)
+bench.txt
+
+# Archivi originali degli asset pack (i modelli usati sono già estratti in assetpack/)
+assetpack/*.zip
+
+# File di sistema
+.DS_Store
+Thumbs.db
+desktop.ini

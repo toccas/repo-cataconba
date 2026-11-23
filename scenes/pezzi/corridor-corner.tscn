@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assetpack/kenney_modular-cave-kit_1.0/Models/GLB format/corridor-corner.glb" id="1_q2vie"]
+[ext_resource type="Shape3D" path="res://scenes/pezzi/corridor-corner_collisione.res" id="2_d4yeo"]
+
+[node name="CorridorCorner" type="Node3D" unique_id=450700091]
+metadata/volume_size = Vector3(4, 4, 4)
+metadata/volume_offset = Vector3(0, 2, 0)
+metadata/terra = true
+
+[node name="Modello" type="Node3D" parent="." unique_id=577122229 instance=ExtResource("1_q2vie")]
+
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=1777776672]
+
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1881913285]
+shape = ExtResource("2_d4yeo")

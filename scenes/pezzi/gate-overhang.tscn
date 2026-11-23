@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assetpack/kenney_modular-cave-kit_1.0/Models/GLB format/gate-overhang.glb" id="1_di5ja"]
+[ext_resource type="Shape3D" path="res://scenes/pezzi/gate-overhang_collisione.res" id="2_x2ge2"]
+
+[node name="GateOverhang" type="Node3D" unique_id=448956600]
+
+[node name="Modello" type="Node3D" parent="." unique_id=1942227679 instance=ExtResource("1_di5ja")]
+
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=1848555747]
+
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=373453795]
+shape = ExtResource("2_x2ge2")
