@@ -13,6 +13,10 @@ const MAX_VISIBLE_BUCKETS := 75
 const BARREL_SCALE := 0.7
 const DUNGEON := "res://assetpack/kenney_mini-dungeon/Models/GLB format/"
 const GRAVEYARD := "res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/"
+const MODELLI := "res://modelli/"
+## Tomba aperta dove si posano le ossa (centro, relativo allo Spawn; lunga lungo X,
+## la testata con la croce è verso -X).
+const TOMB_POS := Vector3(-2.5, FLOOR_Y, 3.55)
 
 var lift: Node3D
 var pile: MultiMeshInstance3D
@@ -72,9 +76,10 @@ func build_nodes() -> void:
 	lift = Node3D.new()
 	lift.name = "Montacarichi"
 	add_child(lift)
-	var plat := BoxMesh.new()
-	plat.size = Vector3(LIFT_SIZE, 0.12, LIFT_SIZE)
-	lift.add_child(_mesh(plat, wood, LIFT_POS + Vector3(0, 0.06, 0)))
+	var plat: Node3D = (load(MODELLI + "montacarichi_piattaforma.glb") as PackedScene).instantiate()
+	plat.name = "Piattaforma"
+	plat.position = LIFT_POS
+	lift.add_child(plat)
 	pile = MultiMeshInstance3D.new()
 	pile.name = "Pila"
 	var mm := MultiMesh.new()
@@ -84,38 +89,37 @@ func build_nodes() -> void:
 	mm.visible_instance_count = 0
 	pile.multimesh = mm
 	lift.add_child(pile)
-	_prop(DUNGEON + "wood-structure", "Castello", LIFT_POS, Vector3(2.3, 4.0, 2.3))
-	_prop(GRAVEYARD + "shovel-dirt", "PalaNellaTerra", LIFT_POS + Vector3(2.0, 0, 1.2), Vector3.ONE * 2.0, 0.6)
+	_prop(MODELLI + "montacarichi_castello", "Castello", LIFT_POS, Vector3.ONE)
 	_interact_box("montacarichi", "AreaMontacarichi", LIFT_POS + Vector3(0, 0.6, 0), Vector3(LIFT_SIZE, 1.2, LIFT_SIZE))
 	_sign("Montacarichi", LIFT_POS + Vector3(1.3, 2.6, 1.3))
 
 	# --- leva ---
-	var base := BoxMesh.new()
-	base.size = Vector3(0.18, 0.7, 0.18)
-	add_child(_mesh(base, dark_wood, LEVER_POS + Vector3(0, 0.35, 0)))
+	_prop(MODELLI + "leva_base", "BaseLeva", LEVER_POS, Vector3.ONE)
 	lever_handle = Node3D.new()
 	lever_handle.name = "ManigliaLeva"
 	lever_handle.position = LEVER_POS + Vector3(0, 0.7, 0)
 	lever_handle.rotation.x = -0.6
 	add_child(lever_handle)
-	var stick := CylinderMesh.new()
-	stick.top_radius = 0.025
-	stick.bottom_radius = 0.025
-	stick.height = 0.5
-	lever_handle.add_child(_mesh(stick, iron, Vector3(0, 0.25, 0)))
-	var knob := SphereMesh.new()
-	knob.radius = 0.05
-	knob.height = 0.1
-	lever_handle.add_child(_mesh(knob, _mat(Color(0.5, 0.1, 0.08)), Vector3(0, 0.5, 0)))
+	var handle: Node3D = (load(MODELLI + "leva_manico.glb") as PackedScene).instantiate()
+	handle.name = "Manico"
+	lever_handle.add_child(handle)
 	_interact_box("leva", "Leva", LEVER_POS + Vector3(0, 0.6, 0), Vector3(0.35, 1.2, 0.35))
 
 	# --- negozio ---
-	_prop(DUNGEON + "table", "Bancone", SHOP_POS, Vector3.ONE * 3.0)
-	_interact_box("negozio", "Negozio", SHOP_POS + Vector3(0, 0.47, 0), Vector3(2.6, 0.94, 1.9))
-	_prop(DUNGEON + "coin", "Moneta", SHOP_POS + Vector3(0.5, 0.93, 0.2), Vector3.ONE * 0.8, -0.3)
-	_prop(DUNGEON + "chest", "Forziere", SHOP_POS + Vector3(-2.0, 0, -0.8), Vector3.ONE * 2.0, 0.4, true)
-	_sign("Negozio", SHOP_POS + Vector3(0, 2.3, 0))
-	_lantern("CandeleNegozio", GRAVEYARD + "candle-multiple", SHOP_POS + Vector3(-0.7, 0.93, -0.3), 2.0, 0.9, 5.0)
+	_prop(MODELLI + "negozio", "Bottega", SHOP_POS, Vector3.ONE)
+	_interact_box("negozio", "Negozio", SHOP_POS + Vector3(0, 0.5, 0), Vector3(2.8, 1.0, 0.95))
+	# insegna: scritta fissa sulla tavola sopra lo scaffale
+	var sign := Label3D.new()
+	sign.name = "ScrittaNegozio"
+	sign.text = "Negozio"
+	sign.position = SHOP_POS + Vector3(0, 2.5, -1.26)
+	sign.pixel_size = 0.004
+	sign.font_size = 80
+	sign.outline_size = 10
+	sign.modulate = Color(0.98, 0.86, 0.55)
+	sign.outline_modulate = Color(0.18, 0.1, 0.05)
+	add_child(sign)
+	_lantern("CandeleNegozio", GRAVEYARD + "candle-multiple", SHOP_POS + Vector3(-0.75, 1.0, -0.15), 2.0, 0.9, 5.0)
 
 	# --- barili con le lanterne ---
 	for side in [-1.0, 1.0]:
@@ -125,10 +129,20 @@ func build_nodes() -> void:
 		_prop(DUNGEON + "barrel", "BarilePiccolo" + tag, p + Vector3(-0.3 * side, 0, 1.0), Vector3.ONE * 1.5, 0.8, true)
 		_lantern("Lanterna" + tag, GRAVEYARD + "lantern-candle", p + Vector3(0, 0.96, 0), 2.0, 1.6, 10.0)
 
-	# --- puntelli di legno agli ingressi e detriti ---
-	for d in [["Est", Vector3(5.8, 0, 0), 90.0], ["Ovest", Vector3(-5.8, 0, 0), 90.0],
-			["Nord", Vector3(0, 0, -5.8), 0.0], ["Sud", Vector3(0, 0, 5.8), 0.0]]:
-		_prop(DUNGEON + "wood-support", "Puntello" + d[0], d[1] + Vector3(0, FLOOR_Y, 0), Vector3(2.8, 4.0, 2.0), deg_to_rad(d[2]))
+	# --- tomba aperta con lo scheletro sdraiato (i pezzi compaiono quando li posi) ---
+	_prop(MODELLI + "tomba", "Tomba", TOMB_POS, Vector3.ONE)
+	_interact_box("tomba", "AreaTomba", TOMB_POS + Vector3(0, 0.4, 0), Vector3(2.4, 0.8, 1.1))
+	var lying: Node3D = (load("res://scenes/scheletro.tscn") as PackedScene).instantiate()
+	lying.name = "ScheletroNellaTomba"
+	lying.transform = lying_transform()
+	for p in ["testa", "torace", "braccio_destro", "braccio_sinistro", "gamba_destra", "gamba_sinistra"]:
+		lying.set(p, false)
+	add_child(lying)
+	var risen := Node3D.new()
+	risen.name = "ScheletriRiparati"
+	add_child(risen)
+
+	# --- detriti ---
 	_prop(GRAVEYARD + "debris-wood", "Assi", Vector3(-3.6, FLOOR_Y, 1.0), Vector3.ONE * 2.5, 0.7)
 	_prop(DUNGEON + "stones", "Sassi", Vector3(1.8, FLOOR_Y, 4.4), Vector3.ONE * 1.5, 1.2)
 
@@ -169,6 +183,12 @@ func _lantern(node_name: String, path: String, pos: Vector3, scl: float, energy:
 	light.omni_range = light_range
 	light.shadow_enabled = true
 	add_child(light)
+
+
+## Scheletro sdraiato nella tomba: piedi verso +X, faccia verso l'alto.
+static func lying_transform() -> Transform3D:
+	var b := Basis(Vector3(0, 0, 1), Vector3(1, 0, 0), Vector3(0, 1, 0))
+	return Transform3D(b, TOMB_POS + Vector3(-0.92, 0.6, 0))
 
 
 func update_pile(secchi: float) -> void:

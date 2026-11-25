@@ -1,0 +1,357 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/scheletro.gd" id="1_wrav7"]
+[ext_resource type="PackedScene" path="res://modelli/scheletro/torace.glb" id="2_ognn5"]
+[ext_resource type="PackedScene" path="res://modelli/scheletro/testa.glb" id="3_anku5"]
+[ext_resource type="PackedScene" path="res://modelli/scheletro/mascella.glb" id="4_ku3c5"]
+[ext_resource type="PackedScene" path="res://modelli/scheletro/braccio.glb" id="5_2tx81"]
+[ext_resource type="PackedScene" path="res://modelli/scheletro/gamba.glb" id="6_jcvsh"]
+
+[sub_resource type="Animation" id="Animation_0vvo0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Corpo:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Corpo/Torace:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Corpo/Testa:rotation")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Corpo/BraccioDestro:rotation")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, -0.1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Corpo/BraccioSinistro:rotation")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0.1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Corpo/GambaDestra:rotation")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Corpo/GambaSinistra:rotation")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Corpo/Testa/Mascella:rotation")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_7k6mn"]
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Corpo:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, -0.07, 0), Vector3(0, 0, 0), Vector3(0, -0.07, 0), Vector3(0, 0, 0), Vector3(0, -0.07, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Corpo/GambaDestra:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.45, 0, 0), Vector3(0.45, 0, 0), Vector3(-0.45, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Corpo/GambaSinistra:rotation")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.45, 0, 0), Vector3(-0.45, 0, 0), Vector3(0.45, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Corpo/BraccioDestro:rotation")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.4, 0, -0.12), Vector3(-0.4, 0, -0.12), Vector3(0.4, 0, -0.12)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Corpo/BraccioSinistro:rotation")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.4, 0, 0.12), Vector3(0.4, 0, 0.12), Vector3(-0.4, 0, 0.12)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Corpo/Torace:rotation")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.05, 0.12, 0), Vector3(0.05, -0.12, 0), Vector3(0.05, 0.12, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Corpo/Testa:rotation")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, -0.08, 0.06), Vector3(0.07, 0, 0), Vector3(0, 0.08, -0.06), Vector3(0.07, 0, 0), Vector3(0, -0.08, 0.06)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Corpo/Testa/Mascella:rotation")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.08, 0, 0), Vector3(0, 0, 0), Vector3(0.08, 0, 0), Vector3(0, 0, 0), Vector3(0.08, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_4d16r"]
+length = 3.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Corpo:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.02, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Corpo/Torace:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.04, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Corpo/Testa:rotation")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.8, 1.4, 2, 2.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.06, 0.35, 0.06), Vector3(0.06, 0.35, 0.06), Vector3(-0.02, -0.3, -0.05), Vector3(-0.02, -0.3, -0.05), Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Corpo/Testa/Mascella:rotation")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 2.1, 2.2, 2.3, 2.4, 2.5, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0.3, 0, 0), Vector3(0.02, 0, 0), Vector3(0.3, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Corpo/BraccioDestro:rotation")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, -0.1), Vector3(0.06, 0, -0.15), Vector3(0, 0, -0.1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Corpo/BraccioSinistro:rotation")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0.1), Vector3(-0.04, 0, 0.15), Vector3(0, 0, 0.1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Corpo/GambaDestra:rotation")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Corpo/GambaSinistra:rotation")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_p4ldp"]
+_data = {
+&"RESET": SubResource("Animation_0vvo0"),
+&"cammina": SubResource("Animation_7k6mn"),
+&"idle": SubResource("Animation_4d16r")
+}
+
+[node name="Scheletro" type="Node3D" unique_id=1300420951]
+script = ExtResource("1_wrav7")
+
+[node name="Corpo" type="Node3D" parent="." unique_id=491249942]
+
+[node name="Torace" type="Node3D" parent="Corpo" unique_id=908095488]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="Modello" type="Node3D" parent="Corpo/Torace" unique_id=1997059542 instance=ExtResource("2_ognn5")]
+
+[node name="Testa" type="Node3D" parent="Corpo" unique_id=672316029]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.56, 0)
+
+[node name="Modello" type="Node3D" parent="Corpo/Testa" unique_id=509488996 instance=ExtResource("3_anku5")]
+
+[node name="Mascella" type="Node3D" parent="Corpo/Testa" unique_id=1284606337]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+
+[node name="Modello" type="Node3D" parent="Corpo/Testa/Mascella" unique_id=675425642 instance=ExtResource("4_ku3c5")]
+
+[node name="BraccioDestro" type="Node3D" parent="Corpo" unique_id=1362620596]
+transform = Transform3D(0.9950042, 0.09983342, 0, -0.09983342, 0.9950042, 0, 0, 0, 1, -0.25, 1.5, 0)
+
+[node name="Modello" type="Node3D" parent="Corpo/BraccioDestro" unique_id=467623983 instance=ExtResource("5_2tx81")]
+
+[node name="BraccioSinistro" type="Node3D" parent="Corpo" unique_id=1471919391]
+transform = Transform3D(0.9950042, -0.09983342, 0, 0.09983342, 0.9950042, 0, 0, 0, 1, 0.25, 1.5, 0)
+
+[node name="Modello" type="Node3D" parent="Corpo/BraccioSinistro" unique_id=645704776 instance=ExtResource("5_2tx81")]
+
+[node name="GambaDestra" type="Node3D" parent="Corpo" unique_id=1133200087]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.9, 0)
+
+[node name="Modello" type="Node3D" parent="Corpo/GambaDestra" unique_id=1533163024 instance=ExtResource("6_jcvsh")]
+
+[node name="GambaSinistra" type="Node3D" parent="Corpo" unique_id=1032555138]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.9, 0)
+
+[node name="Modello" type="Node3D" parent="Corpo/GambaSinistra" unique_id=424327791 instance=ExtResource("6_jcvsh")]
+
+[node name="Animazioni" type="AnimationPlayer" parent="." unique_id=1825006391]
+libraries/ = SubResource("AnimationLibrary_p4ldp")
+autoplay = &"idle"

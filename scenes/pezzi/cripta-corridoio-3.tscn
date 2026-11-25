@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://modelli/cripta/cripta-corridoio-3.glb" id="1_gnixn"]
+[ext_resource type="Shape3D" path="res://modelli/cripta/cripta-corridoio-3_collisione.res" id="2_okig2"]
+
+[node name="CriptaCorridoio3" type="Node3D" unique_id=1971225615]
+metadata/volume_size = Vector3(4, 4, 4)
+metadata/volume_offset = Vector3(0, 2, 0)
+metadata/terra = true
+
+[node name="Modello" type="Node3D" parent="." unique_id=904420502 instance=ExtResource("1_gnixn")]
+
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=718189327]
+
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1417088044]
+shape = ExtResource("2_okig2")

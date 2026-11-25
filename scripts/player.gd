@@ -39,8 +39,9 @@ var ui_open := false
 var look_target := ""
 var look_collider: Object = null
 var terra_piena := false
-var carrying := false        # secchio pieno in mano
-var carried_valore := 0
+var carrying := false        # ha in mano un secchio pieno o un osso
+var carried_valore := 0      # monete che vale il secchio in mano
+var carried_osso := ""       # pezzo di scheletro in mano ("" = secchio)
 var digging := false
 var force_dig := false   # usato dalla prova automatica
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -136,12 +137,22 @@ func tool_name() -> String:
 func carry(v: int) -> void:
 	carrying = true
 	carried_valore = v
+	carried_osso = ""
 
 
-## Lascia il secchio (lanciato o posato).
+## Prende in mano un pezzo di scheletro.
+func carry_bone(parte: String) -> void:
+	carrying = true
+	carried_valore = 0
+	carried_osso = parte
+	viewmodel.set_bone(parte)
+
+
+## Lascia quello che ha in mano (lanciato o posato).
 func drop_carry() -> void:
 	carrying = false
 	carried_valore = 0
+	carried_osso = ""
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -208,7 +219,10 @@ func _physics_process(delta: float) -> void:
 
 
 func _process(delta: float) -> void:
-	viewmodel.set_tool(viewmodel.SECCHIO if carrying else tool_i)
+	if carrying:
+		viewmodel.set_tool(viewmodel.OSSO if carried_osso != "" else viewmodel.SECCHIO)
+	else:
+		viewmodel.set_tool(tool_i)
 	var t: Dictionary = TOOLS[tool_i]
 	var speed := Vector2(velocity.x, velocity.z).length()
 	if viewmodel.step(delta, digging, t["periodo"], speed if is_on_floor() else 0.0):
@@ -230,7 +244,7 @@ func _aim_target(hit: Dictionary) -> void:
 		last_hit = {}
 		return
 	last_hit = {"pos": hit.position, "normal": hit.normal, "terra": hit.collider == terrain.body,
-		"secchio": hit.collider.is_in_group("secchi")}
+		"secchio": hit.collider.is_in_group("secchi"), "osso": hit.collider.is_in_group("ossa")}
 
 
 ## Il colpo dell'attrezzo arriva a segno: stacca un pezzo di terra nel punto mirato
@@ -244,6 +258,12 @@ func _on_impact() -> void:
 		return
 	if last_hit["secchio"]:
 		sfx.play("secchi", last_hit["pos"], -6.0)
+		return
+	if last_hit["osso"]:
+		# un osso sotto la terra: suono secco, non si rompe
+		sfx.play("dura", last_hit["pos"], -3.0)
+		_burst(last_hit["pos"], last_hit["normal"], Color(0.9, 0.86, 0.76), 6)
+		blocked.emit("Un osso! Liberalo e raccoglilo con E")
 		return
 	var pos: Vector3 = last_hit["pos"]
 	var n: Vector3 = last_hit["normal"]

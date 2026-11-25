@@ -22,6 +22,8 @@ migliori, fino a liberare tutta la catacomba e trovare l'uscita nella stanza fin
   lo lanci e continui a scavare. Poi raccogli i secchi uno alla volta (con un secchio
   in mano non scavi) e li posi sul montacarichi: +10% di bonus ogni 5 secchi mandati su
   insieme. Negozio con pala, sacca capiente e piccone.
+- **Ossa e scheletri**: scavando trovi i 6 pezzi di uno scheletro sepolti nella terra. Si raccolgono
+  e si lanciano come i secchi e si posano nella tomba aperta dello spawn; completo, lo scheletro si alza.
 - **Niente crolli, niente mostri.** In futuro: ossa e scheletri che si usurano e si riparano.
 
 ## Comandi
@@ -34,7 +36,7 @@ migliori, fino a liberare tutta la catacomba e trovare l'uscita nella stanza fin
 | `Spazio` | Saltare |
 | `Q` | Riempire un secchio (servono 10 unità di terra) |
 | Tasto destro | Lanciare il secchio che hai in mano |
-| `E` | Raccogliere un secchio, posarlo sul montacarichi, tirare la leva, aprire/chiudere il negozio |
+| `E` | Raccogliere un secchio o un osso, posarlo sul montacarichi o nella tomba, tirare la leva, aprire/chiudere il negozio |
 | `1` `2` `3` | Mani, pala, piccone (se comprati) |
 | `Esc` | Liberare il mouse / chiudere il negozio |
 
@@ -65,21 +67,26 @@ scenes/
   player.tscn        giocatore, camera, attrezzi in mano, suoni, schegge
   hud.tscn           interfaccia e negozio
   secchio.tscn       secchio pieno lanciabile (la botte del Mini Dungeon)
-  pezzi/             un pezzo per ogni modello del Modular Cave Kit (modello + collisione + volume di terra)
+  pezzi/             i pezzi della catacomba (modello + collisione + volume di terra): cripta-* e i pezzi del Modular Cave Kit
 scripts/
   terrain.gd         terreno scavabile (densità, surface nets, chunk) — @tool, anteprima nell'editor
   player.gd          movimento, mira, scavo, interazioni
   viewmodel.gd       animazione dell'attrezzo in mano
   dig_sfx.gd         suoni dello scavo
   game_state.gd      monete, terra raccolta, secchi sul montacarichi, negozio
+  scheletro.gd       scheletro scomponibile: togli_parte / metti_parte, idle e camminata solo se completo
+  osso.gd            pezzo di scheletro da trovare, raccogliere, lanciare e posare nella tomba
   secchio.gd         il secchio pieno che si lancia (fisica)
   spawn_room.gd      arredo dello spawn: montacarichi, leva, negozio
   hud.gd             interfaccia
   main.gd            collega tutto + prove automatiche
 tools/
   build_scenes.gd    rigenera le scene da codice
-  make_models.gd     genera i modelli low-poly di mani, pugno e piccone (in modelli/)
-modelli/             mani, pugno e piccone in stile Kenney (GLB, apribili anche in Blender)
+  low_poly.gd        costruttore di modelli low-poly stile Kenney (blocchi smussati, archi) usato dai due script sotto
+  make_models.gd     genera mani, pugno, piccone, montacarichi (castello e piattaforma), leva, negozio, pala e cassa (in modelli/)
+  make_skeleton.gd   genera lo scheletro in 6 pezzi (in modelli/scheletro/) e la scena scenes/scheletro.tscn con le animazioni
+  make_crypt.gd      genera i pezzi della catacomba: cunicoli scavati nella roccia (corridoio, fondo, curva, T, incrocio) e stanza in mattoni (in modelli/cripta/)
+modelli/             mani, pugno, piccone e pezzi della cripta in stile Kenney (GLB, apribili anche in Blender)
 audio/               suoni provvisori generati
 assetpack/           modelli 3D (Kenney, CC0)
 ```
@@ -87,6 +94,10 @@ assetpack/           modelli 3D (Kenney, CC0)
 ## Modificare la catacomba
 
 Stanze e corridoi sono i pezzi in `scenes/pezzi/`, figli del nodo **Catacomba** in `main.tscn`.
+La catacomba usa i pezzi `cripta-*`. I cunicoli sono scavati nella roccia, con la volta e i loculi:
+`cripta-corridoio` (lungo X, in tre varianti), `cripta-fondo` (aperto verso +X), `cripta-curva`
+(aperta verso -X e -Z), `cripta-t` (chiusa verso +Z), `cripta-incrocio`. Le stanze hanno muri in
+blocchi di tufo con portali ad arco: `cripta-stanza` (12 x 12 m, un portale per lato).
 
 1. Trascina un pezzo dentro **Catacomba**, allineato alla griglia da 4 m (pavimento a `y = 2`).
 2. Seleziona il nodo **Terra** e premi **Rigenera terra** nell'Inspector: il pezzo si riempie di terra.
@@ -103,7 +114,7 @@ Stanze e corridoi sono i pezzi in `scenes/pezzi/`, figli del nodo **Catacomba** 
 
 - Rotaie a pezzi e vagone spinto a mano che porta i secchi al montacarichi
 
-3. Ossa e primo scheletro
+3. Ossa e primo scheletro (modello in 6 pezzi con idle e camminata: fatto)
 4. Materiali e progressione (usura e riparazione degli scheletri)
 5. Prima zona completa
 

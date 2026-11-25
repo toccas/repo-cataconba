@@ -13,9 +13,23 @@ const SpawnScript := preload("res://scripts/spawn_room.gd")
 const StateScript := preload("res://scripts/game_state.gd")
 const SfxScript := preload("res://scripts/dig_sfx.gd")
 const BucketScript := preload("res://scripts/secchio.gd")
+const BoneScript := preload("res://scripts/osso.gd")
+
+## Ossa del primo scheletro, sepolte nella terra di corridoi e stanze: [parte, posizione].
+## Più sono lontane dallo spawn più è dura arrivarci (terra dura e roccia).
+const OSSA := [
+	["Testa", Vector3(41.0, 2.35, 32.4)],
+	["BraccioSinistro", Vector3(21.5, 2.3, 31.6)],
+	["BraccioDestro", Vector3(32.4, 2.3, 22.5)],
+	["GambaDestra", Vector3(31.6, 2.3, 43.0)],
+	["Torace", Vector3(51.0, 2.4, 31.0)],
+	["GambaSinistra", Vector3(33.0, 2.3, 13.0)],
+]
 const ViewmodelScript := preload("res://scripts/viewmodel.gd")
 
 const KIT := "res://assetpack/kenney_modular-cave-kit_1.0/Models/GLB format/"
+## Pezzi della cripta generati da tools/make_crypt.gd (con la loro collisione semplice).
+const CRIPTA := "res://modelli/cripta/"
 const PEZZI := "res://scenes/pezzi/"
 ## Altezza utile di stanze e corridoi del kit: fin qui arriva la terra, sopra c'è il soffitto.
 const ALTEZZA := 4.0
@@ -24,34 +38,35 @@ const MONDO := 64.0
 
 ## Pianta della catacomba di prova, su griglia da 4 m. Pavimento a y = 2.
 ## [nome del nodo, pezzo del kit, posizione (x, z), rotazione in gradi, piena di terra?]
-## Rotazioni: corridor va lungo X; corridor-end è aperto verso +X;
-## corridor-corner è aperto verso -X e -Z. Con +90 gradi +X diventa -Z.
+## Pezzi della cripta (tools/make_crypt.gd). Rotazioni: cripta-corridoio va lungo X;
+## cripta-fondo è aperto verso +X; cripta-curva è aperta verso -X e -Z.
+## Con +90 gradi +X diventa -Z.
 const SPAWN_POS := Vector2(32, 32)
 const LAYOUT := [
-	["StanzaSpawn", "room-small", Vector2(32, 32), 0, false],
-	["CorridoioEst1", "corridor", Vector2(40, 32), 0, true],
-	["CorridoioEst2", "corridor", Vector2(44, 32), 0, true],
-	["StanzaEst", "room-small", Vector2(52, 32), 0, true],
-	["StanzaEstNicchiaNord", "corridor-end", Vector2(52, 24), -90, true],
-	["StanzaEstNicchiaSud", "corridor-end", Vector2(52, 40), 90, true],
-	["StanzaEstNicchiaEst", "corridor-end", Vector2(60, 32), 180, true],
-	["CorridoioNord1", "corridor", Vector2(32, 24), 90, true],
-	["CorridoioNord2", "corridor", Vector2(32, 20), 90, true],
-	["StanzaNord", "room-small-variation", Vector2(32, 12), 0, true],
-	["StanzaNordNicchiaNord", "corridor-end", Vector2(32, 4), -90, true],
-	["StanzaNordNicchiaOvest", "corridor-end", Vector2(24, 12), 0, true],
-	["StanzaNordNicchiaEst", "corridor-end", Vector2(40, 12), 180, true],
-	["CorridoioOvest1", "corridor", Vector2(24, 32), 0, true],
-	["CorridoioOvest2", "corridor", Vector2(20, 32), 0, true],
-	["CorridoioOvest3", "corridor", Vector2(16, 32), 0, true],
-	["CurvaOvest", "corridor-corner", Vector2(12, 32), -90, true],
-	["CorridoioOvestNord1", "corridor", Vector2(12, 28), 90, true],
-	["CorridoioOvestNord2", "corridor", Vector2(12, 24), 90, true],
-	["FondoOvestNord", "corridor-end", Vector2(12, 20), -90, true],
-	["CorridoioSud1", "corridor", Vector2(32, 40), 90, true],
-	["CorridoioSud2", "corridor", Vector2(32, 44), 90, true],
-	["CorridoioSud3", "corridor", Vector2(32, 48), 90, true],
-	["FondoSud", "corridor-end", Vector2(32, 52), 90, true],
+	["StanzaSpawn", "cripta-stanza-spawn", Vector2(32, 32), 0, false],
+	["CorridoioEst1", "cripta-corridoio", Vector2(40, 32), 0, true],
+	["CorridoioEst2", "cripta-corridoio", Vector2(44, 32), 0, true],
+	["StanzaEst", "cripta-stanza", Vector2(52, 32), 0, true],
+	["StanzaEstNicchiaNord", "cripta-fondo", Vector2(52, 24), -90, true],
+	["StanzaEstNicchiaSud", "cripta-fondo", Vector2(52, 40), 90, true],
+	["StanzaEstNicchiaEst", "cripta-fondo", Vector2(60, 32), 180, true],
+	["CorridoioNord1", "cripta-corridoio", Vector2(32, 24), 90, true],
+	["CorridoioNord2", "cripta-corridoio", Vector2(32, 20), 90, true],
+	["StanzaNord", "cripta-stanza", Vector2(32, 12), 0, true],
+	["StanzaNordNicchiaNord", "cripta-fondo", Vector2(32, 4), -90, true],
+	["StanzaNordNicchiaOvest", "cripta-fondo", Vector2(24, 12), 0, true],
+	["StanzaNordNicchiaEst", "cripta-fondo", Vector2(40, 12), 180, true],
+	["CorridoioOvest1", "cripta-corridoio", Vector2(24, 32), 0, true],
+	["CorridoioOvest2", "cripta-corridoio", Vector2(20, 32), 0, true],
+	["CorridoioOvest3", "cripta-corridoio", Vector2(16, 32), 0, true],
+	["CurvaOvest", "cripta-curva", Vector2(12, 32), -90, true],
+	["CorridoioOvestNord1", "cripta-corridoio", Vector2(12, 28), 90, true],
+	["CorridoioOvestNord2", "cripta-corridoio", Vector2(12, 24), 90, true],
+	["FondoOvestNord", "cripta-fondo", Vector2(12, 20), -90, true],
+	["CorridoioSud1", "cripta-corridoio", Vector2(32, 40), 90, true],
+	["CorridoioSud2", "cripta-corridoio", Vector2(32, 44), 90, true],
+	["CorridoioSud3", "cripta-corridoio", Vector2(32, 48), 90, true],
+	["FondoSud", "cripta-fondo", Vector2(32, 52), 90, true],
 ]
 
 
@@ -60,6 +75,7 @@ func _init() -> void:
 	var sounds := _save_sounds()
 	_save_pieces()
 	_save_bucket()
+	_save_bone()
 
 	var player := CharacterBody3D.new()
 	player.name = "Player"
@@ -100,6 +116,18 @@ func _init() -> void:
 	var bucket_root := Node3D.new()
 	bucket_root.name = "Secchi"
 	main.add_child(bucket_root)
+	var bones := Node3D.new()
+	bones.name = "Ossa"
+	main.add_child(bones)
+	var bone_scene: PackedScene = load("res://scenes/osso.tscn")
+	for o in OSSA:
+		var b: RigidBody3D = bone_scene.instantiate()
+		b.name = o[0]
+		b.parte = o[0]
+		b.freeze = true
+		b.position = o[1]
+		b.rotation = Vector3(PI / 2.0 * (0.3 + 0.4 * (o[1].x - floorf(o[1].x))), o[1].z, 0.0)
+		bones.add_child(b)
 	var p: Node3D = load("res://scenes/player.tscn").instantiate()
 	p.position = Vector3(SPAWN_POS.x, PAVIMENTO + 0.1, SPAWN_POS.y + 2.0)
 	main.add_child(p)
@@ -146,44 +174,72 @@ func _environment() -> WorldEnvironment:
 ## e, per stanze e corridoi, il volume da riempire di terra (meta volume_size / volume_offset).
 func _save_pieces() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(PEZZI))
-	for f in DirAccess.get_files_at(KIT):
-		if not f.ends_with(".glb"):
-			continue
-		var id := f.get_basename()
-		var root := Node3D.new()
-		root.name = id.to_pascal_case()
-		var model: Node3D = (load(KIT + f) as PackedScene).instantiate()
-		model.name = "Modello"
-		root.add_child(model)
-		var faces := PackedVector3Array()
-		var box := AABB()
-		var first := true
-		for mi: MeshInstance3D in model.find_children("*", "MeshInstance3D", true, false):
-			var t := Transform3D()
-			var n: Node = mi
-			while n != root:
-				t = (n as Node3D).transform * t
-				n = n.get_parent()
-			faces.append_array(t * mi.mesh.get_faces())
-			box = t * mi.get_aabb() if first else box.merge(t * mi.get_aabb())
-			first = false
+	for dir in [KIT, CRIPTA]:
+		for f in DirAccess.get_files_at(dir):
+			if f.ends_with(".glb"):
+				_save_piece(dir, f.get_basename())
+
+
+func _save_piece(dir: String, id: String) -> void:
+	var root := Node3D.new()
+	root.name = id.to_pascal_case()
+	var model: Node3D = (load(dir + id + ".glb") as PackedScene).instantiate()
+	model.name = "Modello"
+	root.add_child(model)
+	var faces := PackedVector3Array()
+	var box := AABB()
+	var first := true
+	for mi: MeshInstance3D in model.find_children("*", "MeshInstance3D", true, false):
+		var t := Transform3D()
+		var n: Node = mi
+		while n != root:
+			t = (n as Node3D).transform * t
+			n = n.get_parent()
+		faces.append_array(t * mi.mesh.get_faces())
+		box = t * mi.get_aabb() if first else box.merge(t * mi.get_aabb())
+		first = false
+	var col_path := dir + id + "_collisione.res"
+	if not ResourceLoader.exists(col_path):
+		# kit Kenney: collisione presa dalla mesh stessa
+		col_path = PEZZI + id + "_collisione.res"
 		var shape := ConcavePolygonShape3D.new()
 		shape.set_faces(faces)
 		shape.backface_collision = true
-		ResourceSaver.save(shape, PEZZI + id + "_collisione.res")
-		var body := StaticBody3D.new()
-		body.name = "Corpo"
-		var cs := CollisionShape3D.new()
-		cs.name = "Collisione"
-		cs.shape = load(PEZZI + id + "_collisione.res")
-		body.add_child(cs)
-		root.add_child(body)
-		if id.begins_with("corridor") or id.begins_with("room"):
-			var c := box.get_center()
-			root.set_meta("volume_size", Vector3(snappedf(box.size.x, 4.0), ALTEZZA, snappedf(box.size.z, 4.0)))
-			root.set_meta("volume_offset", Vector3(snappedf(c.x, 2.0), ALTEZZA / 2.0, snappedf(c.z, 2.0)))
-			root.set_meta("terra", true)
-		_save(root, PEZZI + id + ".tscn")
+		ResourceSaver.save(shape, col_path)
+	var body := StaticBody3D.new()
+	body.name = "Corpo"
+	var cs := CollisionShape3D.new()
+	cs.name = "Collisione"
+	cs.shape = load(col_path)
+	body.add_child(cs)
+	root.add_child(body)
+	if id.begins_with("corridor") or id.begins_with("room") or id.begins_with("cripta"):
+		var c := box.get_center()
+		root.set_meta("volume_size", Vector3(snappedf(box.size.x, 4.0), ALTEZZA, snappedf(box.size.z, 4.0)))
+		root.set_meta("volume_offset", Vector3(snappedf(c.x, 2.0), ALTEZZA / 2.0, snappedf(c.z, 2.0)))
+		root.set_meta("terra", true)
+	_save(root, PEZZI + id + ".tscn")
+
+
+## Un pezzo di scheletro raccoglibile: corpo fisico, il modello lo crea osso.gd.
+func _save_bone() -> void:
+	var b := RigidBody3D.new()
+	b.name = "Osso"
+	b.set_script(BoneScript)
+	b.mass = 3.0
+	b.continuous_cd = true
+	b.freeze_mode = RigidBody3D.FREEZE_MODE_STATIC
+	var pm := PhysicsMaterial.new()
+	pm.friction = 0.9
+	pm.bounce = 0.1
+	b.physics_material_override = pm
+	b.set_meta("interact", "osso")
+	b.add_to_group("ossa", true)
+	var cs := CollisionShape3D.new()
+	cs.name = "Collisione"
+	cs.shape = BoxShape3D.new()
+	b.add_child(cs)
+	_save(b, "res://scenes/osso.tscn")
 
 
 ## Il secchio pieno che si lancia: la botte del Mini Dungeon con fisica.
@@ -222,11 +278,19 @@ func _save_bucket() -> void:
 func _catacomb() -> Node3D:
 	var cat := Node3D.new()
 	cat.name = "Catacomba"
+	var k := 0
 	for e in LAYOUT:
-		var piece: Node3D = (load(PEZZI + e[1] + ".tscn") as PackedScene).instantiate()
+		var id: String = e[1]
+		var rot: float = e[3]
+		if id == "cripta-corridoio":
+			# tre varianti del corridoio (loculi in punti diversi), a volte girate di 180 gradi
+			id = ["cripta-corridoio", "cripta-corridoio-2", "cripta-corridoio-3"][k % 3]
+			rot += 180.0 if (k / 3) % 2 == 1 else 0.0
+			k += 1
+		var piece: Node3D = (load(PEZZI + id + ".tscn") as PackedScene).instantiate()
 		piece.name = e[0]
 		piece.position = Vector3(e[2].x, PAVIMENTO, e[2].y)
-		piece.rotation_degrees.y = e[3]
+		piece.rotation_degrees.y = rot
 		piece.set_meta("terra", e[4])
 		if e[2] == SPAWN_POS:
 			piece.set_meta("spawn", true)
@@ -241,16 +305,23 @@ func _ceiling() -> CSGCombiner3D:
 	roof.name = "Soffitto"
 	roof.use_collision = true
 	var mat := StandardMaterial3D.new()
-	mat.albedo_color = Color(0.36, 0.27, 0.25)
+	# pietra di tufo a lastre irregolari, chiara come i muri (non deve sembrare terra)
+	mat.albedo_color = Color(0.70, 0.64, 0.51)
 	mat.roughness = 1.0
 	mat.uv1_triplanar = true
 	mat.uv1_scale = Vector3(0.25, 0.25, 0.25)
 	var tex := NoiseTexture2D.new()
 	var n := FastNoiseLite.new()
 	n.noise_type = FastNoiseLite.TYPE_CELLULAR
-	n.frequency = 0.02
+	n.cellular_return_type = FastNoiseLite.RETURN_DISTANCE2_SUB
+	n.frequency = 0.035
 	tex.noise = n
 	tex.seamless = true
+	var ramp := Gradient.new()
+	ramp.set_color(0, Color(0.45, 0.42, 0.36))
+	ramp.set_color(1, Color(1.0, 1.0, 1.0))
+	ramp.set_offset(1, 0.12)
+	tex.color_ramp = ramp
 	mat.albedo_texture = tex
 	var slab := CSGBox3D.new()
 	slab.name = "Lastra"

@@ -3,11 +3,11 @@
 [ext_resource type="PackedScene" path="res://assetpack/kenney_modular-cave-kit_1.0/Models/GLB format/template-floor-layer-raised.glb" id="1_5j4co"]
 [ext_resource type="Shape3D" path="res://scenes/pezzi/template-floor-layer-raised_collisione.res" id="2_kk0px"]
 
-[node name="TemplateFloorLayerRaised" type="Node3D" unique_id=1158053427]
+[node name="TemplateFloorLayerRaised" type="Node3D" unique_id=1584938449]
 
 [node name="Modello" type="Node3D" parent="." unique_id=931299514 instance=ExtResource("1_5j4co")]
 
-[node name="Corpo" type="StaticBody3D" parent="." unique_id=1151986049]
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=643894526]
 
-[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1820836884]
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=916297117]
 shape = ExtResource("2_kk0px")

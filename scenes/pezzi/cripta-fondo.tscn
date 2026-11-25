@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://modelli/cripta/cripta-fondo.glb" id="1_hdf66"]
+[ext_resource type="Shape3D" path="res://modelli/cripta/cripta-fondo_collisione.res" id="2_iafx8"]
+
+[node name="CriptaFondo" type="Node3D" unique_id=122835550]
+metadata/volume_size = Vector3(4, 4, 4)
+metadata/volume_offset = Vector3(0, 2, 0)
+metadata/terra = true
+
+[node name="Modello" type="Node3D" parent="." unique_id=64014038 instance=ExtResource("1_hdf66")]
+
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=1927519167]
+
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=2146010555]
+shape = ExtResource("2_iafx8")

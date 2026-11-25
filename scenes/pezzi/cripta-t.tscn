@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://modelli/cripta/cripta-t.glb" id="1_cbcjr"]
+[ext_resource type="Shape3D" path="res://modelli/cripta/cripta-t_collisione.res" id="2_hprha"]
+
+[node name="CriptaT" type="Node3D" unique_id=1810206544]
+metadata/volume_size = Vector3(4, 4, 4)
+metadata/volume_offset = Vector3(0, 2, 0)
+metadata/terra = true
+
+[node name="Modello" type="Node3D" parent="." unique_id=80555099 instance=ExtResource("1_cbcjr")]
+
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=1229075844]
+
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1539324855]
+shape = ExtResource("2_hprha")

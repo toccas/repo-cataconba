@@ -9,11 +9,14 @@ extends Node3D
 const MANO := "res://modelli/mano.glb"
 const PUGNO := "res://modelli/pugno.glb"
 const PICCONE := "res://modelli/piccone.glb"
-const PALA := "res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/shovel.glb"
+const PALA := "res://modelli/pala.glb"
 const BOTTE := "res://assetpack/kenney_mini-dungeon/Models/GLB format/barrel.glb"
 
 ## Indice del modello "secchio in mano" (dopo mani, pala, piccone).
 const SECCHIO := 3
+## Indice del modello "osso in mano".
+const OSSO := 4
+const OssoScript := preload("res://scripts/osso.gd")
 
 ## Posa di riposo della mano destra (la sinistra è speculare).
 const HAND_POS := Vector3(0.15, -0.18, -0.34)
@@ -64,6 +67,13 @@ const ANIM := [
 			[1.0, Vector3.ZERO, Vector3.ZERO, "smooth"],
 		],
 	},
+	{   # osso in mano: non scava
+		"impatto": 2.0,
+		"pose": [
+			[0.0, Vector3.ZERO, Vector3.ZERO, "smooth"],
+			[1.0, Vector3.ZERO, Vector3.ZERO, "smooth"],
+		],
+	},
 ]
 
 var models := []
@@ -84,7 +94,7 @@ var last_cam_rot := Vector3.ZERO
 
 func _ready() -> void:
 	position = Vector3.ZERO
-	models = [$Mani, $Pala, $Piccone, $Secchio]
+	models = [$Mani, $Pala, $Piccone, $Secchio, $Osso]
 	hands = [$Mani/ManoDestra, $Mani/ManoSinistra]
 	for m in models:
 		m.visible = false
@@ -94,6 +104,23 @@ func _ready() -> void:
 	for mi in find_children("*", "GeometryInstance3D", true, false):
 		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	last_cam_rot = _cam_rot()
+
+
+## Mette in mano il pezzo di scheletro indicato (Testa, Torace, ...).
+func set_bone(parte: String) -> void:
+	var holder: Node3D = $Osso/Pezzo
+	for c in holder.get_children():
+		c.queue_free()
+	var m := OssoScript.modello(parte)
+	holder.add_child(m)
+	var box := OssoScript.aabb(m)
+	# i pezzi lunghi (gambe, braccia) si tengono di traverso
+	var s := 0.55 if box.size.y > 0.6 else 0.45
+	m.scale = Vector3.ONE * s
+	m.position = -box.get_center() * s
+	holder.rotation = Vector3(0.2, 0.0, PI / 2.0 - 0.25) if box.size.y > 0.6 else Vector3(-0.3, PI, 0.0)
+	for mi in m.find_children("*", "GeometryInstance3D", true, false):
+		mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
 
 func set_tool(i: int) -> void:
@@ -237,8 +264,8 @@ func build_nodes() -> void:
 	add_child(pala)
 	var shovel := _inst(PALA, "Modello")
 	shovel.rotation = Vector3(PI, 0, 0)   # lama in alto, come gli altri attrezzi
-	shovel.scale = Vector3.ONE * 1.1
-	shovel.position = Vector3(0, 0.55, 0.03)
+	shovel.scale = Vector3.ONE * 0.75
+	shovel.position = Vector3(0, 0.55, 0.0)
 	pala.add_child(shovel)
 	var fist := _inst(PUGNO, "Mano")
 	fist.position = Vector3(0, 0.02, 0.03)
@@ -271,6 +298,20 @@ func build_nodes() -> void:
 		var grip := _inst(PUGNO, "ManoDestra" if h == 0 else "ManoSinistra")
 		grip.transform = _hand_xf(Vector3(0.2, 0.17, 0.02), Vector3(0.0, 0.0, PI / 2), side)
 		bucket.add_child(grip)
+
+	# osso (pezzo di scheletro) tenuto con due mani; il modello si mette con set_bone()
+	var bone := Node3D.new()
+	bone.name = "Osso"
+	bone.position = Vector3(0.0, -0.33, -0.58)
+	add_child(bone)
+	var piece := Node3D.new()
+	piece.name = "Pezzo"
+	bone.add_child(piece)
+	for h in 2:
+		var side := 1.0 if h == 0 else -1.0
+		var grip := _inst(PUGNO, "ManoDestra" if h == 0 else "ManoSinistra")
+		grip.transform = _hand_xf(Vector3(0.16, -0.05, 0.03), Vector3(0.0, 0.0, PI / 2), side)
+		bone.add_child(grip)
 
 
 ## Mucchietto di terra che sporge dalla botte (per far vedere che il secchio è pieno).

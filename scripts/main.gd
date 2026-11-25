@@ -1,12 +1,14 @@
 extends Node3D
 ## Scena principale del prototipo. Tutti gli elementi sono nodi della scena main.tscn:
 ## Catacomba (pezzi del Modular Cave Kit), Soffitto, Terra, Spawn (montacarichi, leva, negozio),
-## Secchi (i secchi lanciati), Player, HUD.
+## Secchi (i secchi lanciati), Ossa (i pezzi di scheletro sepolti o lanciati), Player, HUD.
 ## Questo script collega le interazioni e aggiorna l'interfaccia.
 ##
 ## Ciclo: scavi -> la terra va nell'attrezzo -> Q riempie un secchio (10 unità) ->
 ## lo lanci (tasto destro) -> lo raccogli (E) -> lo posi sul montacarichi (E) ->
 ## leva: la pila sale e viene venduta -> negozio.
+## Ossa: scavando si trovano pezzi di scheletro; si raccolgono (E), si lanciano (tasto
+## destro) e si posano nella tomba dello spawn (E). Con tutti e 6 lo scheletro si alza.
 ##
 ## Avvio normale: si gioca.
 ## Con "-- --bench": scava da solo per alcuni secondi, salva le misure in
@@ -15,6 +17,9 @@ extends Node3D
 
 ## Scena del secchio (creata da tools/build_scenes.gd), caricata all'avvio.
 var secchio_scene: PackedScene
+var osso_scene: PackedScene
+const OssoScript := preload("res://scripts/osso.gd")
+const PARTI := ["Testa", "Torace", "BraccioDestro", "BraccioSinistro", "GambaDestra", "GambaSinistra"]
 
 @onready var terrain: Node3D = $Terra
 @onready var player: CharacterBody3D = $Player
@@ -22,6 +27,8 @@ var secchio_scene: PackedScene
 @onready var spawn: Node3D = $Spawn
 @onready var hud: CanvasLayer = $HUD
 @onready var secchi: Node3D = $Secchi
+@onready var ossa: Node3D = $Ossa
+@onready var lying: Node3D = $Spawn/ScheletroNellaTomba
 
 var bench := false
 var bench_frames := 0
@@ -31,6 +38,7 @@ var frame_ms := PackedFloat32Array()
 
 func _ready() -> void:
 	secchio_scene = load("res://scenes/secchio.tscn")
+	osso_scene = load("res://scenes/osso.tscn")
 	var args := OS.get_cmdline_user_args()
 	bench = "--bench" in args
 	if bench:
@@ -65,9 +73,9 @@ func _process(delta: float) -> void:
 	terrain.flush()
 	if terrain.last_remesh_chunks > 0:
 		# la terra sotto i secchi può essere stata scavata: li sveglio perché ricadano
-		for b in secchi.get_children():
+		for b in secchi.get_children() + ossa.get_children():
 			(b as RigidBody3D).sleeping = false
-	for b in secchi.get_children():
+	for b in secchi.get_children() + ossa.get_children():
 		if b.global_position.y < -10.0:
 			# caduto fuori dal mondo: torna vicino al montacarichi
 			b.global_position = spawn.global_position + Vector3(0, 2.5, 0)
@@ -110,7 +118,10 @@ func _on_throw() -> void:
 			start = cam.global_position + fwd * maxf(d - 0.4, 0.15) + Vector3(0, -0.2, 0)
 			speed = 1.5
 	var v := fwd * speed + Vector3(0, 1.8, 0) + player.velocity
-	_spawn_bucket(player.carried_valore, start, v)
+	if player.carried_osso != "":
+		_spawn_bone(player.carried_osso, start, v)
+	else:
+		_spawn_bucket(player.carried_valore, start, v)
 	player.drop_carry()
 	player.sfx.play("dura", start, -8.0)
 
@@ -126,6 +137,77 @@ func _spawn_bucket(valore: int, pos: Vector3, vel: Vector3) -> RigidBody3D:
 	# il giocatore ci passa attraverso, così i secchi a terra non bloccano i corridoi
 	b.add_collision_exception_with(player)
 	return b
+
+
+func _spawn_bone(parte: String, pos: Vector3, vel: Vector3) -> RigidBody3D:
+	var b: RigidBody3D = osso_scene.instantiate()
+	b.parte = parte
+	b.freeze = false
+	ossa.add_child(b)
+	b.global_position = pos
+	b.rotation = Vector3(randf() * TAU, randf() * TAU, 0.0)
+	b.linear_velocity = vel
+	b.angular_velocity = Vector3(randf_range(-5, 5), randf_range(-5, 5), randf_range(-5, 5))
+	b.add_collision_exception_with(player)
+	return b
+
+
+func _pick_bone(b: RigidBody3D) -> void:
+	if player.carrying:
+		hud.show_message("Hai già qualcosa in mano")
+		return
+	player.carry_bone(b.parte)
+	player.sfx.play("dura", b.global_position, -6.0)
+	hud.show_message("Hai trovato: %s" % OssoScript.nome(b.parte))
+	b.queue_free()
+
+
+## E sulla tomba: posa il pezzo che hai in mano nello scheletro sdraiato.
+func _place_in_tomb() -> void:
+	if not player.carrying:
+		hud.show_message("Porta qui le ossa che trovi scavando")
+		return
+	if player.carried_osso == "":
+		hud.show_message("Nella tomba vanno le ossa, la terra va al montacarichi")
+		return
+	var parte: String = player.carried_osso
+	if lying.ha_parte(parte):
+		hud.show_message("%s è già nella tomba" % OssoScript.nome(parte))
+		return
+	lying.metti_parte(parte)
+	player.drop_carry()
+	player.sfx.play("dura", spawn.to_global(spawn.TOMB_POS) + Vector3(0, 0.6, 0), -4.0)
+	var n := _pezzi_in_tomba()
+	if n < PARTI.size():
+		hud.show_message("%s nella tomba (%d / %d)" % [OssoScript.nome(parte), n, PARTI.size()])
+	else:
+		_skeleton_rises()
+
+
+func _pezzi_in_tomba() -> int:
+	var n := 0
+	for p in PARTI:
+		if lying.ha_parte(p):
+			n += 1
+	return n
+
+
+## Scheletro completo: si alza dalla tomba e resta in piedi accanto, in idle.
+## La tomba torna vuota per il prossimo scheletro.
+func _skeleton_rises() -> void:
+	hud.show_message("Lo scheletro è completo!")
+	var risen: Node3D = load("res://scenes/scheletro.tscn").instantiate()
+	var holder: Node3D = spawn.get_node("ScheletriRiparati")
+	holder.add_child(risen)
+	risen.transform = lying.transform
+	for p in PARTI:
+		lying.togli_parte(p)
+	var stand := Transform3D(Basis(Vector3.UP, PI / 2.0 + 0.3), spawn.TOMB_POS + Vector3(0.2 + 0.8 * holder.get_child_count(), 0, -1.3))
+	var tw := create_tween()
+	tw.tween_property(risen, "transform", Transform3D(risen.transform.basis, risen.transform.origin + Vector3(0, 0.7, 0)), 0.8) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw.tween_property(risen, "transform", stand, 1.0).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	player.sfx.play("pietra", spawn.to_global(spawn.TOMB_POS), 0.0)
 
 
 func _pick_bucket(b: RigidBody3D) -> void:
@@ -144,11 +226,18 @@ func _on_interact(id: String) -> void:
 		"secchio":
 			if is_instance_valid(player.look_collider):
 				_pick_bucket(player.look_collider)
+		"osso":
+			if is_instance_valid(player.look_collider):
+				_pick_bone(player.look_collider)
+		"tomba":
+			_place_in_tomb()
 		"montacarichi":
 			if spawn.busy:
 				hud.show_message("Il montacarichi è in viaggio")
 			elif not player.carrying:
 				hud.show_message("Porta qui un secchio pieno (Q per riempirlo)")
+			elif player.carried_osso != "":
+				hud.show_message("Le ossa vanno nella tomba")
 			elif not state.impila(player.carried_valore):
 				hud.show_message("Il montacarichi è pieno: tira la leva")
 			else:
@@ -207,8 +296,11 @@ func _update_hud() -> void:
 	var pila: int = state.pila_secchi()
 	var text := "Monete: %d\nTerra: %d / %d unità\nAttrezzo: %s" % [
 		state.monete, floori(state.terra_unita()), state.capienza, player.tool_name()]
-	if player.carrying:
+	if player.carrying and player.carried_osso != "":
+		text += "\nIn mano: %s (portalo nella tomba)" % OssoScript.nome(player.carried_osso)
+	elif player.carrying:
 		text += "\nSecchio in mano: vale %d monete" % player.carried_valore
+	text += "\nScheletro: %d / %d pezzi nella tomba" % [_pezzi_in_tomba(), PARTI.size()]
 	if pila >= 1:
 		text += "\nMontacarichi: %d / %d secchi (vale %d monete)" % [pila, state.PILA_MAX, state.valore_pila()]
 	hud.info.text = text
@@ -223,6 +315,8 @@ func _update_hud() -> void:
 		"montacarichi":
 			if spawn.busy:
 				p = "Il montacarichi è in viaggio"
+			elif player.carrying and player.carried_osso != "":
+				p = "Le ossa vanno nella tomba"
 			elif player.carrying:
 				p = "E  posa il secchio (%d / %d)" % [pila, state.PILA_MAX]
 			else:
@@ -235,12 +329,22 @@ func _update_hud() -> void:
 			else:
 				p = "Il montacarichi è vuoto"
 		"secchio":
-			p = "Hai già un secchio in mano" if player.carrying else "E  raccogli il secchio"
+			p = "Hai già qualcosa in mano" if player.carrying else "E  raccogli il secchio"
+		"osso":
+			if player.carrying:
+				p = "Hai già qualcosa in mano"
+			elif is_instance_valid(player.look_collider):
+				p = "E  raccogli: %s" % OssoScript.nome(player.look_collider.parte)
+		"tomba":
+			if player.carrying and player.carried_osso != "":
+				p = "E  metti nella tomba: %s (%d / %d)" % [OssoScript.nome(player.carried_osso), _pezzi_in_tomba(), PARTI.size()]
+			else:
+				p = "Tomba: %d / %d pezzi dello scheletro" % [_pezzi_in_tomba(), PARTI.size()]
 		"negozio":
 			p = "E  apri il negozio"
 		_:
 			if player.carrying:
-				p = "Tasto destro  lancia il secchio"
+				p = "Tasto destro  lancia " + ("l'osso" if player.carried_osso != "" else "il secchio")
 			elif state.puo_riempire():
 				p = "Q  riempi un secchio"
 	hud.prompt.text = p if not player.ui_open else ""
@@ -281,11 +385,32 @@ func _loop_test() -> void:
 	out.append("monete=%d pila=%d busy=%s" % [state.monete, state.pila_secchi(), spawn.busy])
 	out.append("compra pala: '%s' monete=%d pala=%s" % [state.compra("pala"), state.monete, state.attrezzi[1]])
 	out.append("compra piccone: '%s'" % state.compra("piccone"))
+	# ossa: ce ne sono 6 sepolte; raccolgo la testa, la lancio, la riprendo e la poso
+	out.append("ossa sepolte=%d tomba=%d" % [ossa.get_child_count(), _pezzi_in_tomba()])
+	_pick_bone(ossa.get_node("Testa"))
+	await get_tree().process_frame
+	_on_interact("montacarichi")   # rifiutato: le ossa vanno nella tomba
+	_on_throw()
+	out.append("testa lanciata: in mano=%s ossa=%d" % [player.carrying, ossa.get_child_count()])
+	await get_tree().create_timer(2.0).timeout
+	_pick_bone(ossa.get_child(ossa.get_child_count() - 1))
+	await get_tree().process_frame
+	_place_in_tomb()
+	out.append("testa posata: tomba=%d in mano=%s" % [_pezzi_in_tomba(), player.carrying])
+	for ob in ossa.get_children():
+		_pick_bone(ob)
+		await get_tree().process_frame
+		_place_in_tomb()
+	out.append("tutte posate: scheletri in piedi=%d tomba=%d ossa a terra=%d" % [
+		spawn.get_node("ScheletriRiparati").get_child_count(), _pezzi_in_tomba(), ossa.get_child_count()])
+	await get_tree().create_timer(2.0).timeout
+	var risen: Node3D = spawn.get_node("ScheletriRiparati").get_child(0)
+	out.append("scheletro: completo=%s animazione=%s" % [risen.completo(), risen.anim.current_animation])
 	# qualche secchio lanciato e uno in mano, per lo screenshot
 	player.set_physics_process(false)
-	player.position = spawn.position + Vector3(1.5, 2.1, 2.5)
-	player.rotation.y = 0.5
-	player.cam.rotation.x = -0.35
+	player.position = spawn.position + Vector3(1.0, 2.1, 1.2)
+	player.rotation.y = 1.0
+	player.cam.rotation.x = -0.25
 	for i in 4:
 		_spawn_bucket(10, spawn.position + Vector3(0.6 * i - 1.5, 3.2, 0.8), Vector3(0, 0, -1.0))
 	state.aggiungi_terra(Vector3(2.5, 0.0, 0.0))
