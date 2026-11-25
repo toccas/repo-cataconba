@@ -3,14 +3,14 @@
 [ext_resource type="PackedScene" path="res://assetpack/kenney_modular-cave-kit_1.0/Models/GLB format/room-corner.glb" id="1_4iyg0"]
 [ext_resource type="Shape3D" path="res://scenes/pezzi/room-corner_collisione.res" id="2_wv3k7"]
 
-[node name="RoomCorner" type="Node3D" unique_id=1893207320]
+[node name="RoomCorner" type="Node3D" unique_id=1866553013]
 metadata/volume_size = Vector3(12, 4, 12)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
 [node name="Modello" type="Node3D" parent="." unique_id=190834593 instance=ExtResource("1_4iyg0")]
 
-[node name="Corpo" type="StaticBody3D" parent="." unique_id=242263330]
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=1882837755]
 
-[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=59787869]
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1335596403]
 shape = ExtResource("2_wv3k7")

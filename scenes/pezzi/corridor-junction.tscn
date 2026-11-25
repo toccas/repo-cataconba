@@ -3,14 +3,14 @@
 [ext_resource type="PackedScene" path="res://assetpack/kenney_modular-cave-kit_1.0/Models/GLB format/corridor-junction.glb" id="1_28brk"]
 [ext_resource type="Shape3D" path="res://scenes/pezzi/corridor-junction_collisione.res" id="2_haq7p"]
 
-[node name="CorridorJunction" type="Node3D" unique_id=1271315846]
+[node name="CorridorJunction" type="Node3D" unique_id=1807618721]
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
 [node name="Modello" type="Node3D" parent="." unique_id=2062346890 instance=ExtResource("1_28brk")]
 
-[node name="Corpo" type="StaticBody3D" parent="." unique_id=919206400]
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=1098438982]
 
-[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1697434336]
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=90545875]
 shape = ExtResource("2_haq7p")

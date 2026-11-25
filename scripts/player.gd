@@ -2,6 +2,8 @@ extends CharacterBody3D
 ## Giocatore in prima persona: WASD per muoversi, mouse per guardare,
 ## tasto sinistro tenuto premuto per scavare, 1/2/3 per cambiare attrezzo.
 ## A ogni colpo dell'attrezzo: suono, schegge di terra e una leggera vibrazione.
+## Q riempie un secchio con la terra raccolta, tasto destro lo lancia, E raccoglie
+## un secchio o lo posa sul montacarichi. Con un secchio in mano non si scava.
 
 const ViewmodelScript := preload("res://scripts/viewmodel.gd")
 const SfxScript := preload("res://scripts/dig_sfx.gd")
@@ -13,15 +15,17 @@ const SENS := 0.0025
 
 ## periodo = durata di un colpo in secondi, scossa = forza della vibrazione al colpo
 const TOOLS := [
-	{"nome": "Mani", "raggio": 0.65, "potenza": 2.0, "max_mat": 0, "periodo": 0.38, "scossa": 0.30, "schegge": 10},
+	{"nome": "Mani", "raggio": 0.78, "potenza": 2.0, "max_mat": 0, "periodo": 0.38, "scossa": 0.30, "schegge": 10},
 	{"nome": "Pala", "raggio": 0.9, "potenza": 3.0, "max_mat": 1, "periodo": 0.55, "scossa": 0.45, "schegge": 22},
-	{"nome": "Piccone", "raggio": 0.7, "potenza": 6.0, "max_mat": 2, "periodo": 0.62, "scossa": 0.60, "schegge": 18},
+	{"nome": "Piccone", "raggio": 0.9, "potenza": 6.0, "max_mat": 2, "periodo": 0.62, "scossa": 0.60, "schegge": 18},
 ]
 const SOUND_BY_MAT := ["terra", "dura", "roccia"]
 const INTERACT_DIST := 2.8
 
 signal interact(id: String)
 signal blocked(reason: String)
+signal fill_requested
+signal throw_requested
 
 var terrain: Node3D
 var cam: Camera3D
@@ -33,13 +37,15 @@ var state: Node
 var tool_i := 0
 var ui_open := false
 var look_target := ""
-var zaino_pieno := false
+var look_collider: Object = null
+var terra_piena := false
+var carrying := false        # secchio pieno in mano
+var carried_valore := 0
 var digging := false
 var force_dig := false   # usato dalla prova automatica
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var last_hit := {}
-var removed_since_impact := 0.0
 var trauma := 0.0
 var shake_t := 0.0
 
@@ -126,6 +132,18 @@ func tool_name() -> String:
 	return TOOLS[tool_i]["nome"]
 
 
+## Prende in mano un secchio pieno che vale v monete.
+func carry(v: int) -> void:
+	carrying = true
+	carried_valore = v
+
+
+## Lascia il secchio (lanciato o posato).
+func drop_carry() -> void:
+	carrying = false
+	carried_valore = 0
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotate_y(-event.relative.x * SENS)
@@ -133,6 +151,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		cam.rotation.x = clampf(cam.rotation.x, -1.5, 1.5)
 	elif event is InputEventMouseButton and event.pressed and not ui_open and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT and not ui_open:
+		throw_requested.emit()
 	elif event is InputEventKey and event.pressed and not event.echo:
 		if ui_open:
 			if event.physical_keycode in [KEY_E, KEY_ESCAPE]:
@@ -144,6 +164,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_E:
 				if look_target != "":
 					interact.emit(look_target)
+			KEY_Q:
+				fill_requested.emit()
 			KEY_1:
 				tool_i = 0
 			KEY_2:
@@ -172,18 +194,21 @@ func _physics_process(delta: float) -> void:
 
 	var hit := _aim()
 	look_target = ""
+	look_collider = null
 	if not hit.is_empty() and hit.collider.has_meta("interact") and cam.global_position.distance_to(hit.position) < INTERACT_DIST:
 		look_target = hit.collider.get_meta("interact")
-	zaino_pieno = state.zaino_pieno()
-	digging = force_dig or (not ui_open and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT))
+		look_collider = hit.collider
+	terra_piena = state.terra_piena()
+	# con l'attrezzo pieno di terra o un secchio in mano non si scava
+	digging = not carrying and not terra_piena and (force_dig or (not ui_open and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)))
 	if digging and look_target == "":
-		_dig(hit, delta)
+		_aim_target(hit)
 	else:
 		last_hit = {}
 
 
 func _process(delta: float) -> void:
-	viewmodel.set_tool(tool_i)
+	viewmodel.set_tool(viewmodel.SECCHIO if carrying else tool_i)
 	var t: Dictionary = TOOLS[tool_i]
 	var speed := Vector2(velocity.x, velocity.z).length()
 	if viewmodel.step(delta, digging, t["periodo"], speed if is_on_floor() else 0.0):
@@ -199,28 +224,36 @@ func _aim() -> Dictionary:
 	return get_world_3d().direct_space_state.intersect_ray(q)
 
 
-## Scava nel punto mirato, se lo zaino ha ancora posto.
-func _dig(hit: Dictionary, delta: float) -> void:
+## Scava nel punto mirato, se nell'attrezzo c'è ancora posto per la terra.
+func _aim_target(hit: Dictionary) -> void:
 	if hit.is_empty():
 		last_hit = {}
 		return
-	last_hit = {"pos": hit.position, "normal": hit.normal, "terra": hit.collider == terrain.body}
-	if zaino_pieno:
-		return
-	var t: Dictionary = TOOLS[tool_i]
-	var v: Vector3 = terrain.dig(hit.position, t["raggio"], t["potenza"] * delta, t["max_mat"])
-	state.aggiungi_terra(v)
-	removed_since_impact += v.x + v.y + v.z
+	last_hit = {"pos": hit.position, "normal": hit.normal, "terra": hit.collider == terrain.body,
+		"secchio": hit.collider.is_in_group("secchi")}
 
 
-## Il colpo dell'attrezzo arriva a segno: feedback diverso se si è scavato o no.
+## Il colpo dell'attrezzo arriva a segno: stacca un pezzo di terra nel punto mirato
+## (la terra si scava solo qui, a ogni colpo, non di continuo) e dà il feedback.
+## Ogni colpo toglie potenza x periodo: la velocità media resta quella dell'attrezzo.
 func _on_impact() -> void:
-	if last_hit.is_empty() or zaino_pieno:
+	if terra_piena:
+		return
+	_aim_target(_aim())
+	if last_hit.is_empty():
+		return
+	if last_hit["secchio"]:
+		sfx.play("secchi", last_hit["pos"], -6.0)
 		return
 	var pos: Vector3 = last_hit["pos"]
 	var n: Vector3 = last_hit["normal"]
 	var t: Dictionary = TOOLS[tool_i]
-	if last_hit["terra"] and removed_since_impact > 0.0002:
+	var removed := 0.0
+	if last_hit["terra"]:
+		var v: Vector3 = terrain.dig(pos, t["raggio"], t["potenza"] * t["periodo"], t["max_mat"])
+		state.aggiungi_terra(v)
+		removed = v.x + v.y + v.z
+	if last_hit["terra"] and removed > 0.0002:
 		var m: int = terrain.material_at(pos - n * 0.3)
 		sfx.play(SOUND_BY_MAT[m], pos, -2.0 if tool_i == 0 else 0.0)
 		_burst(pos, n, terrain.MAT_COLOR[m], t["schegge"])
@@ -238,7 +271,6 @@ func _on_impact() -> void:
 		sfx.play("pietra", pos, -4.0)
 		_burst(pos, n, Color(0.45, 0.44, 0.42), 5)
 		_add_trauma(0.25)
-	removed_since_impact = 0.0
 
 
 func _burst(pos: Vector3, normal: Vector3, color: Color, amount: int) -> void:

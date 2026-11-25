@@ -1,0 +1,43 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/secchio.gd" id="1_m6sh3"]
+[ext_resource type="PackedScene" path="res://assetpack/kenney_mini-dungeon/Models/GLB format/barrel.glb" id="2_xi8kr"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_gtqpv"]
+friction = 0.9
+bounce = 0.15
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b1c7c"]
+albedo_color = Color(0.52, 0.36, 0.22, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4dng0"]
+material = SubResource("StandardMaterial3D_b1c7c")
+top_radius = 0.06
+bottom_radius = 0.15
+height = 0.07
+radial_segments = 7
+rings = 1
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_rhuhs"]
+height = 0.33
+radius = 0.17
+
+[node name="Secchio" type="RigidBody3D" unique_id=1033999704 groups=["secchi"]]
+mass = 6.0
+physics_material_override = SubResource("PhysicsMaterial_gtqpv")
+center_of_mass_mode = 1
+center_of_mass = Vector3(0, 0.168, 0)
+continuous_cd = true
+script = ExtResource("1_m6sh3")
+metadata/interact = "secchio"
+
+[node name="Modello" type="Node3D" parent="." unique_id=483316247 instance=ExtResource("2_xi8kr")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
+
+[node name="Terra" type="MeshInstance3D" parent="." unique_id=1358712967]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32, 0)
+mesh = SubResource("CylinderMesh_4dng0")
+
+[node name="Collisione" type="CollisionShape3D" parent="." unique_id=887914445]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.168, 0)
+shape = SubResource("CylinderShape3D_rhuhs")

@@ -12,6 +12,8 @@ const TerrainScript := preload("res://scripts/terrain.gd")
 const SpawnScript := preload("res://scripts/spawn_room.gd")
 const StateScript := preload("res://scripts/game_state.gd")
 const SfxScript := preload("res://scripts/dig_sfx.gd")
+const BucketScript := preload("res://scripts/secchio.gd")
+const ViewmodelScript := preload("res://scripts/viewmodel.gd")
 
 const KIT := "res://assetpack/kenney_modular-cave-kit_1.0/Models/GLB format/"
 const PEZZI := "res://scenes/pezzi/"
@@ -57,6 +59,7 @@ func _init() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://audio"))
 	var sounds := _save_sounds()
 	_save_pieces()
+	_save_bucket()
 
 	var player := CharacterBody3D.new()
 	player.name = "Player"
@@ -94,6 +97,9 @@ func _init() -> void:
 	state.name = "GameState"
 	state.set_script(StateScript)
 	main.add_child(state)
+	var bucket_root := Node3D.new()
+	bucket_root.name = "Secchi"
+	main.add_child(bucket_root)
 	var p: Node3D = load("res://scenes/player.tscn").instantiate()
 	p.position = Vector3(SPAWN_POS.x, PAVIMENTO + 0.1, SPAWN_POS.y + 2.0)
 	main.add_child(p)
@@ -178,6 +184,37 @@ func _save_pieces() -> void:
 			root.set_meta("volume_offset", Vector3(snappedf(c.x, 2.0), ALTEZZA / 2.0, snappedf(c.z, 2.0)))
 			root.set_meta("terra", true)
 		_save(root, PEZZI + id + ".tscn")
+
+
+## Il secchio pieno che si lancia: la botte del Mini Dungeon con fisica.
+func _save_bucket() -> void:
+	var b := RigidBody3D.new()
+	b.name = "Secchio"
+	b.set_script(BucketScript)
+	b.mass = 6.0
+	b.continuous_cd = true
+	b.center_of_mass_mode = RigidBody3D.CENTER_OF_MASS_MODE_CUSTOM
+	b.center_of_mass = Vector3(0, 0.168, 0)
+	var pm := PhysicsMaterial.new()
+	pm.friction = 0.9
+	pm.bounce = 0.15
+	b.physics_material_override = pm
+	b.set_meta("interact", "secchio")
+	b.add_to_group("secchi", true)
+	var model: Node3D = (load(SpawnScript.DUNGEON + "barrel.glb") as PackedScene).instantiate()
+	model.name = "Modello"
+	model.scale = Vector3.ONE * SpawnScript.BARREL_SCALE
+	b.add_child(model)
+	b.add_child(ViewmodelScript.dirt_disc())
+	var cs := CollisionShape3D.new()
+	cs.name = "Collisione"
+	var cyl := CylinderShape3D.new()
+	cyl.radius = 0.17
+	cyl.height = 0.33
+	cs.shape = cyl
+	cs.position.y = 0.168
+	b.add_child(cs)
+	_save(b, "res://scenes/secchio.tscn")
 
 
 ## La catacomba: pezzi del kit (la loro pietra non si scava). Ogni pezzo con meta

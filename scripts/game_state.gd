@@ -1,64 +1,83 @@
 extends Node
-## Stato della partita: monete, zaino, pila sul montacarichi, attrezzi posseduti.
-## Le quantità di terra sono in metri cubi per materiale [terra, terra dura, roccia].
+## Stato della partita: monete, terra raccolta nell'attrezzo, secchi sul montacarichi,
+## attrezzi posseduti.
+##
+## La terra scavata va nell'attrezzo (in unità: 1 unità = 0,25 m³). Con 10 unità
+## si riempie un secchio (tasto Q), che poi si lancia, si raccoglie e si posa sul
+## montacarichi. I secchi sono infiniti. La terra nell'attrezzo è tenuta in m³ per
+## materiale [terra, terra dura, roccia], perché i materiali valgono diversamente.
 
-const SECCHIO_M3 := 0.25
-const VALORE := [1, 3, 8]            # monete per secchio, per materiale
-const BONUS_OGNI := 10               # +10% ogni 10 secchi mandati su insieme
+const UNITA_M3 := 0.25
+const UNITA_SECCHIO := 10
+const VALORE := [1, 3, 8]            # monete per unità, per materiale
+const BONUS_OGNI := 5                # +10% ogni 5 secchi mandati su insieme
+const PILA_MAX := 75                 # posti sul montacarichi (5 x 5, 3 strati)
 
 const NEGOZIO := [
 	{"id": "pala", "nome": "Pala", "prezzo": 50, "desc": "Scava più veloce e più largo, anche la terra dura."},
-	{"id": "zaino", "nome": "Zaino grande", "prezzo": 80, "desc": "Porta 20 secchi invece di 10."},
+	{"id": "contenitore", "nome": "Sacca capiente", "prezzo": 80, "desc": "Tieni 20 unità di terra invece di 10: due secchi prima di fermarti."},
 	{"id": "piccone", "nome": "Piccone", "prezzo": 300, "desc": "Scava tutto, anche la roccia."},
 ]
 
 var monete := 0
-var zaino := [0.0, 0.0, 0.0]
-var pila := [0.0, 0.0, 0.0]
-var capienza := 10
-var attrezzi := [true, false, false]   # mani, pala, piccone
+var terra := [0.0, 0.0, 0.0]         # m³ raccolti nell'attrezzo, per materiale
+var capienza := 10                   # unità di terra che l'attrezzo può tenere
+var pila: Array[int] = []            # valore in monete di ogni secchio sul montacarichi
+var attrezzi := [true, false, false] # mani, pala, piccone
 var comprati := {}
 
 
-func _secchi(v: Array) -> float:
-	return (v[0] + v[1] + v[2]) / SECCHIO_M3
+func terra_unita() -> float:
+	return (terra[0] + terra[1] + terra[2]) / UNITA_M3
 
 
-func zaino_secchi() -> float:
-	return _secchi(zaino)
-
-
-func zaino_pieno() -> bool:
-	return zaino_secchi() >= capienza
-
-
-func pila_secchi() -> float:
-	return _secchi(pila)
+func terra_piena() -> bool:
+	return terra_unita() >= capienza
 
 
 func aggiungi_terra(v: Vector3) -> void:
-	zaino[0] += v.x
-	zaino[1] += v.y
-	zaino[2] += v.z
+	terra[0] += v.x
+	terra[1] += v.y
+	terra[2] += v.z
 
 
-## Sposta tutto lo zaino sulla pila. Restituisce i secchi spostati.
-func impila() -> float:
-	var n := zaino_secchi()
+func puo_riempire() -> bool:
+	return terra_unita() >= UNITA_SECCHIO - 0.001
+
+
+## Riempie un secchio con 10 unità di terra (in proporzione ai materiali raccolti).
+## Restituisce il valore in monete del secchio, o -1 se non c'è abbastanza terra.
+func riempi_secchio() -> int:
+	if not puo_riempire():
+		return -1
+	var f := minf(UNITA_SECCHIO / terra_unita(), 1.0)
+	var valore := 0.0
 	for m in 3:
-		pila[m] += zaino[m]
-		zaino[m] = 0.0
-	return n
+		valore += terra[m] * f / UNITA_M3 * VALORE[m]
+		terra[m] *= 1.0 - f
+	return int(round(valore))
+
+
+## Posa un secchio sul montacarichi. false se è pieno.
+func impila(valore: int) -> bool:
+	if pila.size() >= PILA_MAX:
+		return false
+	pila.append(valore)
+	return true
+
+
+func pila_secchi() -> int:
+	return pila.size()
 
 
 func bonus_pila() -> float:
-	return floori(pila_secchi() / BONUS_OGNI) * 0.1
+	return floori(pila.size() / float(BONUS_OGNI)) * 0.1
 
 
 func valore_pila() -> int:
-	var base := 0.0
-	for m in 3:
-		base += pila[m] / SECCHIO_M3 * VALORE[m]
+	var base := 0
+	for v in pila:
+		base += v
 	return int(round(base * (1.0 + bonus_pila())))
 
 
@@ -66,7 +85,7 @@ func valore_pila() -> int:
 func vendi_pila() -> int:
 	var c := valore_pila()
 	monete += c
-	pila = [0.0, 0.0, 0.0]
+	pila.clear()
 	return c
 
 
@@ -89,6 +108,6 @@ func compra(id: String) -> String:
 			attrezzi[1] = true
 		"piccone":
 			attrezzi[2] = true
-		"zaino":
+		"contenitore":
 			capienza = 20
 	return ""

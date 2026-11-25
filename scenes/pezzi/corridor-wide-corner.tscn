@@ -3,14 +3,14 @@
 [ext_resource type="PackedScene" path="res://assetpack/kenney_modular-cave-kit_1.0/Models/GLB format/corridor-wide-corner.glb" id="1_jj7vx"]
 [ext_resource type="Shape3D" path="res://scenes/pezzi/corridor-wide-corner_collisione.res" id="2_tgngc"]
 
-[node name="CorridorWideCorner" type="Node3D" unique_id=946913765]
+[node name="CorridorWideCorner" type="Node3D" unique_id=1513223697]
 metadata/volume_size = Vector3(8, 4, 8)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
 [node name="Modello" type="Node3D" parent="." unique_id=1942529489 instance=ExtResource("1_jj7vx")]
 
-[node name="Corpo" type="StaticBody3D" parent="." unique_id=884354732]
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=2020847458]
 
-[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=43622787]
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1645291977]
 shape = ExtResource("2_tgngc")

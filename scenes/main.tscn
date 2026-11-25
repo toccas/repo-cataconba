@@ -152,189 +152,189 @@ size = Vector3(1.0352535, 0.95238084, 1.0352535)
 [sub_resource type="BoxShape3D" id="BoxShape3D_mlv25"]
 size = Vector3(0.77644014, 0.7142856, 0.77644014)
 
-[node name="Main" type="Node3D" unique_id=1945384663]
+[node name="Main" type="Node3D" unique_id=1526190610]
 script = ExtResource("1_og1vs")
 
-[node name="Ambiente" type="WorldEnvironment" parent="." unique_id=275474135]
+[node name="Ambiente" type="WorldEnvironment" parent="." unique_id=1490408638]
 environment = SubResource("Environment_j2jfr")
 
-[node name="Catacomba" type="Node3D" parent="." unique_id=445360489]
+[node name="Catacomba" type="Node3D" parent="." unique_id=1553507988]
 
-[node name="StanzaSpawn" type="Node3D" parent="Catacomba" unique_id=1277994286 instance=ExtResource("2_2wyq8")]
+[node name="StanzaSpawn" type="Node3D" parent="Catacomba" unique_id=1280172211 instance=ExtResource("2_2wyq8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 2, 32)
 metadata/volume_size = Vector3(12, 4, 12)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = false
 metadata/spawn = true
 
-[node name="CorridoioEst1" type="Node3D" parent="Catacomba" unique_id=1150853494 instance=ExtResource("3_vxglm")]
+[node name="CorridoioEst1" type="Node3D" parent="Catacomba" unique_id=2092712086 instance=ExtResource("3_vxglm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 2, 32)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioEst2" type="Node3D" parent="Catacomba" unique_id=2034611855 instance=ExtResource("3_vxglm")]
+[node name="CorridoioEst2" type="Node3D" parent="Catacomba" unique_id=1225327678 instance=ExtResource("3_vxglm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 2, 32)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaEst" type="Node3D" parent="Catacomba" unique_id=1100463782 instance=ExtResource("2_2wyq8")]
+[node name="StanzaEst" type="Node3D" parent="Catacomba" unique_id=490180162 instance=ExtResource("2_2wyq8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 2, 32)
 metadata/volume_size = Vector3(12, 4, 12)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaEstNicchiaNord" type="Node3D" parent="Catacomba" unique_id=1423054984 instance=ExtResource("4_2f3dj")]
+[node name="StanzaEstNicchiaNord" type="Node3D" parent="Catacomba" unique_id=1196477281 instance=ExtResource("4_2f3dj")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 52, 2, 24)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaEstNicchiaSud" type="Node3D" parent="Catacomba" unique_id=27813601 instance=ExtResource("4_2f3dj")]
+[node name="StanzaEstNicchiaSud" type="Node3D" parent="Catacomba" unique_id=1231812372 instance=ExtResource("4_2f3dj")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 52, 2, 40)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaEstNicchiaEst" type="Node3D" parent="Catacomba" unique_id=1164532220 instance=ExtResource("4_2f3dj")]
+[node name="StanzaEstNicchiaEst" type="Node3D" parent="Catacomba" unique_id=920307210 instance=ExtResource("4_2f3dj")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 60, 2, 32)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioNord1" type="Node3D" parent="Catacomba" unique_id=1768400394 instance=ExtResource("3_vxglm")]
+[node name="CorridoioNord1" type="Node3D" parent="Catacomba" unique_id=2009289382 instance=ExtResource("3_vxglm")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 32, 2, 24)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioNord2" type="Node3D" parent="Catacomba" unique_id=546234641 instance=ExtResource("3_vxglm")]
+[node name="CorridoioNord2" type="Node3D" parent="Catacomba" unique_id=894725499 instance=ExtResource("3_vxglm")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 32, 2, 20)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaNord" type="Node3D" parent="Catacomba" unique_id=1434683202 instance=ExtResource("5_yq6so")]
+[node name="StanzaNord" type="Node3D" parent="Catacomba" unique_id=642202367 instance=ExtResource("5_yq6so")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 2, 12)
 metadata/volume_size = Vector3(12, 4, 12)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaNordNicchiaNord" type="Node3D" parent="Catacomba" unique_id=797678850 instance=ExtResource("4_2f3dj")]
+[node name="StanzaNordNicchiaNord" type="Node3D" parent="Catacomba" unique_id=969342474 instance=ExtResource("4_2f3dj")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 32, 2, 4)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaNordNicchiaOvest" type="Node3D" parent="Catacomba" unique_id=1776000174 instance=ExtResource("4_2f3dj")]
+[node name="StanzaNordNicchiaOvest" type="Node3D" parent="Catacomba" unique_id=47920655 instance=ExtResource("4_2f3dj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 2, 12)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaNordNicchiaEst" type="Node3D" parent="Catacomba" unique_id=239600658 instance=ExtResource("4_2f3dj")]
+[node name="StanzaNordNicchiaEst" type="Node3D" parent="Catacomba" unique_id=713115218 instance=ExtResource("4_2f3dj")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 40, 2, 12)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioOvest1" type="Node3D" parent="Catacomba" unique_id=1981143238 instance=ExtResource("3_vxglm")]
+[node name="CorridoioOvest1" type="Node3D" parent="Catacomba" unique_id=88346680 instance=ExtResource("3_vxglm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 2, 32)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioOvest2" type="Node3D" parent="Catacomba" unique_id=110575337 instance=ExtResource("3_vxglm")]
+[node name="CorridoioOvest2" type="Node3D" parent="Catacomba" unique_id=2055931109 instance=ExtResource("3_vxglm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 2, 32)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioOvest3" type="Node3D" parent="Catacomba" unique_id=246831875 instance=ExtResource("3_vxglm")]
+[node name="CorridoioOvest3" type="Node3D" parent="Catacomba" unique_id=1320551765 instance=ExtResource("3_vxglm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 2, 32)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CurvaOvest" type="Node3D" parent="Catacomba" unique_id=450700091 instance=ExtResource("6_fv21b")]
+[node name="CurvaOvest" type="Node3D" parent="Catacomba" unique_id=1506850524 instance=ExtResource("6_fv21b")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 12, 2, 32)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioOvestNord1" type="Node3D" parent="Catacomba" unique_id=517270903 instance=ExtResource("3_vxglm")]
+[node name="CorridoioOvestNord1" type="Node3D" parent="Catacomba" unique_id=2068432323 instance=ExtResource("3_vxglm")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 12, 2, 28)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioOvestNord2" type="Node3D" parent="Catacomba" unique_id=110896934 instance=ExtResource("3_vxglm")]
+[node name="CorridoioOvestNord2" type="Node3D" parent="Catacomba" unique_id=1976897749 instance=ExtResource("3_vxglm")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 12, 2, 24)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="FondoOvestNord" type="Node3D" parent="Catacomba" unique_id=1051732593 instance=ExtResource("4_2f3dj")]
+[node name="FondoOvestNord" type="Node3D" parent="Catacomba" unique_id=1928529719 instance=ExtResource("4_2f3dj")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 12, 2, 20)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioSud1" type="Node3D" parent="Catacomba" unique_id=1298710373 instance=ExtResource("3_vxglm")]
+[node name="CorridoioSud1" type="Node3D" parent="Catacomba" unique_id=642376776 instance=ExtResource("3_vxglm")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 32, 2, 40)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioSud2" type="Node3D" parent="Catacomba" unique_id=129625269 instance=ExtResource("3_vxglm")]
+[node name="CorridoioSud2" type="Node3D" parent="Catacomba" unique_id=1265254016 instance=ExtResource("3_vxglm")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 32, 2, 44)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioSud3" type="Node3D" parent="Catacomba" unique_id=187727994 instance=ExtResource("3_vxglm")]
+[node name="CorridoioSud3" type="Node3D" parent="Catacomba" unique_id=1254940654 instance=ExtResource("3_vxglm")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 32, 2, 48)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="FondoSud" type="Node3D" parent="Catacomba" unique_id=1967844703 instance=ExtResource("4_2f3dj")]
+[node name="FondoSud" type="Node3D" parent="Catacomba" unique_id=460051475 instance=ExtResource("4_2f3dj")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 32, 2, 52)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="Soffitto" type="CSGCombiner3D" parent="." unique_id=1109785178]
+[node name="Soffitto" type="CSGCombiner3D" parent="." unique_id=502015106]
 use_collision = true
 
-[node name="Lastra" type="CSGBox3D" parent="Soffitto" unique_id=1611835584]
+[node name="Lastra" type="CSGBox3D" parent="Soffitto" unique_id=1839119183]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 7.45, 32)
 size = Vector3(64, 3, 64)
 material = SubResource("StandardMaterial3D_o7ddy")
 
-[node name="PozzoMontacarichi" type="CSGBox3D" parent="Soffitto" unique_id=1338788541]
+[node name="PozzoMontacarichi" type="CSGBox3D" parent="Soffitto" unique_id=1507238737]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.25, 7.45, 29.25)
 operation = 2
 size = Vector3(2.5, 3.4, 2.5)
 material = SubResource("StandardMaterial3D_o7ddy")
 
-[node name="Terra" type="Node3D" parent="." unique_id=1206337514]
+[node name="Terra" type="Node3D" parent="." unique_id=698165588]
 script = ExtResource("7_tel4y")
 stone_path = NodePath("../Catacomba")
 
-[node name="Spawn" type="Node3D" parent="." unique_id=1959843291]
+[node name="Spawn" type="Node3D" parent="." unique_id=1299539788]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 32)
 script = ExtResource("8_qkpxi")
 
-[node name="Montacarichi" type="Node3D" parent="Spawn" unique_id=1836335010]
+[node name="Montacarichi" type="Node3D" parent="Spawn" unique_id=42628737]
 
-[node name="MeshInstance3D0" type="MeshInstance3D" parent="Spawn/Montacarichi" unique_id=1919810750]
+[node name="MeshInstance3D0" type="MeshInstance3D" parent="Spawn/Montacarichi" unique_id=1747818375]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.75, 2.06, -2.75)
 material_override = SubResource("StandardMaterial3D_0loja")
 mesh = SubResource("BoxMesh_ids8r")
 
-[node name="Pila" type="MultiMeshInstance3D" parent="Spawn/Montacarichi" unique_id=198284102]
+[node name="Pila" type="MultiMeshInstance3D" parent="Spawn/Montacarichi" unique_id=1050876371]
 multimesh = SubResource("MultiMesh_dnhof")
 
 [node name="Castello" type="Node3D" parent="Spawn" unique_id=200907909 instance=ExtResource("10_dgi5k")]
@@ -343,14 +343,14 @@ transform = Transform3D(2.3, 0, 0, 0, 4, 0, 0, 0, 2.3, -2.75, 2, -2.75)
 [node name="PalaNellaTerra" type="Node3D" parent="Spawn" unique_id=976127885 instance=ExtResource("11_j8jky")]
 transform = Transform3D(1.6506712, 0, 1.129285, 0, 2, 0, -1.129285, 0, 1.6506712, -0.75, 2, -1.55)
 
-[node name="AreaMontacarichi" type="StaticBody3D" parent="Spawn" unique_id=1767370308]
+[node name="AreaMontacarichi" type="StaticBody3D" parent="Spawn" unique_id=811689250]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.75, 2.6, -2.75)
 metadata/interact = "montacarichi"
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/AreaMontacarichi" unique_id=1270746223]
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/AreaMontacarichi" unique_id=1864154792]
 shape = SubResource("BoxShape3D_1v6qk")
 
-[node name="CartelloMontacarichi" type="Label3D" parent="Spawn" unique_id=1777719470]
+[node name="CartelloMontacarichi" type="Label3D" parent="Spawn" unique_id=275412535]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45, 4.6, -1.45)
 pixel_size = 0.004
 billboard = 1
@@ -358,39 +358,39 @@ modulate = Color(0.95, 0.85, 0.65, 1)
 text = "Montacarichi"
 font_size = 64
 
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="Spawn" unique_id=555512166]
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Spawn" unique_id=893037459]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45, 2.35, -3.65)
 material_override = SubResource("StandardMaterial3D_augu2")
 mesh = SubResource("BoxMesh_tm6hj")
 
-[node name="ManigliaLeva" type="Node3D" parent="Spawn" unique_id=1340549705]
+[node name="ManigliaLeva" type="Node3D" parent="Spawn" unique_id=559983434]
 transform = Transform3D(1, 0, 0, 0, 0.8253356, 0.5646425, 0, -0.5646425, 0.8253356, -1.45, 2.7, -3.65)
 
-[node name="MeshInstance3D0" type="MeshInstance3D" parent="Spawn/ManigliaLeva" unique_id=44499052]
+[node name="MeshInstance3D0" type="MeshInstance3D" parent="Spawn/ManigliaLeva" unique_id=1013328865]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 material_override = SubResource("StandardMaterial3D_kf5aa")
 mesh = SubResource("CylinderMesh_t5ykj")
 
-[node name="MeshInstance3D1" type="MeshInstance3D" parent="Spawn/ManigliaLeva" unique_id=1303647614]
+[node name="MeshInstance3D1" type="MeshInstance3D" parent="Spawn/ManigliaLeva" unique_id=1857444974]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 material_override = SubResource("StandardMaterial3D_e755i")
 mesh = SubResource("SphereMesh_ro3en")
 
-[node name="Leva" type="StaticBody3D" parent="Spawn" unique_id=1674286808]
+[node name="Leva" type="StaticBody3D" parent="Spawn" unique_id=434438409]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45, 2.6, -3.65)
 metadata/interact = "leva"
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/Leva" unique_id=317547539]
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/Leva" unique_id=1771045894]
 shape = SubResource("BoxShape3D_od4ux")
 
 [node name="Bancone" type="Node3D" parent="Spawn" unique_id=824497742 instance=ExtResource("12_kmb1v")]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 2.9, 2, -3.4)
 
-[node name="Negozio" type="StaticBody3D" parent="Spawn" unique_id=997791745]
+[node name="Negozio" type="StaticBody3D" parent="Spawn" unique_id=1133387016]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9, 2.47, -3.4)
 metadata/interact = "negozio"
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/Negozio" unique_id=1009704261]
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/Negozio" unique_id=1017171703]
 shape = SubResource("BoxShape3D_xhfw6")
 
 [node name="Moneta" type="Node3D" parent="Spawn" unique_id=205707406 instance=ExtResource("13_fuf3a")]
@@ -399,13 +399,13 @@ transform = Transform3D(0.76426923, 0, -0.23641618, 0, 0.8, 0, 0.23641618, 0, 0.
 [node name="Forziere" type="Node3D" parent="Spawn" unique_id=982705001 instance=ExtResource("14_pibwh")]
 transform = Transform3D(1.842122, 0, 0.77883667, 0, 2, 0, -0.77883667, 0, 1.842122, 0.9000001, 2, -4.2000003)
 
-[node name="ForziereCollisione" type="StaticBody3D" parent="Spawn" unique_id=417707853]
+[node name="ForziereCollisione" type="StaticBody3D" parent="Spawn" unique_id=392919410]
 transform = Transform3D(0.921061, 0, 0.38941833, 0, 1, 0, -0.38941833, 0, 0.921061, 0.97788376, 2.2, -4.015788)
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/ForziereCollisione" unique_id=265773561]
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/ForziereCollisione" unique_id=1720135782]
 shape = SubResource("BoxShape3D_1epgm")
 
-[node name="CartelloNegozio" type="Label3D" parent="Spawn" unique_id=1632110598]
+[node name="CartelloNegozio" type="Label3D" parent="Spawn" unique_id=574258691]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9, 4.3, -3.4)
 pixel_size = 0.004
 billboard = 1
@@ -416,7 +416,7 @@ font_size = 64
 [node name="CandeleNegozio" type="Node3D" parent="Spawn" unique_id=582287254 instance=ExtResource("15_c6pm6")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 2.2, 2.93, -3.7)
 
-[node name="CandeleNegozioLuce" type="OmniLight3D" parent="Spawn" unique_id=266595114]
+[node name="CandeleNegozioLuce" type="OmniLight3D" parent="Spawn" unique_id=1263573245]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 3.83, -3.7)
 light_color = Color(1, 0.6, 0.3, 1)
 light_energy = 0.9
@@ -425,53 +425,53 @@ shadow_enabled = true
 [node name="BarileOvest" type="Node3D" parent="Spawn" unique_id=483316247 instance=ExtResource("16_5he1u")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -4.5, 2, 3.5)
 
-[node name="BarileOvestCollisione" type="StaticBody3D" parent="Spawn" unique_id=591543695]
+[node name="BarileOvestCollisione" type="StaticBody3D" parent="Spawn" unique_id=1602826040]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 2.4761903, 3.5)
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarileOvestCollisione" unique_id=604647571]
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarileOvestCollisione" unique_id=1295133043]
 shape = SubResource("BoxShape3D_152kg")
 
-[node name="BarilePiccoloOvest" type="Node3D" parent="Spawn" unique_id=1301166375 instance=ExtResource("16_5he1u")]
+[node name="BarilePiccoloOvest" type="Node3D" parent="Spawn" unique_id=1952637463 instance=ExtResource("16_5he1u")]
 transform = Transform3D(1.04506, 0, 1.0760341, 0, 1.5, 0, -1.0760341, 0, 1.04506, -4.2, 2, 4.5)
 
-[node name="BarilePiccoloOvestCollisione" type="StaticBody3D" parent="Spawn" unique_id=1635509395]
+[node name="BarilePiccoloOvestCollisione" type="StaticBody3D" parent="Spawn" unique_id=51909288]
 transform = Transform3D(0.6967067, 0, 0.7173561, 0, 1, 0, -0.7173561, 0, 0.6967067, -4.2, 2.357143, 4.5)
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarilePiccoloOvestCollisione" unique_id=2084657523]
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarilePiccoloOvestCollisione" unique_id=1841855944]
 shape = SubResource("BoxShape3D_r4e17")
 
 [node name="LanternaOvest" type="Node3D" parent="Spawn" unique_id=1606654725 instance=ExtResource("17_5poiv")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -4.5, 2.96, 3.5)
 
-[node name="LanternaOvestLuce" type="OmniLight3D" parent="Spawn" unique_id=283722937]
+[node name="LanternaOvestLuce" type="OmniLight3D" parent="Spawn" unique_id=314630198]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 3.8600001, 3.5)
 light_color = Color(1, 0.6, 0.3, 1)
 light_energy = 1.6
 shadow_enabled = true
 omni_range = 10.0
 
-[node name="BarileEst" type="Node3D" parent="Spawn" unique_id=645083386 instance=ExtResource("16_5he1u")]
+[node name="BarileEst" type="Node3D" parent="Spawn" unique_id=1375507758 instance=ExtResource("16_5he1u")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 4.5, 2, 3.5)
 
-[node name="BarileEstCollisione" type="StaticBody3D" parent="Spawn" unique_id=1327893726]
+[node name="BarileEstCollisione" type="StaticBody3D" parent="Spawn" unique_id=1173651443]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 2.4761903, 3.5)
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarileEstCollisione" unique_id=870442570]
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarileEstCollisione" unique_id=775857887]
 shape = SubResource("BoxShape3D_y57op")
 
-[node name="BarilePiccoloEst" type="Node3D" parent="Spawn" unique_id=1857266156 instance=ExtResource("16_5he1u")]
+[node name="BarilePiccoloEst" type="Node3D" parent="Spawn" unique_id=2070088706 instance=ExtResource("16_5he1u")]
 transform = Transform3D(1.04506, 0, 1.0760341, 0, 1.5, 0, -1.0760341, 0, 1.04506, 4.2, 2, 4.5)
 
-[node name="BarilePiccoloEstCollisione" type="StaticBody3D" parent="Spawn" unique_id=767166544]
+[node name="BarilePiccoloEstCollisione" type="StaticBody3D" parent="Spawn" unique_id=1490431905]
 transform = Transform3D(0.6967067, 0, 0.7173561, 0, 1, 0, -0.7173561, 0, 0.6967067, 4.2, 2.357143, 4.5)
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarilePiccoloEstCollisione" unique_id=515813634]
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarilePiccoloEstCollisione" unique_id=2036207860]
 shape = SubResource("BoxShape3D_mlv25")
 
-[node name="LanternaEst" type="Node3D" parent="Spawn" unique_id=449080711 instance=ExtResource("17_5poiv")]
+[node name="LanternaEst" type="Node3D" parent="Spawn" unique_id=372919975 instance=ExtResource("17_5poiv")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 4.5, 2.96, 3.5)
 
-[node name="LanternaEstLuce" type="OmniLight3D" parent="Spawn" unique_id=83637401]
+[node name="LanternaEstLuce" type="OmniLight3D" parent="Spawn" unique_id=904919113]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 3.8600001, 3.5)
 light_color = Color(1, 0.6, 0.3, 1)
 light_energy = 1.6
@@ -481,13 +481,13 @@ omni_range = 10.0
 [node name="PuntelloEst" type="Node3D" parent="Spawn" unique_id=1545969050 instance=ExtResource("18_2cjbq")]
 transform = Transform3D(-1.2239188e-07, 0, 2, 0, 4, 0, -2.8, 0, -8.742278e-08, 5.8, 2, 0)
 
-[node name="PuntelloOvest" type="Node3D" parent="Spawn" unique_id=475683459 instance=ExtResource("18_2cjbq")]
+[node name="PuntelloOvest" type="Node3D" parent="Spawn" unique_id=905484093 instance=ExtResource("18_2cjbq")]
 transform = Transform3D(-1.2239188e-07, 0, 2, 0, 4, 0, -2.8, 0, -8.742278e-08, -5.8, 2, 0)
 
-[node name="PuntelloNord" type="Node3D" parent="Spawn" unique_id=1060633923 instance=ExtResource("18_2cjbq")]
+[node name="PuntelloNord" type="Node3D" parent="Spawn" unique_id=841878534 instance=ExtResource("18_2cjbq")]
 transform = Transform3D(2.8, 0, 0, 0, 4, 0, 0, 0, 2, 0, 2, -5.8)
 
-[node name="PuntelloSud" type="Node3D" parent="Spawn" unique_id=1920271341 instance=ExtResource("18_2cjbq")]
+[node name="PuntelloSud" type="Node3D" parent="Spawn" unique_id=299992012 instance=ExtResource("18_2cjbq")]
 transform = Transform3D(2.8, 0, 0, 0, 4, 0, 0, 0, 2, 0, 2, 5.8)
 
 [node name="Assi" type="Node3D" parent="Spawn" unique_id=1287689613 instance=ExtResource("19_chjal")]
@@ -496,12 +496,14 @@ transform = Transform3D(1.9121056, 0, 1.6105442, 0, 2.5, 0, -1.6105442, 0, 1.912
 [node name="Sassi" type="Node3D" parent="Spawn" unique_id=2035045792 instance=ExtResource("20_cjqg0")]
 transform = Transform3D(0.54353654, 0, 1.3980587, 0, 1.5, 0, -1.3980587, 0, 0.54353654, 1.8, 2, 4.4)
 
-[node name="GameState" type="Node" parent="." unique_id=609798892]
+[node name="GameState" type="Node" parent="." unique_id=87953455]
 script = ExtResource("21_vchkt")
 
-[node name="Player" type="CharacterBody3D" parent="." unique_id=2007452859 instance=ExtResource("22_txyw0")]
+[node name="Secchi" type="Node3D" parent="." unique_id=1162267793]
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=872540204 instance=ExtResource("22_txyw0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 2.1, 34)
 script = ExtResource("23_vc5cj")
 
-[node name="HUD" type="CanvasLayer" parent="." unique_id=703154888 instance=ExtResource("24_nvyfr")]
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1062611837 instance=ExtResource("24_nvyfr")]
 script = ExtResource("25_ty1g6")

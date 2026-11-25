@@ -1,12 +1,12 @@
 # Scava Catacomba
 
 Gioco in prima persona, 3D dark fantasy, fatto con **Godot 4.7**.
-Sei sepolto in una catacomba piena di terra: la scavi, la porti al montacarichi,
-la vendi e con le monete compri attrezzi migliori, fino a liberare tutta la catacomba
-e trovare l'uscita nella stanza finale.
+Sei sepolto in una catacomba piena di terra: la scavi, la metti nei secchi, li lanci,
+li raccogli e li impili sul montacarichi, li vendi e con le monete compri attrezzi
+migliori, fino a liberare tutta la catacomba e trovare l'uscita nella stanza finale.
 
 > **Stato:** prototipo. Sono pronte le fasi 0–2 (terreno scavabile, feedback dello scavo,
-> ciclo base zaino → montacarichi → vendita → negozio).
+> ciclo base secchi → montacarichi → vendita → negozio).
 
 ![Screenshot](shot.png)
 
@@ -18,8 +18,10 @@ e trovare l'uscita nella stanza finale.
   La pietra di stanze e corridoi non si scava.
 - **Feedback dello scavo**: schegge, suoni generati via codice, scossa della camera
   e animazione dell'attrezzo in mano.
-- **Ciclo di gioco**: zaino a secchi, pila sul montacarichi con bonus ogni 10 secchi,
-  leva per mandarla su e venderla, negozio con pala, zaino più grande e piccone.
+- **Ciclo di gioco**: la terra scavata va nell'attrezzo; con 10 unità riempi un secchio,
+  lo lanci e continui a scavare. Poi raccogli i secchi uno alla volta (con un secchio
+  in mano non scavi) e li posi sul montacarichi: +10% di bonus ogni 5 secchi mandati su
+  insieme. Negozio con pala, sacca capiente e piccone.
 - **Niente crolli, niente mostri.** In futuro: ossa e scheletri che si usurano e si riparano.
 
 ## Comandi
@@ -30,7 +32,9 @@ e trovare l'uscita nella stanza finale.
 | Mouse | Guardarsi intorno |
 | Tasto sinistro (tenuto) | Scavare |
 | `Spazio` | Saltare |
-| `E` | Interagire (montacarichi, leva, negozio) / chiudere il negozio |
+| `Q` | Riempire un secchio (servono 10 unità di terra) |
+| Tasto destro | Lanciare il secchio che hai in mano |
+| `E` | Raccogliere un secchio, posarlo sul montacarichi, tirare la leva, aprire/chiudere il negozio |
 | `1` `2` `3` | Mani, pala, piccone (se comprati) |
 | `Esc` | Liberare il mouse / chiudere il negozio |
 
@@ -49,7 +53,7 @@ godot --path .
 ### Prove automatiche
 
 ```
-godot --path . -- --loop    # prova il ciclo zaino -> pila -> vendita -> negozio
+godot --path . -- --loop    # prova il ciclo secchio -> lancio -> montacarichi -> vendita -> negozio
 godot --path . -- --bench   # scava da solo 6 s, salva le misure in bench.txt e uno screenshot in shot.png
 ```
 
@@ -60,18 +64,22 @@ scenes/
   main.tscn          scena principale: Catacomba, Soffitto, Terra, Spawn, Player, HUD
   player.tscn        giocatore, camera, attrezzi in mano, suoni, schegge
   hud.tscn           interfaccia e negozio
+  secchio.tscn       secchio pieno lanciabile (la botte del Mini Dungeon)
   pezzi/             un pezzo per ogni modello del Modular Cave Kit (modello + collisione + volume di terra)
 scripts/
   terrain.gd         terreno scavabile (densità, surface nets, chunk) — @tool, anteprima nell'editor
   player.gd          movimento, mira, scavo, interazioni
   viewmodel.gd       animazione dell'attrezzo in mano
   dig_sfx.gd         suoni dello scavo
-  game_state.gd      monete, zaino, pila, negozio
+  game_state.gd      monete, terra raccolta, secchi sul montacarichi, negozio
+  secchio.gd         il secchio pieno che si lancia (fisica)
   spawn_room.gd      arredo dello spawn: montacarichi, leva, negozio
   hud.gd             interfaccia
   main.gd            collega tutto + prove automatiche
 tools/
   build_scenes.gd    rigenera le scene da codice
+  make_models.gd     genera i modelli low-poly di mani, pugno e piccone (in modelli/)
+modelli/             mani, pugno e piccone in stile Kenney (GLB, apribili anche in Blender)
 audio/               suoni provvisori generati
 assetpack/           modelli 3D (Kenney, CC0)
 ```
@@ -92,6 +100,8 @@ Stanze e corridoi sono i pezzi in `scenes/pezzi/`, figli del nodo **Catacomba** 
 > ```
 
 ## Prossime fasi
+
+- Rotaie a pezzi e vagone spinto a mano che porta i secchi al montacarichi
 
 3. Ossa e primo scheletro
 4. Materiali e progressione (usura e riparazione degli scheletri)
