@@ -21,6 +21,7 @@ var nome := "Scavatore"
 var giocatori := {}        # id -> nome (compreso me)
 var online := false
 var ip_pubblico := ""
+var stato_upnp := ""
 var _upnp_thread: Thread
 
 
@@ -89,18 +90,47 @@ func esci() -> void:
 
 
 ## UPnP (in un thread, la ricerca del router richiede qualche secondo).
+## Il risultato resta in stato_upnp (mostrato in basso a sinistra a chi ospita).
 func _apri_porta(porta: int) -> void:
-	var upnp := UPNP.new()
-	var testo := ""
-	if upnp.discover(2000, 2) != UPNP.UPNP_RESULT_SUCCESS or upnp.get_device_count() == 0 or not upnp.get_gateway() or not upnp.get_gateway().is_valid_gateway():
-		testo = "UPnP non disponibile: apri a mano la porta UDP %d sul router o usate una VPN" % porta
-	elif upnp.add_port_mapping(porta, porta, "Scava Catacomba", "UDP") != UPNP.UPNP_RESULT_SUCCESS:
-		testo = "Il router non ha aperto la porta %d: aprila a mano o usate una VPN" % porta
-	else:
-		var ip := upnp.query_external_address()
-		testo = "Porta aperta. Gli amici si collegano a  %s" % ip
-		call_deferred("set", "ip_pubblico", ip)
+	var testo := _prova_upnp(porta)
+	print("UPnP: ", testo)
+	call_deferred("set", "stato_upnp", testo)
 	call_deferred("emit_signal", "stato_cambiato", testo)
+
+
+func _prova_upnp(porta: int) -> String:
+	var upnp := UPNP.new()
+	# prima una ricerca veloce, poi una più lunga che passa anche un secondo router
+	var r := upnp.discover(3000, 2)
+	if upnp.get_device_count() == 0:
+		r = upnp.discover(6000, 4)
+	if upnp.get_device_count() == 0:
+		return "UPnP: nessun router trovato (errore %d). Cause tipiche: UPnP spento sul router, firewall di Windows che blocca Godot, PC collegato a un ripetitore o a un secondo router. Se hai aperto la porta UDP %d a mano, ignora questo messaggio." % [r, porta]
+	var gw := upnp.get_gateway()
+	if gw == null or not gw.is_valid_gateway():
+		return "UPnP: trovati %d dispositivi ma nessun router valido. Se hai aperto la porta UDP %d a mano, ignora questo messaggio." % [upnp.get_device_count(), porta]
+	var ip := upnp.query_external_address()
+	# una regola vecchia (per esempio di un altro PC) può bloccare la nuova
+	upnp.delete_port_mapping(porta, "UDP")
+	var m := upnp.add_port_mapping(porta, porta, "Scava Catacomba", "UDP", 0)
+	if m != UPNP.UPNP_RESULT_SUCCESS:
+		m = upnp.add_port_mapping(porta, porta, "Scava Catacomba", "UDP", 86400)
+	if m != UPNP.UPNP_RESULT_SUCCESS:
+		return "UPnP: il router ha rifiutato la porta UDP %d (errore %d). Aprila a mano (port forwarding) o usate Tailscale." % [porta, m]
+	if _ip_non_pubblico(ip):
+		return "Porta aperta sul router, ma il suo indirizzo esterno è %s: non è pubblico (CGNAT dell'operatore o doppio router). Da internet non si entra: usate Tailscale." % ip
+	call_deferred("set", "ip_pubblico", ip)
+	return "Porta UDP %d aperta. Gli amici si collegano a  %s" % [porta, ip]
+
+
+static func _ip_non_pubblico(ip: String) -> bool:
+	var p := ip.split(".")
+	if p.size() != 4:
+		return true
+	var a := p[0].to_int()
+	var b := p[1].to_int()
+	return a == 10 or (a == 192 and b == 168) or (a == 172 and b >= 16 and b <= 31) \
+		or (a == 100 and b >= 64 and b <= 127) or a == 0 or a == 127
 
 
 func _exit_tree() -> void:

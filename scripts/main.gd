@@ -859,7 +859,8 @@ func _update_hud() -> void:
 			nomi.append(Rete.nome_di(id) + (" (ospita)" if id == 1 else ""))
 		hud.debug.text += "\nOnline: " + ", ".join(nomi)
 		if multiplayer.is_server():
-			hud.debug.text += "   porta %d%s" % [Rete.PORTA, ("   IP pubblico " + Rete.ip_pubblico) if Rete.ip_pubblico != "" else ""]
+			hud.debug.text += "
+" + (Rete.stato_upnp if Rete.stato_upnp != "" else "Cerco il router per aprire la porta UDP %d..." % Rete.PORTA)
 
 
 # --- prove automatiche ---------------------------------------------------------

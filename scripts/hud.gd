@@ -24,6 +24,10 @@ func _ready() -> void:
 	message.text = ""
 	warning.text = ""
 	prompt.text = ""
+	# le righe del multigiocatore si aggiungono sotto: il testo cresce verso l'alto e va a capo
+	debug.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	debug.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	debug.custom_minimum_size.x = 900
 
 
 func show_message(text: String) -> void:
