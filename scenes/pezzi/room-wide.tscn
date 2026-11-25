@@ -3,14 +3,14 @@
 [ext_resource type="PackedScene" path="res://assetpack/kenney_modular-cave-kit_1.0/Models/GLB format/room-wide.glb" id="1_il11q"]
 [ext_resource type="Shape3D" path="res://scenes/pezzi/room-wide_collisione.res" id="2_6l1h0"]
 
-[node name="RoomWide" type="Node3D" unique_id=1275935242]
+[node name="RoomWide" type="Node3D" unique_id=1439526058]
 metadata/volume_size = Vector3(20, 4, 12)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
 [node name="Modello" type="Node3D" parent="." unique_id=1232815547 instance=ExtResource("1_il11q")]
 
-[node name="Corpo" type="StaticBody3D" parent="." unique_id=1195266730]
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=390641807]
 
-[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1876213837]
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1284810391]
 shape = ExtResource("2_6l1h0")

@@ -3,14 +3,14 @@
 [ext_resource type="PackedScene" path="res://modelli/cripta/cripta-corridoio-2.glb" id="1_4byfw"]
 [ext_resource type="Shape3D" path="res://modelli/cripta/cripta-corridoio-2_collisione.res" id="2_l8asi"]
 
-[node name="CriptaCorridoio2" type="Node3D" unique_id=130959065]
+[node name="CriptaCorridoio2" type="Node3D" unique_id=1686552934]
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
 [node name="Modello" type="Node3D" parent="." unique_id=1198045955 instance=ExtResource("1_4byfw")]
 
-[node name="Corpo" type="StaticBody3D" parent="." unique_id=1554256598]
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=2126651149]
 
-[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1843112049]
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1633145222]
 shape = ExtResource("2_l8asi")

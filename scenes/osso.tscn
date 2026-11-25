@@ -8,12 +8,12 @@ bounce = 0.1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kr12b"]
 
-[node name="Osso" type="RigidBody3D" unique_id=34452641 groups=["ossa"]]
+[node name="Osso" type="RigidBody3D" unique_id=689101082 groups=["ossa"]]
 mass = 3.0
 physics_material_override = SubResource("PhysicsMaterial_fxb40")
 continuous_cd = true
 script = ExtResource("1_xltmb")
 metadata/interact = "osso"
 
-[node name="Collisione" type="CollisionShape3D" parent="." unique_id=112200086]
+[node name="Collisione" type="CollisionShape3D" parent="." unique_id=1172899118]
 shape = SubResource("BoxShape3D_kr12b")

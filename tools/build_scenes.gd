@@ -8,6 +8,7 @@ extends SceneTree
 const MainScript := preload("res://scripts/main.gd")
 const PlayerScript := preload("res://scripts/player.gd")
 const HudScript := preload("res://scripts/hud.gd")
+const DevScript := preload("res://scripts/dev_tool.gd")
 const TerrainScript := preload("res://scripts/terrain.gd")
 const SpawnScript := preload("res://scripts/spawn_room.gd")
 const StateScript := preload("res://scripts/game_state.gd")
@@ -92,6 +93,12 @@ func _init() -> void:
 	hud.build_nodes()
 	_save(hud, "res://scenes/hud.tscn")
 
+	var dev := CanvasLayer.new()
+	dev.name = "DevTool"
+	dev.set_script(DevScript)
+	dev.build_nodes()
+	_save(dev, "res://scenes/dev_tool.tscn")
+
 	var main := Node3D.new()
 	main.name = "Main"
 	main.set_script(MainScript)
@@ -132,6 +139,7 @@ func _init() -> void:
 	p.position = Vector3(SPAWN_POS.x, PAVIMENTO + 0.1, SPAWN_POS.y + 2.0)
 	main.add_child(p)
 	main.add_child(load("res://scenes/hud.tscn").instantiate())
+	main.add_child(load("res://scenes/dev_tool.tscn").instantiate())
 	_save(main, "res://scenes/main.tscn")
 	quit()
 
@@ -350,12 +358,23 @@ func _save(root: Node, path: String) -> void:
 
 
 ## Imposta il proprietario di tutti i nodi (così vengono salvati) e dà nomi leggibili.
-func _own(n: Node, root: Node) -> void:
+## Restituisce true se dentro n c'è almeno un nodo aggiunto qui (di proprietà di root).
+func _own(n: Node, root: Node) -> bool:
 	var i := 0
+	var found := false
 	for c in n.get_children():
 		if str(c.name).begins_with("@"):
 			c.name = "%s%d" % [c.get_class(), i]
 		i += 1
-		c.owner = root
-		if c.scene_file_path == "":
-			_own(c, root)
+		var added := c.owner == null
+		if added:
+			c.owner = root
+			found = true
+		if c.scene_file_path == "" or c.owner == root:
+			var inside := _own(c, root)
+			found = found or inside
+			# nodi aggiunti dentro una scena istanziata (es. il berretto sul negoziante):
+			# Godot li salva solo se l'istanza ha i "figli modificabili"
+			if inside and c.scene_file_path != "" and c.owner == root:
+				root.set_editable_instance(c, true)
+	return found

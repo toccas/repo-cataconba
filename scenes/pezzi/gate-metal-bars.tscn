@@ -3,11 +3,11 @@
 [ext_resource type="PackedScene" path="res://assetpack/kenney_modular-cave-kit_1.0/Models/GLB format/gate-metal-bars.glb" id="1_xpqnr"]
 [ext_resource type="Shape3D" path="res://scenes/pezzi/gate-metal-bars_collisione.res" id="2_43w7q"]
 
-[node name="GateMetalBars" type="Node3D" unique_id=1120366229]
+[node name="GateMetalBars" type="Node3D" unique_id=101502756]
 
 [node name="Modello" type="Node3D" parent="." unique_id=2112269717 instance=ExtResource("1_xpqnr")]
 
-[node name="Corpo" type="StaticBody3D" parent="." unique_id=568005730]
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=186657396]
 
-[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1233404250]
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=915374224]
 shape = ExtResource("2_43w7q")

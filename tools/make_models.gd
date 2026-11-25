@@ -55,6 +55,8 @@ func _init() -> void:
 	lp.save_glb(OUT + "cassa.glb", "cassa", [FERRO, ORO])
 	_tomb()
 	lp.save_glb(OUT + "tomba.glb", "tomba", [])
+	_beret()
+	lp.save_glb(OUT + "berretto.glb", "berretto", [])
 	quit()
 
 
@@ -377,3 +379,22 @@ func _tomb() -> void:
 	lp.cbox(lid * Transform3D(Basis(), Vector3(0, 0.07, 0)), Vector3(L - 0.2, 0.04, W - 0.25), 0.02, st_light)
 	lp.cbox(lid * Transform3D(Basis(), Vector3(0, 0.1, 0)), Vector3(0.9, 0.03, 0.1), 0.008, st_dark)
 	lp.cbox(lid * Transform3D(Basis(), Vector3(-0.25, 0.1, 0)), Vector3(0.1, 0.03, 0.45), 0.008, st_dark)
+
+
+## Berretto viola (basco) per il teschio dello scheletro: origine nel perno della testa
+## (base del collo), così va messo come figlio del nodo Testa senza spostarlo.
+## Calotta morbida e schiacciata, inclinata da un lato, fascia più scura e picciolo in cima.
+func _beret() -> void:
+	var viola := Color(0.47, 0.22, 0.62)
+	var viola_chiaro := Color(0.58, 0.32, 0.74)
+	var viola_scuro := Color(0.30, 0.12, 0.42)
+	var tilt := Transform3D(Basis.from_euler(Vector3(-0.1, 0.0, 0.22)), Vector3(0.0, 0.0, -0.01))
+	var c := Vector3(0, 0.43, -0.015)
+	# fascia sul cranio
+	lp.prism(tilt * (c + Vector3(0, -0.02, 0)), tilt * (c + Vector3(0, 0.035, 0)), 0.168, 0.176, 12, viola_scuro)
+	# calotta gonfia: un ellissoide alto e uno largo spostato di lato
+	lp.ball(tilt * (c + Vector3(0, 0.06, 0)), Vector3(0.2, 0.08, 0.2), 12, 6, viola)
+	var top := tilt * (c + Vector3(0.035, 0.1, 0))
+	lp.ball(top, Vector3(0.23, 0.055, 0.215), 12, 6, viola_chiaro)
+	# picciolo
+	lp.prism(top + Vector3(0, 0.045, 0), top + Vector3(0.005, 0.085, 0), 0.017, 0.013, 6, viola_scuro)

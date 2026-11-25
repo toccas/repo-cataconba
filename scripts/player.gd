@@ -26,6 +26,8 @@ signal interact(id: String)
 signal blocked(reason: String)
 signal fill_requested
 signal throw_requested
+## Ho tolto terra: main.gd lo manda agli altri giocatori.
+signal scavato(pos: Vector3, raggio: float, forza: float, max_mat: int, normale: Vector3)
 
 var terrain: Node3D
 var cam: Camera3D
@@ -44,6 +46,10 @@ var carried_valore := 0      # monete che vale il secchio in mano
 var carried_osso := ""       # pezzo di scheletro in mano ("" = secchio)
 var digging := false
 var force_dig := false   # usato dalla prova automatica
+# comandi del dev tool (Ctrl+M)
+var dev_volo := false        # vola e passa attraverso i muri (Spazio sale, Shift scende)
+var dev_velocita := 1.0      # moltiplica la velocità di movimento
+var dev_scavo := false       # scavo potente: pezzi più grandi, scava anche la roccia
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var last_hit := {}
@@ -188,6 +194,37 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if dev_volo:
+		_fly()
+	else:
+		_walk(delta)
+	_update_aim()
+
+
+## Attiva o disattiva il volo del dev tool (senza collisioni).
+func set_volo(on: bool) -> void:
+	dev_volo = on
+	$Collisione.disabled = on
+	velocity = Vector3.ZERO
+
+
+## Volo del dev tool: si muove dove guarda la camera, senza gravità né collisioni.
+func _fly() -> void:
+	var dir := Vector3.ZERO
+	if not ui_open:
+		if Input.is_physical_key_pressed(KEY_W): dir.z -= 1
+		if Input.is_physical_key_pressed(KEY_S): dir.z += 1
+		if Input.is_physical_key_pressed(KEY_A): dir.x -= 1
+		if Input.is_physical_key_pressed(KEY_D): dir.x += 1
+	var v := cam.global_transform.basis * dir.normalized()
+	if not ui_open:
+		if Input.is_physical_key_pressed(KEY_SPACE): v.y += 1.0
+		if Input.is_physical_key_pressed(KEY_SHIFT): v.y -= 1.0
+	velocity = v * SPEED * 2.0 * dev_velocita
+	global_position += velocity * get_physics_process_delta_time()
+
+
+func _walk(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	elif Input.is_physical_key_pressed(KEY_SPACE):
@@ -199,10 +236,12 @@ func _physics_process(delta: float) -> void:
 		if Input.is_physical_key_pressed(KEY_A): dir.x -= 1
 		if Input.is_physical_key_pressed(KEY_D): dir.x += 1
 	dir = (transform.basis * dir.normalized())
-	velocity.x = dir.x * SPEED
-	velocity.z = dir.z * SPEED
+	velocity.x = dir.x * SPEED * dev_velocita
+	velocity.z = dir.z * SPEED * dev_velocita
 	move_and_slide()
 
+
+func _update_aim() -> void:
 	var hit := _aim()
 	look_target = ""
 	look_collider = null
@@ -270,7 +309,11 @@ func _on_impact() -> void:
 	var t: Dictionary = TOOLS[tool_i]
 	var removed := 0.0
 	if last_hit["terra"]:
-		var v: Vector3 = terrain.dig(pos, t["raggio"], t["potenza"] * t["periodo"], t["max_mat"])
+		var raggio: float = t["raggio"] * (2.0 if dev_scavo else 1.0)
+		var forza: float = t["potenza"] * t["periodo"] * (10.0 if dev_scavo else 1.0)
+		var v: Vector3 = terrain.dig(pos, raggio, forza, 2 if dev_scavo else t["max_mat"])
+		if v.x + v.y + v.z > 0.0:
+			scavato.emit(pos, raggio, forza, 2 if dev_scavo else t["max_mat"], n)
 		state.aggiungi_terra(v)
 		removed = v.x + v.y + v.z
 	if last_hit["terra"] and removed > 0.0002:

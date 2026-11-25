@@ -115,6 +115,25 @@ func arch(center: Vector3, span: Vector3, depth_dir: Vector3, ri: float, ro: flo
 					Vector3(w, fill_to - ytop, depth * 0.9), 0.0, fill_c)
 
 
+## Ellissoide sfaccettato (stile low-poly): centro c, semiassi r, segs spicchi, rings fasce.
+func ball(c: Vector3, r: Vector3, segs: int, rings: int, col: Color) -> void:
+	var pt := func(lat: float, lon: float) -> Vector3:
+		return c + Vector3(cos(lat) * cos(lon) * r.x, sin(lat) * r.y, cos(lat) * sin(lon) * r.z)
+	var xf := Transform3D()
+	for i in rings:
+		var la0 := -PI / 2.0 + PI * i / rings
+		var la1 := -PI / 2.0 + PI * (i + 1) / rings
+		for j in segs:
+			var lo0 := TAU * j / segs
+			var lo1 := TAU * (j + 1) / segs
+			var p00: Vector3 = pt.call(la0, lo0)
+			var p01: Vector3 = pt.call(la0, lo1)
+			var p11: Vector3 = pt.call(la1, lo1)
+			var p10: Vector3 = pt.call(la1, lo0)
+			var n := ((p00 + p01 + p11 + p10) / 4.0 - c).normalized()
+			quad(xf, p00, p01, p11, p10, n, col)
+
+
 func quad(xf: Transform3D, p0: Vector3, p1: Vector3, p2: Vector3, p3: Vector3, n: Vector3, c: Color) -> void:
 	tri(xf, p0, p1, p2, n, c)
 	tri(xf, p0, p2, p3, n, c)

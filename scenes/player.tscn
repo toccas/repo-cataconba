@@ -55,37 +55,37 @@ vertex_color_use_as_albedo = true
 material = SubResource("StandardMaterial3D_8txt3")
 size = Vector3(0.05, 0.05, 0.05)
 
-[node name="Player" type="CharacterBody3D" unique_id=1533249709]
+[node name="Player" type="CharacterBody3D" unique_id=722656306]
 script = ExtResource("1_gl8cc")
 
-[node name="Collisione" type="CollisionShape3D" parent="." unique_id=1441686255]
+[node name="Collisione" type="CollisionShape3D" parent="." unique_id=2074138971]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
 shape = SubResource("CapsuleShape3D_51ujp")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=2038348525]
+[node name="Camera3D" type="Camera3D" parent="." unique_id=5389229]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
 fov = 80.0
 near = 0.03
 
-[node name="FiammaMagica" type="OmniLight3D" parent="Camera3D" unique_id=1058235642]
+[node name="FiammaMagica" type="OmniLight3D" parent="Camera3D" unique_id=418174968]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, -0.2, -0.3)
 light_color = Color(1, 0.62, 0.32, 1)
 light_energy = 1.6
 shadow_enabled = true
 omni_range = 11.0
 
-[node name="Viewmodel" type="Node3D" parent="Camera3D" unique_id=1150079727]
+[node name="Viewmodel" type="Node3D" parent="Camera3D" unique_id=1066137874]
 script = ExtResource("2_487ah")
 
-[node name="Mani" type="Node3D" parent="Camera3D/Viewmodel" unique_id=1484365375]
+[node name="Mani" type="Node3D" parent="Camera3D/Viewmodel" unique_id=1516235039]
 
 [node name="ManoDestra" type="Node3D" parent="Camera3D/Viewmodel/Mani" unique_id=1105038089 instance=ExtResource("3_md1ol")]
 transform = Transform3D(0.92540014, 0.26986146, 0.26610032, -0.13456115, 0.8903361, -0.43496552, -0.35429913, 0.36671036, 0.86023, 0.15, -0.18, -0.34)
 
-[node name="ManoSinistra" type="Node3D" parent="Camera3D/Viewmodel/Mani" unique_id=2016747156 instance=ExtResource("3_md1ol")]
+[node name="ManoSinistra" type="Node3D" parent="Camera3D/Viewmodel/Mani" unique_id=1675597814 instance=ExtResource("3_md1ol")]
 transform = Transform3D(-0.92540014, -0.26986146, -0.26610032, -0.13456115, 0.8903361, -0.43496552, -0.35429913, 0.36671036, 0.86023, -0.15, -0.18, -0.34)
 
-[node name="Pala" type="Node3D" parent="Camera3D/Viewmodel" unique_id=2028823653]
+[node name="Pala" type="Node3D" parent="Camera3D/Viewmodel" unique_id=1223120195]
 transform = Transform3D(0.9393727, -0.1175789, 0.32210883, 0, 0.9393727, 0.3428978, -0.3428978, -0.32210883, 0.8824211, 0.3, -0.34, -0.48)
 
 [node name="Modello" type="Node3D" parent="Camera3D/Viewmodel/Pala" unique_id=1277681524 instance=ExtResource("4_bj30b")]
@@ -94,42 +94,42 @@ transform = Transform3D(0.75, 0, 0, 0, -0.75, 6.556708e-08, 0, -6.556708e-08, -0
 [node name="Mano" type="Node3D" parent="Camera3D/Viewmodel/Pala" unique_id=110375615 instance=ExtResource("5_jc3p3")]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0.02, 0.03)
 
-[node name="Piccone" type="Node3D" parent="Camera3D/Viewmodel" unique_id=457350540]
+[node name="Piccone" type="Node3D" parent="Camera3D/Viewmodel" unique_id=697659499]
 transform = Transform3D(0.9393727, -0.1175789, 0.32210883, 0, 0.9393727, 0.3428978, -0.3428978, -0.32210883, 0.8824211, 0.3, -0.34, -0.48)
 
 [node name="Modello" type="Node3D" parent="Camera3D/Viewmodel/Piccone" unique_id=1085708570 instance=ExtResource("6_hax0n")]
 
-[node name="Mano" type="Node3D" parent="Camera3D/Viewmodel/Piccone" unique_id=182067504 instance=ExtResource("5_jc3p3")]
+[node name="Mano" type="Node3D" parent="Camera3D/Viewmodel/Piccone" unique_id=1934522100 instance=ExtResource("5_jc3p3")]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, -0.07, 0)
 
-[node name="Secchio" type="Node3D" parent="Camera3D/Viewmodel" unique_id=1327173939]
+[node name="Secchio" type="Node3D" parent="Camera3D/Viewmodel" unique_id=904901853]
 transform = Transform3D(1, 0, 0, 0, 0.9689124, -0.24740396, 0, 0.24740396, 0.9689124, 0, -0.44, -0.62)
 
 [node name="Modello" type="Node3D" parent="Camera3D/Viewmodel/Secchio" unique_id=483316247 instance=ExtResource("7_t4otl")]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
 
-[node name="Terra" type="MeshInstance3D" parent="Camera3D/Viewmodel/Secchio" unique_id=160773158]
+[node name="Terra" type="MeshInstance3D" parent="Camera3D/Viewmodel/Secchio" unique_id=588876212]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32, 0)
 mesh = SubResource("CylinderMesh_fuw3a")
 
-[node name="ManoDestra" type="Node3D" parent="Camera3D/Viewmodel/Secchio" unique_id=704838715 instance=ExtResource("5_jc3p3")]
+[node name="ManoDestra" type="Node3D" parent="Camera3D/Viewmodel/Secchio" unique_id=1474491409 instance=ExtResource("5_jc3p3")]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.2, 0.17, 0.02)
 
-[node name="ManoSinistra" type="Node3D" parent="Camera3D/Viewmodel/Secchio" unique_id=1979839667 instance=ExtResource("5_jc3p3")]
+[node name="ManoSinistra" type="Node3D" parent="Camera3D/Viewmodel/Secchio" unique_id=1186463113 instance=ExtResource("5_jc3p3")]
 transform = Transform3D(4.371139e-08, 1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -0.2, 0.17, 0.02)
 
-[node name="Osso" type="Node3D" parent="Camera3D/Viewmodel" unique_id=1582932004]
+[node name="Osso" type="Node3D" parent="Camera3D/Viewmodel" unique_id=1810012842]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.33, -0.58)
 
-[node name="Pezzo" type="Node3D" parent="Camera3D/Viewmodel/Osso" unique_id=729255659]
+[node name="Pezzo" type="Node3D" parent="Camera3D/Viewmodel/Osso" unique_id=782930993]
 
-[node name="ManoDestra" type="Node3D" parent="Camera3D/Viewmodel/Osso" unique_id=1768998523 instance=ExtResource("5_jc3p3")]
+[node name="ManoDestra" type="Node3D" parent="Camera3D/Viewmodel/Osso" unique_id=2073919368 instance=ExtResource("5_jc3p3")]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.16, -0.05, 0.03)
 
-[node name="ManoSinistra" type="Node3D" parent="Camera3D/Viewmodel/Osso" unique_id=290433870 instance=ExtResource("5_jc3p3")]
+[node name="ManoSinistra" type="Node3D" parent="Camera3D/Viewmodel/Osso" unique_id=1735181321 instance=ExtResource("5_jc3p3")]
 transform = Transform3D(4.371139e-08, 1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -0.16, -0.05, 0.03)
 
-[node name="Sfx" type="Node3D" parent="." unique_id=792865262]
+[node name="Sfx" type="Node3D" parent="." unique_id=2143117279]
 top_level = true
 script = ExtResource("8_j2b1d")
 terra = Array[AudioStream]([ExtResource("9_cs1tg"), ExtResource("10_2dvfe"), ExtResource("11_giy8y"), ExtResource("12_fdfoy")])
@@ -139,25 +139,25 @@ pietra = Array[AudioStream]([ExtResource("21_sc3ue"), ExtResource("22_lxlsd"), E
 monete = Array[AudioStream]([ExtResource("25_74r1k"), ExtResource("26_8svfe"), ExtResource("27_2a3c5"), ExtResource("28_42b1b")])
 secchi = Array[AudioStream]([ExtResource("29_h7ic4"), ExtResource("30_au7lq"), ExtResource("31_nubpm"), ExtResource("32_ua5cf")])
 
-[node name="Voce1" type="AudioStreamPlayer3D" parent="Sfx" unique_id=1634313357]
+[node name="Voce1" type="AudioStreamPlayer3D" parent="Sfx" unique_id=1906870050]
 unit_size = 4.0
 
-[node name="Voce2" type="AudioStreamPlayer3D" parent="Sfx" unique_id=2100181784]
+[node name="Voce2" type="AudioStreamPlayer3D" parent="Sfx" unique_id=92442832]
 unit_size = 4.0
 
-[node name="Voce3" type="AudioStreamPlayer3D" parent="Sfx" unique_id=1052884493]
+[node name="Voce3" type="AudioStreamPlayer3D" parent="Sfx" unique_id=1873103288]
 unit_size = 4.0
 
-[node name="Voce4" type="AudioStreamPlayer3D" parent="Sfx" unique_id=466112227]
+[node name="Voce4" type="AudioStreamPlayer3D" parent="Sfx" unique_id=1699638794]
 unit_size = 4.0
 
-[node name="Voce5" type="AudioStreamPlayer3D" parent="Sfx" unique_id=1991336171]
+[node name="Voce5" type="AudioStreamPlayer3D" parent="Sfx" unique_id=824565903]
 unit_size = 4.0
 
-[node name="Voce6" type="AudioStreamPlayer3D" parent="Sfx" unique_id=1672133060]
+[node name="Voce6" type="AudioStreamPlayer3D" parent="Sfx" unique_id=544405796]
 unit_size = 4.0
 
-[node name="Schegge1" type="CPUParticles3D" parent="." unique_id=2142792017]
+[node name="Schegge1" type="CPUParticles3D" parent="." unique_id=18888716]
 top_level = true
 emitting = false
 amount = 24
@@ -178,7 +178,7 @@ damping_max = 1.5
 scale_amount_min = 0.5
 scale_amount_max = 1.4
 
-[node name="Schegge2" type="CPUParticles3D" parent="." unique_id=2030940123]
+[node name="Schegge2" type="CPUParticles3D" parent="." unique_id=436606838]
 top_level = true
 emitting = false
 amount = 24
@@ -199,7 +199,7 @@ damping_max = 1.5
 scale_amount_min = 0.5
 scale_amount_max = 1.4
 
-[node name="Schegge3" type="CPUParticles3D" parent="." unique_id=290188651]
+[node name="Schegge3" type="CPUParticles3D" parent="." unique_id=548004696]
 top_level = true
 emitting = false
 amount = 24
@@ -220,7 +220,7 @@ damping_max = 1.5
 scale_amount_min = 0.5
 scale_amount_max = 1.4
 
-[node name="Schegge4" type="CPUParticles3D" parent="." unique_id=535845563]
+[node name="Schegge4" type="CPUParticles3D" parent="." unique_id=21897330]
 top_level = true
 emitting = false
 amount = 24

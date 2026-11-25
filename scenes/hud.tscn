@@ -18,10 +18,10 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="HUD" type="CanvasLayer" unique_id=1608004450]
+[node name="HUD" type="CanvasLayer" unique_id=486848102]
 script = ExtResource("1_ahhtf")
 
-[node name="Info" type="Label" parent="." unique_id=556498414]
+[node name="Info" type="Label" parent="." unique_id=395298302]
 offset_left = 16.0
 offset_top = 12.0
 offset_right = 16.0
@@ -34,7 +34,7 @@ text = "Monete: 0
 Zaino: 0 / 10 secchi
 Attrezzo: Mani"
 
-[node name="Mirino" type="Label" parent="." unique_id=41700126]
+[node name="Mirino" type="Label" parent="." unique_id=1458251047]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -51,7 +51,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
 theme_override_constants/outline_size = 6
 text = "+"
 
-[node name="Suggerimento" type="Label" parent="." unique_id=1594491160]
+[node name="Suggerimento" type="Label" parent="." unique_id=1571669294]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -68,7 +68,7 @@ theme_override_constants/outline_size = 6
 text = "E  apri il negozio"
 horizontal_alignment = 1
 
-[node name="Messaggio" type="Label" parent="." unique_id=1541026718]
+[node name="Messaggio" type="Label" parent="." unique_id=1913385529]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -86,7 +86,7 @@ theme_override_constants/outline_size = 6
 text = "+24 monete"
 horizontal_alignment = 1
 
-[node name="Avviso" type="Label" parent="." unique_id=897938257]
+[node name="Avviso" type="Label" parent="." unique_id=382785797]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -102,7 +102,7 @@ theme_override_constants/outline_size = 6
 text = "Zaino pieno: porta la terra al montacarichi"
 horizontal_alignment = 1
 
-[node name="Debug" type="Label" parent="." unique_id=282184488]
+[node name="Debug" type="Label" parent="." unique_id=425462822]
 modulate = Color(1, 1, 1, 0.6)
 anchors_preset = 2
 anchor_top = 1.0
@@ -115,7 +115,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
 theme_override_constants/outline_size = 6
 text = "FPS 60   ricalcolo 0.0 ms"
 
-[node name="Negozio" type="PanelContainer" parent="." unique_id=1663410002]
+[node name="Negozio" type="PanelContainer" parent="." unique_id=381891257]
 visible = false
 custom_minimum_size = Vector2(460, 0)
 anchors_preset = 8
@@ -127,28 +127,28 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_oo0fn")
 
-[node name="Colonna" type="VBoxContainer" parent="Negozio" unique_id=684923265]
+[node name="Colonna" type="VBoxContainer" parent="Negozio" unique_id=608589795]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Titolo" type="Label" parent="Negozio/Colonna" unique_id=1123522830]
+[node name="Titolo" type="Label" parent="Negozio/Colonna" unique_id=1143361981]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
 theme_override_colors/font_color = Color(0.95, 0.85, 0.65, 1)
 text = "Negozio"
 
-[node name="Monete" type="Label" parent="Negozio/Colonna" unique_id=1245722209]
+[node name="Monete" type="Label" parent="Negozio/Colonna" unique_id=39539196]
 layout_mode = 2
 text = "Monete: 0"
 
-[node name="Lista" type="VBoxContainer" parent="Negozio/Colonna" unique_id=988530677]
+[node name="Lista" type="VBoxContainer" parent="Negozio/Colonna" unique_id=902724316]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Stato" type="Label" parent="Negozio/Colonna" unique_id=1115643890]
+[node name="Stato" type="Label" parent="Negozio/Colonna" unique_id=1159766540]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.55, 0.4, 1)
 
-[node name="Chiudi" type="Button" parent="Negozio/Colonna" unique_id=920991764]
+[node name="Chiudi" type="Button" parent="Negozio/Colonna" unique_id=315899326]
 layout_mode = 2
 text = "Chiudi (E)"

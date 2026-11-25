@@ -1,38 +1,41 @@
 [gd_scene format=4]
 
-[ext_resource type="Script" path="res://scripts/main.gd" id="1_tel4y"]
-[ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-stanza-spawn.tscn" id="2_qkpxi"]
-[ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-corridoio.tscn" id="3_5q0nq"]
-[ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-corridoio-2.tscn" id="4_dgi5k"]
-[ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-stanza.tscn" id="5_j8jky"]
-[ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-fondo.tscn" id="6_kmb1v"]
-[ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-corridoio-3.tscn" id="7_fuf3a"]
-[ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-curva.tscn" id="8_pibwh"]
-[ext_resource type="Script" path="res://scripts/terrain.gd" id="9_c6pm6"]
-[ext_resource type="Script" path="res://scripts/spawn_room.gd" id="10_5he1u"]
-[ext_resource type="PackedScene" path="res://modelli/montacarichi_piattaforma.glb" id="11_5poiv"]
-[ext_resource type="Texture2D" path="res://assetpack/kenney_mini-dungeon/Models/GLB format/Textures/colormap.png" id="12_2cjbq"]
-[ext_resource type="PackedScene" path="res://modelli/montacarichi_castello.glb" id="13_chjal"]
-[ext_resource type="PackedScene" path="res://modelli/leva_base.glb" id="14_cjqg0"]
-[ext_resource type="PackedScene" path="res://modelli/leva_manico.glb" id="15_vchkt"]
-[ext_resource type="PackedScene" path="res://modelli/negozio.glb" id="16_txyw0"]
-[ext_resource type="PackedScene" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/candle-multiple.glb" id="17_vc5cj"]
-[ext_resource type="PackedScene" path="res://assetpack/kenney_mini-dungeon/Models/GLB format/barrel.glb" id="18_nvyfr"]
-[ext_resource type="PackedScene" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/lantern-candle.glb" id="19_ty1g6"]
-[ext_resource type="PackedScene" path="res://modelli/tomba.glb" id="20_j2jfr"]
-[ext_resource type="PackedScene" path="res://scenes/scheletro.tscn" id="21_bjg73"]
-[ext_resource type="Script" path="res://scripts/scheletro.gd" id="22_bu4jf"]
-[ext_resource type="PackedScene" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/debris-wood.glb" id="23_o7ddy"]
-[ext_resource type="PackedScene" path="res://assetpack/kenney_mini-dungeon/Models/GLB format/stones.glb" id="24_0loja"]
-[ext_resource type="Script" path="res://scripts/game_state.gd" id="25_ids8r"]
-[ext_resource type="PackedScene" path="res://scenes/osso.tscn" id="26_dnhof"]
-[ext_resource type="Script" path="res://scripts/osso.gd" id="27_1v6qk"]
-[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="28_augu2"]
-[ext_resource type="Script" path="res://scripts/player.gd" id="29_tm6hj"]
-[ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="30_kf5aa"]
-[ext_resource type="Script" path="res://scripts/hud.gd" id="31_t5ykj"]
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_dgi5k"]
+[ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-stanza-spawn.tscn" id="2_j8jky"]
+[ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-corridoio.tscn" id="3_kmb1v"]
+[ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-corridoio-2.tscn" id="4_fuf3a"]
+[ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-stanza.tscn" id="5_pibwh"]
+[ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-fondo.tscn" id="6_c6pm6"]
+[ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-corridoio-3.tscn" id="7_5he1u"]
+[ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-curva.tscn" id="8_5poiv"]
+[ext_resource type="Script" path="res://scripts/terrain.gd" id="9_2cjbq"]
+[ext_resource type="Script" path="res://scripts/spawn_room.gd" id="10_chjal"]
+[ext_resource type="PackedScene" path="res://modelli/montacarichi_piattaforma.glb" id="11_cjqg0"]
+[ext_resource type="Texture2D" path="res://assetpack/kenney_mini-dungeon/Models/GLB format/Textures/colormap.png" id="12_vchkt"]
+[ext_resource type="PackedScene" path="res://modelli/montacarichi_castello.glb" id="13_txyw0"]
+[ext_resource type="PackedScene" path="res://modelli/leva_base.glb" id="14_vc5cj"]
+[ext_resource type="PackedScene" path="res://modelli/leva_manico.glb" id="15_nvyfr"]
+[ext_resource type="PackedScene" path="res://modelli/negozio.glb" id="16_ty1g6"]
+[ext_resource type="PackedScene" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/candle-multiple.glb" id="17_j2jfr"]
+[ext_resource type="PackedScene" path="res://scenes/scheletro.tscn" id="18_bjg73"]
+[ext_resource type="Script" path="res://scripts/scheletro.gd" id="19_bu4jf"]
+[ext_resource type="PackedScene" path="res://modelli/berretto.glb" id="20_o7ddy"]
+[ext_resource type="PackedScene" path="res://assetpack/kenney_mini-dungeon/Models/GLB format/barrel.glb" id="21_0loja"]
+[ext_resource type="PackedScene" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/lantern-candle.glb" id="22_ids8r"]
+[ext_resource type="PackedScene" path="res://modelli/tomba.glb" id="23_dnhof"]
+[ext_resource type="PackedScene" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/debris-wood.glb" id="24_1v6qk"]
+[ext_resource type="PackedScene" path="res://assetpack/kenney_mini-dungeon/Models/GLB format/stones.glb" id="25_augu2"]
+[ext_resource type="Script" path="res://scripts/game_state.gd" id="26_tm6hj"]
+[ext_resource type="PackedScene" path="res://scenes/osso.tscn" id="27_kf5aa"]
+[ext_resource type="Script" path="res://scripts/osso.gd" id="28_t5ykj"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="29_e755i"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="30_ro3en"]
+[ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="31_od4ux"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="32_xhfw6"]
+[ext_resource type="PackedScene" path="res://scenes/dev_tool.tscn" id="33_1epgm"]
+[ext_resource type="Script" path="res://scripts/dev_tool.gd" id="34_152kg"]
 
-[sub_resource type="Environment" id="Environment_e755i"]
+[sub_resource type="Environment" id="Environment_r4e17"]
 background_mode = 1
 ambient_light_source = 2
 ambient_light_color = Color(0.25, 0.22, 0.3, 1)
@@ -42,30 +45,30 @@ fog_enabled = true
 fog_light_color = Color(0.02, 0.02, 0.03, 1)
 fog_density = 0.04
 
-[sub_resource type="Gradient" id="Gradient_ro3en"]
+[sub_resource type="Gradient" id="Gradient_y57op"]
 offsets = PackedFloat32Array(0, 0.12)
 colors = PackedColorArray(0.45, 0.42, 0.36, 1, 1, 1, 1, 1)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_od4ux"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_mlv25"]
 noise_type = 2
 frequency = 0.035
 cellular_return_type = 4
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xhfw6"]
-noise = SubResource("FastNoiseLite_od4ux")
-color_ramp = SubResource("Gradient_ro3en")
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a82wo"]
+noise = SubResource("FastNoiseLite_mlv25")
+color_ramp = SubResource("Gradient_y57op")
 seamless = true
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1epgm"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gdvew"]
 albedo_color = Color(0.7, 0.64, 0.51, 1)
-albedo_texture = SubResource("NoiseTexture2D_xhfw6")
+albedo_texture = SubResource("NoiseTexture2D_a82wo")
 uv1_scale = Vector3(0.25, 0.25, 0.25)
 uv1_triplanar = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0s8nf"]
 resource_name = "colormap"
 cull_mode = 2
-albedo_texture = ExtResource("12_2cjbq")
+albedo_texture = ExtResource("12_vchkt")
 metadata/_gltf_primary_texture_coord = 0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_dgrtn"]
@@ -102,234 +105,670 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_dgrtn")
 
-[sub_resource type="MultiMesh" id="MultiMesh_152kg"]
+[sub_resource type="MultiMesh" id="MultiMesh_kjtvk"]
 transform_format = 1
 instance_count = 75
 visible_instance_count = 0
 mesh = SubResource("ArrayMesh_pb8lx")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_r4e17"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_xrs0c"]
 size = Vector3(2.2, 1.2, 2.2)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_y57op"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_xljpf"]
 size = Vector3(0.35, 1.2, 0.35)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_mlv25"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_j4bwh"]
 size = Vector3(2.8, 1, 0.95)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_a82wo"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lhfsh"]
+shading_mode = 0
+albedo_color = Color(0.5, 1, 0.85, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_6prgb"]
+material = SubResource("StandardMaterial3D_lhfsh")
+radius = 0.024
+height = 0.048
+radial_segments = 8
+rings = 4
+
+[sub_resource type="Animation" id="Animation_sb85j"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Corpo:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Corpo/Torace:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Corpo/Testa:rotation")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Corpo/BraccioDestro:rotation")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, -0.1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Corpo/BraccioSinistro:rotation")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0.1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Corpo/GambaDestra:rotation")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Corpo/GambaSinistra:rotation")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Corpo/BraccioDestro/Avambraccio:rotation")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.15, 0, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Corpo/BraccioSinistro/Avambraccio:rotation")
+tracks/8/interp = 2
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.15, 0, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Corpo/GambaDestra/Stinco:rotation")
+tracks/9/interp = 2
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Corpo/GambaSinistra/Stinco:rotation")
+tracks/10/interp = 2
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Corpo/Testa/Mascella:rotation")
+tracks/11/interp = 2
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_n5ubg"]
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Corpo:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, -0.06, 0), Vector3(0, 0.01, 0), Vector3(0, -0.06, 0), Vector3(0, 0.01, 0), Vector3(0, -0.06, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Corpo/GambaDestra:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.42, 0, 0), Vector3(0.42, 0, 0), Vector3(-0.42, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Corpo/GambaSinistra:rotation")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.42, 0, 0), Vector3(-0.42, 0, 0), Vector3(0.42, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Corpo/GambaDestra/Stinco:rotation")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.68, 0.85, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.05, 0, 0), Vector3(0.15, 0, 0), Vector3(0.25, 0, 0), Vector3(0.95, 0, 0), Vector3(0.45, 0, 0), Vector3(0.05, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Corpo/GambaSinistra/Stinco:rotation")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.18, 0.35, 0.5, 0.75, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.25, 0, 0), Vector3(0.95, 0, 0), Vector3(0.45, 0, 0), Vector3(0.05, 0, 0), Vector3(0.15, 0, 0), Vector3(0.25, 0, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Corpo/BraccioDestro:rotation")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.42, 0, -0.12), Vector3(-0.42, 0, -0.12), Vector3(0.42, 0, -0.12)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Corpo/BraccioSinistro:rotation")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.42, 0, 0.12), Vector3(0.42, 0, 0.12), Vector3(-0.42, 0, 0.12)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Corpo/BraccioDestro/Avambraccio:rotation")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.2, 0, 0), Vector3(-0.6, 0, 0), Vector3(-0.2, 0, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Corpo/BraccioSinistro/Avambraccio:rotation")
+tracks/8/interp = 2
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.6, 0, 0), Vector3(-0.2, 0, 0), Vector3(-0.6, 0, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Corpo/Torace:rotation")
+tracks/9/interp = 2
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.06, 0.13, 0), Vector3(0.06, -0.13, 0), Vector3(0.06, 0.13, 0)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Corpo/Testa:rotation")
+tracks/10/interp = 2
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, -0.1, 0.07), Vector3(0.08, 0, 0), Vector3(0, 0.1, -0.07), Vector3(0.08, 0, 0), Vector3(0, -0.1, 0.07)]
+}
+
+[sub_resource type="Animation" id="Animation_lxbh7"]
+length = 3.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Corpo:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.02, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Corpo/Torace:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.05, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Corpo/Testa:rotation")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.8, 1.4, 2, 2.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.08, 0.4, 0.08), Vector3(0.08, 0.4, 0.08), Vector3(-0.03, -0.35, -0.06), Vector3(-0.03, -0.35, -0.06), Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Corpo/BraccioDestro:rotation")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, -0.1), Vector3(0.07, 0, -0.15), Vector3(0, 0, -0.1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Corpo/BraccioSinistro:rotation")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0.1), Vector3(-0.05, 0, 0.15), Vector3(0, 0, 0.1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Corpo/BraccioDestro/Avambraccio:rotation")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.15, 0, 0), Vector3(-0.3, 0, 0), Vector3(-0.15, 0, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Corpo/BraccioSinistro/Avambraccio:rotation")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.25, 0, 0), Vector3(-0.15, 0, 0), Vector3(-0.25, 0, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Corpo/GambaDestra:rotation")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.03, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Corpo/GambaDestra/Stinco:rotation")
+tracks/8/interp = 2
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.06, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Corpo/GambaSinistra:rotation")
+tracks/9/interp = 2
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.03, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Corpo/GambaSinistra/Stinco:rotation")
+tracks/10/interp = 2
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 1.6, 3.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.06, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7jneh"]
+_data = {
+&"RESET": SubResource("Animation_sb85j"),
+&"cammina": SubResource("Animation_n5ubg"),
+&"idle": SubResource("Animation_lxbh7")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ksmap"]
 size = Vector3(1.0352535, 0.95238084, 1.0352535)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_gdvew"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ygd8o"]
 size = Vector3(0.77644014, 0.7142856, 0.77644014)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_kjtvk"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_2s0kr"]
 size = Vector3(1.0352535, 0.95238084, 1.0352535)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_xrs0c"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_xaipn"]
 size = Vector3(0.77644014, 0.7142856, 0.77644014)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_xljpf"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ndrjj"]
 size = Vector3(2.4, 0.8, 1.1)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_fxb40"]
 friction = 0.9
 bounce = 0.1
 
-[node name="Main" type="Node3D" unique_id=161800777]
-script = ExtResource("1_tel4y")
+[node name="Main" type="Node3D" unique_id=809127661]
+script = ExtResource("1_dgi5k")
 
-[node name="Ambiente" type="WorldEnvironment" parent="." unique_id=1054233894]
-environment = SubResource("Environment_e755i")
+[node name="Ambiente" type="WorldEnvironment" parent="." unique_id=517127606]
+environment = SubResource("Environment_r4e17")
 
-[node name="Catacomba" type="Node3D" parent="." unique_id=1006021185]
+[node name="Catacomba" type="Node3D" parent="." unique_id=2107405360]
 
-[node name="StanzaSpawn" type="Node3D" parent="Catacomba" unique_id=1339278764 instance=ExtResource("2_qkpxi")]
+[node name="StanzaSpawn" type="Node3D" parent="Catacomba" unique_id=353391869 instance=ExtResource("2_j8jky")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 2, 32)
 metadata/volume_size = Vector3(12, 4, 12)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = false
 metadata/spawn = true
 
-[node name="CorridoioEst1" type="Node3D" parent="Catacomba" unique_id=1450327130 instance=ExtResource("3_5q0nq")]
+[node name="CorridoioEst1" type="Node3D" parent="Catacomba" unique_id=451659506 instance=ExtResource("3_kmb1v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 2, 32)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioEst2" type="Node3D" parent="Catacomba" unique_id=130959065 instance=ExtResource("4_dgi5k")]
+[node name="CorridoioEst2" type="Node3D" parent="Catacomba" unique_id=1686552934 instance=ExtResource("4_fuf3a")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 2, 32)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaEst" type="Node3D" parent="Catacomba" unique_id=207117587 instance=ExtResource("5_j8jky")]
+[node name="StanzaEst" type="Node3D" parent="Catacomba" unique_id=1709701798 instance=ExtResource("5_pibwh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 2, 32)
 metadata/volume_size = Vector3(12, 4, 12)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaEstNicchiaNord" type="Node3D" parent="Catacomba" unique_id=122835550 instance=ExtResource("6_kmb1v")]
+[node name="StanzaEstNicchiaNord" type="Node3D" parent="Catacomba" unique_id=1515240010 instance=ExtResource("6_c6pm6")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 52, 2, 24)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaEstNicchiaSud" type="Node3D" parent="Catacomba" unique_id=1045059058 instance=ExtResource("6_kmb1v")]
+[node name="StanzaEstNicchiaSud" type="Node3D" parent="Catacomba" unique_id=2038592858 instance=ExtResource("6_c6pm6")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 52, 2, 40)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaEstNicchiaEst" type="Node3D" parent="Catacomba" unique_id=1884359287 instance=ExtResource("6_kmb1v")]
+[node name="StanzaEstNicchiaEst" type="Node3D" parent="Catacomba" unique_id=1272049700 instance=ExtResource("6_c6pm6")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 60, 2, 32)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioNord1" type="Node3D" parent="Catacomba" unique_id=1971225615 instance=ExtResource("7_fuf3a")]
+[node name="CorridoioNord1" type="Node3D" parent="Catacomba" unique_id=206399777 instance=ExtResource("7_5he1u")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 32, 2, 24)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioNord2" type="Node3D" parent="Catacomba" unique_id=2098871114 instance=ExtResource("3_5q0nq")]
+[node name="CorridoioNord2" type="Node3D" parent="Catacomba" unique_id=1730659282 instance=ExtResource("3_kmb1v")]
 transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 32, 2, 20)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaNord" type="Node3D" parent="Catacomba" unique_id=744815965 instance=ExtResource("5_j8jky")]
+[node name="StanzaNord" type="Node3D" parent="Catacomba" unique_id=1792699136 instance=ExtResource("5_pibwh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 2, 12)
 metadata/volume_size = Vector3(12, 4, 12)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaNordNicchiaNord" type="Node3D" parent="Catacomba" unique_id=333123407 instance=ExtResource("6_kmb1v")]
+[node name="StanzaNordNicchiaNord" type="Node3D" parent="Catacomba" unique_id=128499251 instance=ExtResource("6_c6pm6")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 32, 2, 4)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaNordNicchiaOvest" type="Node3D" parent="Catacomba" unique_id=1939959024 instance=ExtResource("6_kmb1v")]
+[node name="StanzaNordNicchiaOvest" type="Node3D" parent="Catacomba" unique_id=1663454737 instance=ExtResource("6_c6pm6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 2, 12)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="StanzaNordNicchiaEst" type="Node3D" parent="Catacomba" unique_id=78356348 instance=ExtResource("6_kmb1v")]
+[node name="StanzaNordNicchiaEst" type="Node3D" parent="Catacomba" unique_id=118882270 instance=ExtResource("6_c6pm6")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 40, 2, 12)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioOvest1" type="Node3D" parent="Catacomba" unique_id=692685064 instance=ExtResource("4_dgi5k")]
+[node name="CorridoioOvest1" type="Node3D" parent="Catacomba" unique_id=1460670290 instance=ExtResource("4_fuf3a")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 24, 2, 32)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioOvest2" type="Node3D" parent="Catacomba" unique_id=743276165 instance=ExtResource("7_fuf3a")]
+[node name="CorridoioOvest2" type="Node3D" parent="Catacomba" unique_id=938642772 instance=ExtResource("7_5he1u")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 20, 2, 32)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioOvest3" type="Node3D" parent="Catacomba" unique_id=564582668 instance=ExtResource("3_5q0nq")]
+[node name="CorridoioOvest3" type="Node3D" parent="Catacomba" unique_id=1730179645 instance=ExtResource("3_kmb1v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 2, 32)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CurvaOvest" type="Node3D" parent="Catacomba" unique_id=345044274 instance=ExtResource("8_pibwh")]
+[node name="CurvaOvest" type="Node3D" parent="Catacomba" unique_id=848033193 instance=ExtResource("8_5poiv")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 12, 2, 32)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioOvestNord1" type="Node3D" parent="Catacomba" unique_id=1369794845 instance=ExtResource("4_dgi5k")]
+[node name="CorridoioOvestNord1" type="Node3D" parent="Catacomba" unique_id=1182837674 instance=ExtResource("4_fuf3a")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 12, 2, 28)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioOvestNord2" type="Node3D" parent="Catacomba" unique_id=2049423285 instance=ExtResource("7_fuf3a")]
+[node name="CorridoioOvestNord2" type="Node3D" parent="Catacomba" unique_id=496539242 instance=ExtResource("7_5he1u")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 12, 2, 24)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="FondoOvestNord" type="Node3D" parent="Catacomba" unique_id=110054976 instance=ExtResource("6_kmb1v")]
+[node name="FondoOvestNord" type="Node3D" parent="Catacomba" unique_id=523319590 instance=ExtResource("6_c6pm6")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 12, 2, 20)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioSud1" type="Node3D" parent="Catacomba" unique_id=561165865 instance=ExtResource("3_5q0nq")]
+[node name="CorridoioSud1" type="Node3D" parent="Catacomba" unique_id=946708338 instance=ExtResource("3_kmb1v")]
 transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 32, 2, 40)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioSud2" type="Node3D" parent="Catacomba" unique_id=1191841525 instance=ExtResource("4_dgi5k")]
+[node name="CorridoioSud2" type="Node3D" parent="Catacomba" unique_id=174479263 instance=ExtResource("4_fuf3a")]
 transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 32, 2, 44)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="CorridoioSud3" type="Node3D" parent="Catacomba" unique_id=1194725580 instance=ExtResource("7_fuf3a")]
+[node name="CorridoioSud3" type="Node3D" parent="Catacomba" unique_id=217167218 instance=ExtResource("7_5he1u")]
 transform = Transform3D(1.1924881e-08, 0, -1, 0, 1, 0, 1, 0, 1.1924881e-08, 32, 2, 48)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="FondoSud" type="Node3D" parent="Catacomba" unique_id=1310224279 instance=ExtResource("6_kmb1v")]
+[node name="FondoSud" type="Node3D" parent="Catacomba" unique_id=957967949 instance=ExtResource("6_c6pm6")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 32, 2, 52)
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
-[node name="Soffitto" type="CSGCombiner3D" parent="." unique_id=206085602]
+[node name="Soffitto" type="CSGCombiner3D" parent="." unique_id=1967294921]
 use_collision = true
 
-[node name="Lastra" type="CSGBox3D" parent="Soffitto" unique_id=1394401120]
+[node name="Lastra" type="CSGBox3D" parent="Soffitto" unique_id=4730709]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 7.45, 32)
 size = Vector3(64, 3, 64)
-material = SubResource("StandardMaterial3D_1epgm")
+material = SubResource("StandardMaterial3D_gdvew")
 
-[node name="PozzoMontacarichi" type="CSGBox3D" parent="Soffitto" unique_id=629944916]
+[node name="PozzoMontacarichi" type="CSGBox3D" parent="Soffitto" unique_id=1660443320]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.25, 7.45, 29.25)
 operation = 2
 size = Vector3(2.5, 3.4, 2.5)
-material = SubResource("StandardMaterial3D_1epgm")
+material = SubResource("StandardMaterial3D_gdvew")
 
-[node name="Terra" type="Node3D" parent="." unique_id=694745928]
-script = ExtResource("9_c6pm6")
+[node name="Terra" type="Node3D" parent="." unique_id=1251005226]
+script = ExtResource("9_2cjbq")
 stone_path = NodePath("../Catacomba")
 
-[node name="Spawn" type="Node3D" parent="." unique_id=701186019]
+[node name="Spawn" type="Node3D" parent="." unique_id=74784450]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 32)
-script = ExtResource("10_5he1u")
+script = ExtResource("10_chjal")
 
-[node name="Montacarichi" type="Node3D" parent="Spawn" unique_id=955298560]
+[node name="Montacarichi" type="Node3D" parent="Spawn" unique_id=101157008]
 
-[node name="Piattaforma" type="Node3D" parent="Spawn/Montacarichi" unique_id=724596739 instance=ExtResource("11_5poiv")]
+[node name="Piattaforma" type="Node3D" parent="Spawn/Montacarichi" unique_id=724596739 instance=ExtResource("11_cjqg0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.75, 2, -2.75)
 
-[node name="Pila" type="MultiMeshInstance3D" parent="Spawn/Montacarichi" unique_id=1179975796]
-multimesh = SubResource("MultiMesh_152kg")
+[node name="Pila" type="MultiMeshInstance3D" parent="Spawn/Montacarichi" unique_id=566512156]
+multimesh = SubResource("MultiMesh_kjtvk")
 
-[node name="Castello" type="Node3D" parent="Spawn" unique_id=1388090995 instance=ExtResource("13_chjal")]
+[node name="Castello" type="Node3D" parent="Spawn" unique_id=1388090995 instance=ExtResource("13_txyw0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.75, 2, -2.75)
 
-[node name="AreaMontacarichi" type="StaticBody3D" parent="Spawn" unique_id=535726454]
+[node name="AreaMontacarichi" type="StaticBody3D" parent="Spawn" unique_id=1507896352]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.75, 2.6, -2.75)
 metadata/interact = "montacarichi"
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/AreaMontacarichi" unique_id=1860052486]
-shape = SubResource("BoxShape3D_r4e17")
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/AreaMontacarichi" unique_id=644418102]
+shape = SubResource("BoxShape3D_xrs0c")
 
-[node name="CartelloMontacarichi" type="Label3D" parent="Spawn" unique_id=2142789911]
+[node name="CartelloMontacarichi" type="Label3D" parent="Spawn" unique_id=1949556103]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45, 4.6, -1.45)
 pixel_size = 0.004
 billboard = 1
@@ -337,32 +776,32 @@ modulate = Color(0.95, 0.85, 0.65, 1)
 text = "Montacarichi"
 font_size = 64
 
-[node name="BaseLeva" type="Node3D" parent="Spawn" unique_id=1103141522 instance=ExtResource("14_cjqg0")]
+[node name="BaseLeva" type="Node3D" parent="Spawn" unique_id=1103141522 instance=ExtResource("14_vc5cj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45, 2, -3.65)
 
-[node name="ManigliaLeva" type="Node3D" parent="Spawn" unique_id=1220925354]
+[node name="ManigliaLeva" type="Node3D" parent="Spawn" unique_id=1380200571]
 transform = Transform3D(1, 0, 0, 0, 0.8253356, 0.5646425, 0, -0.5646425, 0.8253356, -1.45, 2.7, -3.65)
 
-[node name="Manico" type="Node3D" parent="Spawn/ManigliaLeva" unique_id=717822047 instance=ExtResource("15_vchkt")]
+[node name="Manico" type="Node3D" parent="Spawn/ManigliaLeva" unique_id=717822047 instance=ExtResource("15_nvyfr")]
 
-[node name="Leva" type="StaticBody3D" parent="Spawn" unique_id=1445274339]
+[node name="Leva" type="StaticBody3D" parent="Spawn" unique_id=1344243748]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45, 2.6, -3.65)
 metadata/interact = "leva"
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/Leva" unique_id=853652977]
-shape = SubResource("BoxShape3D_y57op")
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/Leva" unique_id=1010164752]
+shape = SubResource("BoxShape3D_xljpf")
 
-[node name="Bottega" type="Node3D" parent="Spawn" unique_id=255329464 instance=ExtResource("16_txyw0")]
+[node name="Bottega" type="Node3D" parent="Spawn" unique_id=255329464 instance=ExtResource("16_ty1g6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9, 2, -3.4)
 
-[node name="Negozio" type="StaticBody3D" parent="Spawn" unique_id=2823931]
+[node name="Negozio" type="StaticBody3D" parent="Spawn" unique_id=1697286198]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9, 2.5, -3.4)
 metadata/interact = "negozio"
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/Negozio" unique_id=1037247069]
-shape = SubResource("BoxShape3D_mlv25")
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/Negozio" unique_id=1555669783]
+shape = SubResource("BoxShape3D_j4bwh")
 
-[node name="ScrittaNegozio" type="Label3D" parent="Spawn" unique_id=646074903]
+[node name="ScrittaNegozio" type="Label3D" parent="Spawn" unique_id=919147886]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9, 4.5, -4.66)
 pixel_size = 0.004
 modulate = Color(0.98, 0.86, 0.55, 1)
@@ -371,84 +810,156 @@ text = "Negozio"
 font_size = 80
 outline_size = 10
 
-[node name="CandeleNegozio" type="Node3D" parent="Spawn" unique_id=582287254 instance=ExtResource("17_vc5cj")]
+[node name="CandeleNegozio" type="Node3D" parent="Spawn" unique_id=582287254 instance=ExtResource("17_j2jfr")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 2.15, 3, -3.5500002)
 
-[node name="CandeleNegozioLuce" type="OmniLight3D" parent="Spawn" unique_id=215225938]
+[node name="CandeleNegozioLuce" type="OmniLight3D" parent="Spawn" unique_id=715553166]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.15, 3.9, -3.5500002)
 light_color = Color(1, 0.6, 0.3, 1)
 light_energy = 0.9
 shadow_enabled = true
 
-[node name="BarileOvest" type="Node3D" parent="Spawn" unique_id=483316247 instance=ExtResource("18_nvyfr")]
+[node name="Negoziante" parent="Spawn" unique_id=1233248402 instance=ExtResource("18_bjg73")]
+transform = Transform3D(0.9887711, 0, 0.14943814, 0, 1, 0, -0.14943814, 0, 0.9887711, 3, 2, -4.2000003)
+script = ExtResource("19_bu4jf")
+
+[node name="Torace" parent="Spawn/Negoziante/Corpo" parent_id_path=PackedInt32Array(1233248402, 1316605961) index="0" unique_id=63630707]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+
+[node name="Testa" parent="Spawn/Negoziante/Corpo" parent_id_path=PackedInt32Array(1233248402, 1316605961) index="1" unique_id=972245461]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.56, 0)
+
+[node name="Mascella" parent="Spawn/Negoziante/Corpo/Testa" index="1" unique_id=448082990]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+
+[node name="OcchioDestro" parent="Spawn/Negoziante/Corpo/Testa/Occhi" parent_id_path=PackedInt32Array(1233248402, 111025123) index="0" unique_id=2126566198]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.075, 0.2, 0.165)
+cast_shadow = 0
+mesh = SubResource("SphereMesh_6prgb")
+
+[node name="OcchioSinistro" parent="Spawn/Negoziante/Corpo/Testa/Occhi" parent_id_path=PackedInt32Array(1233248402, 111025123) index="1" unique_id=1424671237]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.075, 0.2, 0.165)
+cast_shadow = 0
+mesh = SubResource("SphereMesh_6prgb")
+
+[node name="Luce" parent="Spawn/Negoziante/Corpo/Testa/Occhi" parent_id_path=PackedInt32Array(1233248402, 111025123) index="2" unique_id=1522613774]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0.3)
+light_color = Color(0.4, 1, 0.8, 1)
+light_energy = 0.6
+omni_range = 1.6
+
+[node name="Berretto" type="Node3D" parent="Spawn/Negoziante/Corpo/Testa" index="3" unique_id=374102278 instance=ExtResource("20_o7ddy")]
+
+[node name="BraccioDestro" parent="Spawn/Negoziante/Corpo" parent_id_path=PackedInt32Array(1233248402, 1316605961) index="2" unique_id=1560058828]
+transform = Transform3D(0.9950042, 0.09983342, 0, -0.09983342, 0.9950042, 0, 0, 0, 1, -0.25, 1.5, 0)
+
+[node name="Avambraccio" parent="Spawn/Negoziante/Corpo/BraccioDestro" index="1" unique_id=575259643]
+transform = Transform3D(1, 0, 0, 0, 0.9887711, 0.14943814, 0, -0.14943814, 0.9887711, 0, -0.31, 0)
+
+[node name="BraccioSinistro" parent="Spawn/Negoziante/Corpo" parent_id_path=PackedInt32Array(1233248402, 1316605961) index="3" unique_id=1691697298]
+transform = Transform3D(0.9950042, -0.09983342, 0, 0.09983342, 0.9950042, 0, 0, 0, 1, 0.25, 1.5, 0)
+
+[node name="Modello" parent="Spawn/Negoziante/Corpo/BraccioSinistro" index="0" unique_id=186699825]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Avambraccio" parent="Spawn/Negoziante/Corpo/BraccioSinistro" index="1" unique_id=153686521]
+transform = Transform3D(1, 0, 0, 0, 0.9887711, 0.14943814, 0, -0.14943814, 0.9887711, 0, -0.31, 0)
+
+[node name="Modello" parent="Spawn/Negoziante/Corpo/BraccioSinistro/Avambraccio" index="0" unique_id=371184912]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="GambaDestra" parent="Spawn/Negoziante/Corpo" parent_id_path=PackedInt32Array(1233248402, 1316605961) index="4" unique_id=1284106427]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.9, 0)
+
+[node name="Stinco" parent="Spawn/Negoziante/Corpo/GambaDestra" index="1" unique_id=537938737]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.44, 0)
+
+[node name="GambaSinistra" parent="Spawn/Negoziante/Corpo" parent_id_path=PackedInt32Array(1233248402, 1316605961) index="5" unique_id=646455279]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0.9, 0)
+
+[node name="Modello" parent="Spawn/Negoziante/Corpo/GambaSinistra" index="0" unique_id=1632616442]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Stinco" parent="Spawn/Negoziante/Corpo/GambaSinistra" index="1" unique_id=1962592006]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.44, 0)
+
+[node name="Modello" parent="Spawn/Negoziante/Corpo/GambaSinistra/Stinco" index="0" unique_id=1816778701]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Animazioni" parent="Spawn/Negoziante" index="1" unique_id=229769025]
+libraries/ = SubResource("AnimationLibrary_7jneh")
+autoplay = &"idle"
+
+[node name="BarileOvest" type="Node3D" parent="Spawn" unique_id=483316247 instance=ExtResource("21_0loja")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -4.5, 2, 3.5)
 
-[node name="BarileOvestCollisione" type="StaticBody3D" parent="Spawn" unique_id=750334540]
+[node name="BarileOvestCollisione" type="StaticBody3D" parent="Spawn" unique_id=868676592]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 2.4761903, 3.5)
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarileOvestCollisione" unique_id=1919372962]
-shape = SubResource("BoxShape3D_a82wo")
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarileOvestCollisione" unique_id=1383885778]
+shape = SubResource("BoxShape3D_ksmap")
 
-[node name="BarilePiccoloOvest" type="Node3D" parent="Spawn" unique_id=2031914482 instance=ExtResource("18_nvyfr")]
+[node name="BarilePiccoloOvest" type="Node3D" parent="Spawn" unique_id=727639381 instance=ExtResource("21_0loja")]
 transform = Transform3D(1.04506, 0, 1.0760341, 0, 1.5, 0, -1.0760341, 0, 1.04506, -4.2, 2, 4.5)
 
-[node name="BarilePiccoloOvestCollisione" type="StaticBody3D" parent="Spawn" unique_id=1725443244]
+[node name="BarilePiccoloOvestCollisione" type="StaticBody3D" parent="Spawn" unique_id=1745850249]
 transform = Transform3D(0.6967067, 0, 0.7173561, 0, 1, 0, -0.7173561, 0, 0.6967067, -4.2, 2.357143, 4.5)
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarilePiccoloOvestCollisione" unique_id=678678205]
-shape = SubResource("BoxShape3D_gdvew")
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarilePiccoloOvestCollisione" unique_id=1886406139]
+shape = SubResource("BoxShape3D_ygd8o")
 
-[node name="LanternaOvest" type="Node3D" parent="Spawn" unique_id=1606654725 instance=ExtResource("19_ty1g6")]
+[node name="LanternaOvest" type="Node3D" parent="Spawn" unique_id=1606654725 instance=ExtResource("22_ids8r")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -4.5, 2.96, 3.5)
 
-[node name="LanternaOvestLuce" type="OmniLight3D" parent="Spawn" unique_id=224843073]
+[node name="LanternaOvestLuce" type="OmniLight3D" parent="Spawn" unique_id=1725395773]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 3.8600001, 3.5)
 light_color = Color(1, 0.6, 0.3, 1)
 light_energy = 1.6
 shadow_enabled = true
 omni_range = 10.0
 
-[node name="BarileEst" type="Node3D" parent="Spawn" unique_id=25092643 instance=ExtResource("18_nvyfr")]
+[node name="BarileEst" type="Node3D" parent="Spawn" unique_id=1509679876 instance=ExtResource("21_0loja")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 4.5, 2, 3.5)
 
-[node name="BarileEstCollisione" type="StaticBody3D" parent="Spawn" unique_id=1735639288]
+[node name="BarileEstCollisione" type="StaticBody3D" parent="Spawn" unique_id=2041114181]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 2.4761903, 3.5)
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarileEstCollisione" unique_id=937848112]
-shape = SubResource("BoxShape3D_kjtvk")
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarileEstCollisione" unique_id=887543481]
+shape = SubResource("BoxShape3D_2s0kr")
 
-[node name="BarilePiccoloEst" type="Node3D" parent="Spawn" unique_id=1204127418 instance=ExtResource("18_nvyfr")]
+[node name="BarilePiccoloEst" type="Node3D" parent="Spawn" unique_id=186382548 instance=ExtResource("21_0loja")]
 transform = Transform3D(1.04506, 0, 1.0760341, 0, 1.5, 0, -1.0760341, 0, 1.04506, 4.2, 2, 4.5)
 
-[node name="BarilePiccoloEstCollisione" type="StaticBody3D" parent="Spawn" unique_id=1824765114]
+[node name="BarilePiccoloEstCollisione" type="StaticBody3D" parent="Spawn" unique_id=876785865]
 transform = Transform3D(0.6967067, 0, 0.7173561, 0, 1, 0, -0.7173561, 0, 0.6967067, 4.2, 2.357143, 4.5)
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarilePiccoloEstCollisione" unique_id=997618310]
-shape = SubResource("BoxShape3D_xrs0c")
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/BarilePiccoloEstCollisione" unique_id=1956811391]
+shape = SubResource("BoxShape3D_xaipn")
 
-[node name="LanternaEst" type="Node3D" parent="Spawn" unique_id=320809992 instance=ExtResource("19_ty1g6")]
+[node name="LanternaEst" type="Node3D" parent="Spawn" unique_id=622879389 instance=ExtResource("22_ids8r")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 4.5, 2.96, 3.5)
 
-[node name="LanternaEstLuce" type="OmniLight3D" parent="Spawn" unique_id=1768550360]
+[node name="LanternaEstLuce" type="OmniLight3D" parent="Spawn" unique_id=498054286]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 3.8600001, 3.5)
 light_color = Color(1, 0.6, 0.3, 1)
 light_energy = 1.6
 shadow_enabled = true
 omni_range = 10.0
 
-[node name="Tomba" type="Node3D" parent="Spawn" unique_id=1367774893 instance=ExtResource("20_j2jfr")]
+[node name="Tomba" type="Node3D" parent="Spawn" unique_id=261251064 instance=ExtResource("23_dnhof")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2, 3.55)
 
-[node name="AreaTomba" type="StaticBody3D" parent="Spawn" unique_id=1249439490]
+[node name="AreaTomba" type="StaticBody3D" parent="Spawn" unique_id=495279361]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.4, 3.55)
 metadata/interact = "tomba"
 
-[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/AreaTomba" unique_id=627579043]
-shape = SubResource("BoxShape3D_xljpf")
+[node name="CollisionShape3D0" type="CollisionShape3D" parent="Spawn/AreaTomba" unique_id=1265914016]
+shape = SubResource("BoxShape3D_ndrjj")
 
-[node name="ScheletroNellaTomba" type="Node3D" parent="Spawn" unique_id=1300420951 instance=ExtResource("21_bjg73")]
-transform = Transform3D(0, 1, 0, 0, 0, 1, 1, 0, 0, -3.42, 2.6, 3.55)
-script = ExtResource("22_bu4jf")
+[node name="ScheletroNellaTomba" type="Node3D" parent="Spawn" unique_id=1632444101 instance=ExtResource("18_bjg73")]
+transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, -1.5100001, 2.55, 3.55)
+script = ExtResource("19_bu4jf")
+sveglio = false
 testa = false
 torace = false
 braccio_destro = false
@@ -456,83 +967,89 @@ braccio_sinistro = false
 gamba_destra = false
 gamba_sinistra = false
 
-[node name="ScheletriRiparati" type="Node3D" parent="Spawn" unique_id=260601432]
+[node name="ScheletriRiparati" type="Node3D" parent="Spawn" unique_id=1534075798]
 
-[node name="Assi" type="Node3D" parent="Spawn" unique_id=1287689613 instance=ExtResource("23_o7ddy")]
+[node name="Assi" type="Node3D" parent="Spawn" unique_id=1287689613 instance=ExtResource("24_1v6qk")]
 transform = Transform3D(1.9121056, 0, 1.6105442, 0, 2.5, 0, -1.6105442, 0, 1.9121056, -3.6, 2, 1)
 
-[node name="Sassi" type="Node3D" parent="Spawn" unique_id=2035045792 instance=ExtResource("24_0loja")]
+[node name="Sassi" type="Node3D" parent="Spawn" unique_id=2035045792 instance=ExtResource("25_augu2")]
 transform = Transform3D(0.54353654, 0, 1.3980587, 0, 1.5, 0, -1.3980587, 0, 0.54353654, 1.8, 2, 4.4)
 
-[node name="GameState" type="Node" parent="." unique_id=1794642126]
-script = ExtResource("25_ids8r")
+[node name="GameState" type="Node" parent="." unique_id=497839237]
+script = ExtResource("26_tm6hj")
 
-[node name="Secchi" type="Node3D" parent="." unique_id=782097052]
+[node name="Secchi" type="Node3D" parent="." unique_id=536906131]
 
-[node name="Ossa" type="Node3D" parent="." unique_id=240561608]
+[node name="Ossa" type="Node3D" parent="." unique_id=63257366]
 
-[node name="Testa" type="RigidBody3D" parent="Ossa" unique_id=34452641 groups=["ossa"] instance=ExtResource("26_dnhof")]
+[node name="Testa" type="RigidBody3D" parent="Ossa" unique_id=689101082 groups=["ossa"] instance=ExtResource("27_kf5aa")]
 transform = Transform3D(0.5536337, 0.3780653, 0.7419949, 0, 0.8910065, -0.45399052, -0.83276033, 0.25134444, 0.49329123, 41, 2.35, 32.4)
 mass = 3.0
 physics_material_override = SubResource("PhysicsMaterial_fxb40")
 freeze = true
 continuous_cd = true
-script = ExtResource("27_1v6qk")
+script = ExtResource("28_t5ykj")
 metadata/interact = "osso"
 
-[node name="BraccioSinistro" type="RigidBody3D" parent="Ossa" unique_id=1511553308 groups=["ossa"] instance=ExtResource("26_dnhof")]
+[node name="BraccioSinistro" type="RigidBody3D" parent="Ossa" unique_id=1638017449 groups=["ossa"] instance=ExtResource("27_kf5aa")]
 transform = Transform3D(0.9831062, 0.12942606, 0.12942606, 0, 0.70710677, -0.70710677, -0.1830361, 0.69516104, 0.69516104, 21.5, 2.3, 31.6)
 mass = 3.0
 physics_material_override = SubResource("PhysicsMaterial_fxb40")
 freeze = true
 continuous_cd = true
-script = ExtResource("27_1v6qk")
+script = ExtResource("28_t5ykj")
 parte = "BraccioSinistro"
 metadata/interact = "osso"
 
-[node name="BraccioDestro" type="RigidBody3D" parent="Ossa" unique_id=562411160 groups=["ossa"] instance=ExtResource("26_dnhof")]
+[node name="BraccioDestro" type="RigidBody3D" parent="Ossa" unique_id=1781140071 groups=["ossa"] instance=ExtResource("27_kf5aa")]
 transform = Transform3D(-0.87330467, -0.32217464, -0.36543468, 0, 0.75011045, -0.6613126, 0.4871745, -0.57752734, -0.65507495, 32.4, 2.3, 22.5)
 mass = 3.0
 physics_material_override = SubResource("PhysicsMaterial_fxb40")
 freeze = true
 continuous_cd = true
-script = ExtResource("27_1v6qk")
+script = ExtResource("28_t5ykj")
 parte = "BraccioDestro"
 metadata/interact = "osso"
 
-[node name="GambaDestra" type="RigidBody3D" parent="Ossa" unique_id=1376451334 groups=["ossa"] instance=ExtResource("26_dnhof")]
+[node name="GambaDestra" type="RigidBody3D" parent="Ossa" unique_id=1632750130 groups=["ossa"] instance=ExtResource("27_kf5aa")]
 transform = Transform3D(0.5551133, -0.6239236, -0.55006236, 0, 0.6613117, -0.7501112, 0.8317748, 0.41639674, 0.36710292, 31.6, 2.3, 43)
 mass = 3.0
 physics_material_override = SubResource("PhysicsMaterial_fxb40")
 freeze = true
 continuous_cd = true
-script = ExtResource("27_1v6qk")
+script = ExtResource("28_t5ykj")
 parte = "GambaDestra"
 metadata/interact = "osso"
 
-[node name="Torace" type="RigidBody3D" parent="Ossa" unique_id=593106670 groups=["ossa"] instance=ExtResource("26_dnhof")]
+[node name="Torace" type="RigidBody3D" parent="Ossa" unique_id=1804828886 groups=["ossa"] instance=ExtResource("27_kf5aa")]
 transform = Transform3D(0.91474235, -0.18342927, -0.3600002, 0, 0.8910065, -0.45399052, 0.40403765, 0.41528437, 0.8150414, 51, 2.4, 31)
 mass = 3.0
 physics_material_override = SubResource("PhysicsMaterial_fxb40")
 freeze = true
 continuous_cd = true
-script = ExtResource("27_1v6qk")
+script = ExtResource("28_t5ykj")
 parte = "Torace"
 metadata/interact = "osso"
 
-[node name="GambaSinistra" type="RigidBody3D" parent="Ossa" unique_id=1276371291 groups=["ossa"] instance=ExtResource("26_dnhof")]
+[node name="GambaSinistra" type="RigidBody3D" parent="Ossa" unique_id=1023341490 groups=["ossa"] instance=ExtResource("27_kf5aa")]
 transform = Transform3D(0.9074468, 0.19075185, 0.37437156, 0, 0.8910065, -0.45399052, -0.42016703, 0.41197225, 0.808541, 33, 2.3, 13)
 mass = 3.0
 physics_material_override = SubResource("PhysicsMaterial_fxb40")
 freeze = true
 continuous_cd = true
-script = ExtResource("27_1v6qk")
+script = ExtResource("28_t5ykj")
 parte = "GambaSinistra"
 metadata/interact = "osso"
 
-[node name="Player" type="CharacterBody3D" parent="." unique_id=1533249709 instance=ExtResource("28_augu2")]
+[node name="Player" type="CharacterBody3D" parent="." unique_id=722656306 instance=ExtResource("29_e755i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 2.1, 34)
-script = ExtResource("29_tm6hj")
+script = ExtResource("30_ro3en")
 
-[node name="HUD" type="CanvasLayer" parent="." unique_id=1608004450 instance=ExtResource("30_kf5aa")]
-script = ExtResource("31_t5ykj")
+[node name="HUD" type="CanvasLayer" parent="." unique_id=486848102 instance=ExtResource("31_od4ux")]
+script = ExtResource("32_xhfw6")
+
+[node name="DevTool" type="CanvasLayer" parent="." unique_id=585760537 instance=ExtResource("33_1epgm")]
+layer = 10
+script = ExtResource("34_152kg")
+
+[editable path="Spawn/Negoziante"]

@@ -14,9 +14,14 @@ const BARREL_SCALE := 0.7
 const DUNGEON := "res://assetpack/kenney_mini-dungeon/Models/GLB format/"
 const GRAVEYARD := "res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/"
 const MODELLI := "res://modelli/"
+const SkeletonScript := preload("res://scripts/scheletro.gd")
 ## Tomba aperta dove si posano le ossa (centro, relativo allo Spawn; lunga lungo X,
 ## la testata con la croce è verso -X).
 const TOMB_POS := Vector3(-2.5, FLOOR_Y, 3.55)
+## Anca dello scheletro sdraiato nella tomba (sul letto di terra, testa verso la croce, -X).
+const TOMB_HIP := TOMB_POS + Vector3(0.09, 0.55, 0)
+## La testa dello scheletro nella tomba è verso -X.
+const TOMB_YAW := PI / 2.0
 
 var lift: Node3D
 var pile: MultiMeshInstance3D
@@ -120,6 +125,15 @@ func build_nodes() -> void:
 	sign.outline_modulate = Color(0.18, 0.1, 0.05)
 	add_child(sign)
 	_lantern("CandeleNegozio", GRAVEYARD + "candle-multiple", SHOP_POS + Vector3(-0.75, 1.0, -0.15), 2.0, 0.9, 5.0)
+	# il negoziante: uno scheletro con il berretto viola, dietro il bancone, che guarda la stanza
+	var keeper: Node3D = (load("res://scenes/scheletro.tscn") as PackedScene).instantiate()
+	keeper.name = "Negoziante"
+	keeper.position = SHOP_POS + Vector3(0.1, 0, -0.8)
+	keeper.rotation.y = 0.15
+	add_child(keeper)
+	var beret: Node3D = (load(MODELLI + "berretto.glb") as PackedScene).instantiate()
+	beret.name = "Berretto"
+	keeper.get_node("Corpo/Testa").add_child(beret)
 
 	# --- barili con le lanterne ---
 	for side in [-1.0, 1.0]:
@@ -135,6 +149,7 @@ func build_nodes() -> void:
 	var lying: Node3D = (load("res://scenes/scheletro.tscn") as PackedScene).instantiate()
 	lying.name = "ScheletroNellaTomba"
 	lying.transform = lying_transform()
+	lying.sveglio = false
 	for p in ["testa", "torace", "braccio_destro", "braccio_sinistro", "gamba_destra", "gamba_sinistra"]:
 		lying.set(p, false)
 	add_child(lying)
@@ -185,10 +200,9 @@ func _lantern(node_name: String, path: String, pos: Vector3, scl: float, energy:
 	add_child(light)
 
 
-## Scheletro sdraiato nella tomba: piedi verso +X, faccia verso l'alto.
+## Scheletro sdraiato nella tomba: testa verso -X (la croce), faccia verso l'alto.
 static func lying_transform() -> Transform3D:
-	var b := Basis(Vector3(0, 0, 1), Vector3(1, 0, 0), Vector3(0, 1, 0))
-	return Transform3D(b, TOMB_POS + Vector3(-0.92, 0.6, 0))
+	return SkeletonScript.lying_transform(TOMB_HIP, TOMB_YAW)
 
 
 func update_pile(secchi: float) -> void:

@@ -1,0 +1,222 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/dev_tool.gd" id="1_7k6n8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_etv83"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.06, 0.07, 0.09, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.35, 0.75, 0.55, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="DevTool" type="CanvasLayer" unique_id=585760537]
+layer = 10
+script = ExtResource("1_7k6n8")
+
+[node name="Pannello" type="PanelContainer" parent="." unique_id=361666027]
+visible = false
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -360.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_etv83")
+
+[node name="Scorri" type="ScrollContainer" parent="Pannello" unique_id=112903181]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Colonna" type="VBoxContainer" parent="Pannello/Scorri" unique_id=1861918971]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Titolo" type="Label" parent="Pannello/Scorri/Colonna" unique_id=610083110]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.45, 0.95, 0.65, 1)
+text = "Dev tool   (Ctrl+M / Esc per chiudere)"
+
+[node name="Info" type="Label" parent="Pannello/Scorri/Colonna" unique_id=692463558]
+modulate = Color(1, 1, 1, 0.8)
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Posizione ..."
+
+[node name="SezioneGiocatore" type="Label" parent="Pannello/Scorri/Colonna" unique_id=1911156682]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
+text = "Giocatore"
+
+[node name="Volo" type="CheckButton" parent="Pannello/Scorri/Colonna" unique_id=1892258626]
+layout_mode = 2
+focus_mode = 0
+text = "Volo senza collisioni (Spazio su, Shift giù)"
+
+[node name="ScavoPotente" type="CheckButton" parent="Pannello/Scorri/Colonna" unique_id=1766952126]
+layout_mode = 2
+focus_mode = 0
+text = "Scavo potente (anche la roccia)"
+
+[node name="RigaVelocita" type="HBoxContainer" parent="Pannello/Scorri/Colonna" unique_id=1476167625]
+layout_mode = 2
+
+[node name="Etichetta" type="Label" parent="Pannello/Scorri/Colonna/RigaVelocita" unique_id=1034047066]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Velocità"
+
+[node name="Velocita" type="HSlider" parent="Pannello/Scorri/Colonna/RigaVelocita" unique_id=209683718]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+min_value = 0.5
+max_value = 5.0
+step = 0.5
+value = 1.0
+
+[node name="VelocitaValore" type="Label" parent="Pannello/Scorri/Colonna" unique_id=212492299]
+modulate = Color(1, 1, 1, 0.7)
+layout_mode = 2
+text = "x1.0"
+
+[node name="VaiSpawn" type="Button" parent="Pannello/Scorri/Colonna" unique_id=458002185]
+layout_mode = 2
+focus_mode = 0
+text = "Vai allo spawn"
+
+[node name="SezioneRisorse" type="Label" parent="Pannello/Scorri/Colonna" unique_id=1204143372]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
+text = "Risorse"
+
+[node name="Monete100" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1475265933]
+layout_mode = 2
+focus_mode = 0
+text = "+100 monete"
+
+[node name="Monete1000" type="Button" parent="Pannello/Scorri/Colonna" unique_id=320140112]
+layout_mode = 2
+focus_mode = 0
+text = "+1000 monete"
+
+[node name="TuttiAttrezzi" type="Button" parent="Pannello/Scorri/Colonna" unique_id=2001129498]
+layout_mode = 2
+focus_mode = 0
+text = "Dai tutti gli attrezzi"
+
+[node name="RiempiTerra" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1200449079]
+layout_mode = 2
+focus_mode = 0
+text = "Riempi l'attrezzo di terra"
+
+[node name="SecchioInMano" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1053645634]
+layout_mode = 2
+focus_mode = 0
+text = "Secchio pieno in mano"
+
+[node name="Montacarichi10" type="Button" parent="Pannello/Scorri/Colonna" unique_id=396325323]
+layout_mode = 2
+focus_mode = 0
+text = "+10 secchi sul montacarichi"
+
+[node name="SezioneOssa" type="Label" parent="Pannello/Scorri/Colonna" unique_id=1548514034]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
+text = "Ossa"
+
+[node name="Parte" type="OptionButton" parent="Pannello/Scorri/Colonna" unique_id=1469419153]
+layout_mode = 2
+focus_mode = 0
+selected = 0
+item_count = 6
+popup/item_0/text = "Testa"
+popup/item_0/id = 0
+popup/item_1/text = "Torace"
+popup/item_1/id = 1
+popup/item_2/text = "BraccioDestro"
+popup/item_2/id = 2
+popup/item_3/text = "BraccioSinistro"
+popup/item_3/id = 3
+popup/item_4/text = "GambaDestra"
+popup/item_4/id = 4
+popup/item_5/text = "GambaSinistra"
+popup/item_5/id = 5
+
+[node name="DaiOsso" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1430738173]
+layout_mode = 2
+focus_mode = 0
+text = "Osso scelto in mano"
+
+[node name="VaiOsso" type="Button" parent="Pannello/Scorri/Colonna" unique_id=926463338]
+layout_mode = 2
+focus_mode = 0
+text = "Vai all'osso scelto (lo scopre)"
+
+[node name="ScopriOssa" type="Button" parent="Pannello/Scorri/Colonna" unique_id=103951196]
+layout_mode = 2
+focus_mode = 0
+text = "Scopri tutte le ossa sepolte"
+
+[node name="CompletaTomba" type="Button" parent="Pannello/Scorri/Colonna" unique_id=859475976]
+layout_mode = 2
+focus_mode = 0
+text = "Completa lo scheletro nella tomba"
+
+[node name="SvuotaTomba" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1646686688]
+layout_mode = 2
+focus_mode = 0
+text = "Svuota la tomba"
+
+[node name="SezioneMondo" type="Label" parent="Pannello/Scorri/Colonna" unique_id=1955031396]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
+text = "Mondo"
+
+[node name="RigaTempo" type="HBoxContainer" parent="Pannello/Scorri/Colonna" unique_id=105068667]
+layout_mode = 2
+
+[node name="Etichetta" type="Label" parent="Pannello/Scorri/Colonna/RigaTempo" unique_id=1536989010]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Velocità del tempo"
+
+[node name="Tempo" type="HSlider" parent="Pannello/Scorri/Colonna/RigaTempo" unique_id=7383670]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+min_value = 0.1
+max_value = 3.0
+step = 0.05
+value = 1.0
+
+[node name="TempoValore" type="Label" parent="Pannello/Scorri/Colonna" unique_id=1856183880]
+modulate = Color(1, 1, 1, 0.7)
+layout_mode = 2
+text = "x1.0"
+
+[node name="RigeneraTerra" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1207076279]
+layout_mode = 2
+focus_mode = 0
+text = "Rigenera la terra"
+
+[node name="Ricomincia" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1159791155]
+layout_mode = 2
+focus_mode = 0
+text = "Ricomincia la partita"

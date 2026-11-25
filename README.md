@@ -24,6 +24,8 @@ migliori, fino a liberare tutta la catacomba e trovare l'uscita nella stanza fin
   insieme. Negozio con pala, sacca capiente e piccone.
 - **Ossa e scheletri**: scavando trovi i 6 pezzi di uno scheletro sepolti nella terra. Si raccolgono
   e si lanciano come i secchi e si posano nella tomba aperta dello spawn; completo, lo scheletro si alza.
+- **Multigiocatore co-op online** (fino a 4): stessa catacomba, monete, montacarichi, negozio e
+  tomba in comune; ognuno ha la sua terra nell'attrezzo e quello che tiene in mano.
 - **Niente crolli, niente mostri.** In futuro: ossa e scheletri che si usurano e si riparano.
 
 ## Comandi
@@ -39,6 +41,7 @@ migliori, fino a liberare tutta la catacomba e trovare l'uscita nella stanza fin
 | `E` | Raccogliere un secchio o un osso, posarlo sul montacarichi o nella tomba, tirare la leva, aprire/chiudere il negozio |
 | `1` `2` `3` | Mani, pala, piccone (se comprati) |
 | `Esc` | Liberare il mouse / chiudere il negozio |
+| `Ctrl+M` | Dev tool: monete, attrezzi, volo, velocità, ossa, tomba, tempo, rigenera terra |
 
 ## Come avviarlo
 
@@ -52,11 +55,34 @@ Da riga di comando:
 godot --path .
 ```
 
+All'avvio c'è il menu: **Gioca da solo**, **Ospita una partita online** o **Entra** scrivendo
+l'indirizzo di chi ospita.
+
+### Giocare online
+
+- Chi **ospita** usa la porta **UDP 7777**. Il gioco prova ad aprirla da solo sul router (UPnP):
+  se ci riesce, in basso a sinistra compare l'IP pubblico da dare agli amici.
+- Se il router non lo permette: apri a mano la porta UDP 7777 verso il PC di chi ospita, oppure
+  usate tutti una VPN tipo [Tailscale](https://tailscale.com), ZeroTier o Radmin VPN e collegatevi
+  all'IP della VPN.
+- Sulla stessa rete di casa basta l'IP locale (es. `192.168.1.20`).
+- Chi ospita tiene la partita: se esce, la partita finisce per tutti. Chi entra dopo riceve la
+  catacomba già scavata, i secchi e le ossa a terra e le monete.
+
+Da riga di comando, senza menu:
+
+```
+godot --path . -- --host --nome Anna
+godot --path . -- --join 192.168.1.20 --nome Bruno
+```
+
 ### Prove automatiche
 
 ```
 godot --path . -- --loop    # prova il ciclo secchio -> lancio -> montacarichi -> vendita -> negozio
 godot --path . -- --bench   # scava da solo 6 s, salva le misure in bench.txt e uno screenshot in shot.png
+godot --headless --path . -- --host --provarete              # prova in rete: prima il server...
+godot --headless --path . -- --join 127.0.0.1 --provarete    # ...poi il client (lancia, vende, compra, scava, tomba)
 ```
 
 ## Struttura del progetto
@@ -74,16 +100,20 @@ scripts/
   viewmodel.gd       animazione dell'attrezzo in mano
   dig_sfx.gd         suoni dello scavo
   game_state.gd      monete, terra raccolta, secchi sul montacarichi, negozio
-  scheletro.gd       scheletro scomponibile: togli_parte / metti_parte, idle e camminata solo se completo
+  scheletro.gd       scheletro scomponibile: togli_parte / metti_parte, idle e camminata solo se completo, alzati() per uscire dalla tomba
   osso.gd            pezzo di scheletro da trovare, raccogliere, lanciare e posare nella tomba
+  dev_tool.gd        pannello dei comandi di prova (Ctrl+M)
   secchio.gd         il secchio pieno che si lancia (fisica)
   spawn_room.gd      arredo dello spawn: montacarichi, leva, negozio
   hud.gd             interfaccia
-  main.gd            collega tutto + prove automatiche
+  main.gd            collega tutto, multigiocatore (richieste al server, sincronizzazione) + prove automatiche
+  rete.gd            autoload "Rete": ospita / entra (ENet, porta 7777, UPnP), elenco dei giocatori
+  lobby.gd           menu iniziale (da solo / ospita / entra)
+  giocatore_remoto.gd  come si vedono gli altri giocatori (corpo, nome, fiamma, attrezzo in mano)
 tools/
   build_scenes.gd    rigenera le scene da codice
   low_poly.gd        costruttore di modelli low-poly stile Kenney (blocchi smussati, archi) usato dai due script sotto
-  make_models.gd     genera mani, pugno, piccone, montacarichi (castello e piattaforma), leva, negozio, pala e cassa (in modelli/)
+  make_models.gd     genera mani, pugno, piccone, montacarichi (castello e piattaforma), leva, negozio, pala, cassa, tomba e berretto (in modelli/)
   make_skeleton.gd   genera lo scheletro in 6 pezzi (in modelli/scheletro/) e la scena scenes/scheletro.tscn con le animazioni
   make_crypt.gd      genera i pezzi della catacomba: cunicoli scavati nella roccia (corridoio, fondo, curva, T, incrocio) e stanza in mattoni (in modelli/cripta/)
 modelli/             mani, pugno, piccone e pezzi della cripta in stile Kenney (GLB, apribili anche in Blender)
