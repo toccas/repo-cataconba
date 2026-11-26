@@ -1,16 +1,17 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene format=3 uid="uid://dmob6c3lbfswi"]
 
-[ext_resource type="Script" path="res://scripts/menu_principale.gd" id="1_menu"]
+[ext_resource type="Script" uid="uid://uajwnkouqb5i" path="res://scripts/menu_principale.gd" id="1_menu"]
 [ext_resource type="PackedScene" path="res://scenes/pezzi/cripta-stanza.tscn" id="2_stanza"]
-[ext_resource type="PackedScene" path="res://scenes/negoziante.tscn" id="3_neg"]
-[ext_resource type="PackedScene" path="res://modelli/tomba.glb" id="4_tomba"]
-[ext_resource type="PackedScene" path="res://modelli/cassa.glb" id="5_cassa"]
-[ext_resource type="PackedScene" path="res://modelli/pala.glb" id="6_pala"]
-[ext_resource type="PackedScene" path="res://assetpack/kenney_mini-dungeon/Models/GLB format/barrel.glb" id="7_barile"]
-[ext_resource type="PackedScene" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/candle-multiple.glb" id="8_candele"]
-[ext_resource type="PackedScene" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/lantern-candle.glb" id="9_lanterna"]
-[ext_resource type="PackedScene" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/urn-round.glb" id="10_urna"]
-[ext_resource type="PackedScene" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/debris.glb" id="11_detriti"]
+[ext_resource type="PackedScene" uid="uid://b7m4o0grgpicf" path="res://scenes/negoziante.tscn" id="3_neg"]
+[ext_resource type="PackedScene" uid="uid://d0xv7y7wgmt0y" path="res://modelli/tomba.glb" id="4_tomba"]
+[ext_resource type="PackedScene" uid="uid://cvoq7tdxkmlhh" path="res://modelli/cassa.glb" id="5_cassa"]
+[ext_resource type="PackedScene" uid="uid://dmgt3vw5uf8gs" path="res://modelli/pala.glb" id="6_pala"]
+[ext_resource type="PackedScene" uid="uid://b1ojkv8dv6yqn" path="res://assetpack/kenney_mini-dungeon/Models/GLB format/barrel.glb" id="7_barile"]
+[ext_resource type="PackedScene" uid="uid://bianals87u6qv" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/candle-multiple.glb" id="8_candele"]
+[ext_resource type="PackedScene" uid="uid://b4k2vjo5x27y8" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/lantern-candle.glb" id="9_lanterna"]
+[ext_resource type="PackedScene" uid="uid://sno5s81va8p1" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/urn-round.glb" id="10_urna"]
+[ext_resource type="PackedScene" uid="uid://i73q3hpkwul7" path="res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/debris.glb" id="11_detriti"]
+[ext_resource type="FontFile" uid="uid://dqhmsitiinbs0" path="res://font/curse_of_the_zombie/Curse of the Zombie.ttf" id="12_yo4vf"]
 
 [sub_resource type="Environment" id="Environment_menu"]
 background_mode = 1
@@ -26,15 +27,6 @@ fog_enabled = true
 fog_light_color = Color(0.06, 0.045, 0.035, 1)
 fog_density = 0.06
 
-[sub_resource type="LabelSettings" id="LabelSettings_titolo"]
-font_size = 64
-font_color = Color(0.95, 0.76, 0.42, 1)
-outline_size = 14
-outline_color = Color(0.05, 0.03, 0.02, 1)
-shadow_size = 12
-shadow_color = Color(0, 0, 0, 0.6)
-shadow_offset = Vector2(3, 4)
-
 [sub_resource type="Gradient" id="Gradient_sfuma"]
 offsets = PackedFloat32Array(0, 0.6, 1)
 colors = PackedColorArray(0, 0, 0, 0.62, 0, 0, 0, 0.45, 0, 0, 0, 0)
@@ -44,64 +36,75 @@ gradient = SubResource("Gradient_sfuma")
 width = 256
 height = 4
 
-[node name="MenuPrincipale" type="Node3D"]
+[sub_resource type="Theme" id="Theme_s8fg0"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_titolo"]
+font_size = 46
+font_color = Color(0.95, 0.76, 0.42, 1)
+outline_size = 14
+outline_color = Color(0.05, 0.03, 0.02, 1)
+shadow_size = 12
+shadow_color = Color(0, 0, 0, 0.6)
+shadow_offset = Vector2(3, 4)
+
+[node name="MenuPrincipale" type="Node3D" unique_id=685233078]
 script = ExtResource("1_menu")
 
-[node name="Ambiente" type="WorldEnvironment" parent="."]
+[node name="Ambiente" type="WorldEnvironment" parent="." unique_id=1023930530]
 environment = SubResource("Environment_menu")
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="." unique_id=796672089]
 transform = Transform3D(0.97, 0.03, -0.24, 0, 0.99, 0.12, 0.24, -0.12, 0.96, -0.6, 1.55, 3.6)
 fov = 62.0
 
-[node name="Stanza" parent="." instance=ExtResource("2_stanza")]
+[node name="Stanza" parent="." unique_id=829456783 instance=ExtResource("2_stanza")]
 
-[node name="Negoziante" parent="." instance=ExtResource("3_neg")]
+[node name="Negoziante" parent="." unique_id=2098314505 instance=ExtResource("3_neg")]
 transform = Transform3D(0.8, 0, 0.6, 0, 1, 0, -0.6, 0, 0.8, 1.3, 0, -0.9)
 
-[node name="Tomba" parent="." instance=ExtResource("4_tomba")]
+[node name="Tomba" parent="." unique_id=1584071987 instance=ExtResource("4_tomba")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -0.3, 0, -2.4)
 
-[node name="Cassa" parent="." instance=ExtResource("5_cassa")]
+[node name="Cassa" parent="." unique_id=1870662419 instance=ExtResource("5_cassa")]
 transform = Transform3D(0.94, 0, -0.34, 0, 1, 0, 0.34, 0, 0.94, 2.6, 0, -2.2)
 
-[node name="Pala" parent="." instance=ExtResource("6_pala")]
+[node name="Pala" parent="." unique_id=147712542 instance=ExtResource("6_pala")]
 transform = Transform3D(0.97, -0.26, 0, 0.26, 0.97, 0, 0, 0, 1, 0.45, 0.02, -1.6)
 
-[node name="Barile" parent="." instance=ExtResource("7_barile")]
+[node name="Barile" parent="." unique_id=469542446 instance=ExtResource("7_barile")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 2.3, 0, -0.6)
 
-[node name="Barile2" parent="." instance=ExtResource("7_barile")]
+[node name="Barile2" parent="." unique_id=773373895 instance=ExtResource("7_barile")]
 transform = Transform3D(0.6, 0, 0.36, 0, 0.7, 0, -0.36, 0, 0.6, 2.9, 0, -1.1)
 
-[node name="Candele" parent="." instance=ExtResource("8_candele")]
+[node name="Candele" parent="." unique_id=353052664 instance=ExtResource("8_candele")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -2.6)
 
-[node name="Urna" parent="." instance=ExtResource("10_urna")]
+[node name="Urna" parent="." unique_id=604638127 instance=ExtResource("10_urna")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 0, -2.3)
 
-[node name="Detriti" parent="." instance=ExtResource("11_detriti")]
+[node name="Detriti" parent="." unique_id=1347635222 instance=ExtResource("11_detriti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, 0.3)
 
-[node name="LanternaModello" parent="." instance=ExtResource("9_lanterna")]
+[node name="LanternaModello" parent="." unique_id=778439354 instance=ExtResource("9_lanterna")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0, -0.1)
 
-[node name="Lanterna" type="OmniLight3D" parent="."]
+[node name="Lanterna" type="OmniLight3D" parent="." unique_id=1463832359]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.55, -0.1)
 light_color = Color(1, 0.66, 0.34, 1)
 light_energy = 2.2
 shadow_enabled = true
 omni_range = 7.0
 
-[node name="LuceCandele" type="OmniLight3D" parent="."]
+[node name="LuceCandele" type="OmniLight3D" parent="." unique_id=813275598]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.7, -2.3)
 light_color = Color(1, 0.6, 0.3, 1)
 light_energy = 1.2
 omni_range = 4.0
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=2123853234]
 
-[node name="Radice" type="Control" parent="UI"]
+[node name="Radice" type="Control" parent="UI" unique_id=1744504248]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -109,7 +112,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Sfumatura" type="TextureRect" parent="UI/Radice"]
+[node name="Sfumatura" type="TextureRect" parent="UI/Radice" unique_id=1591076188]
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -118,59 +121,51 @@ grow_vertical = 2
 mouse_filter = 2
 texture = SubResource("GradientTexture2D_sfuma")
 expand_mode = 1
-stretch_mode = 0
 
-[node name="Titolo" type="Label" parent="UI/Radice"]
+[node name="Titolo" type="Label" parent="UI/Radice" unique_id=788090444]
 layout_mode = 0
-offset_left = 64.0
-offset_top = 56.0
-offset_right = 620.0
-offset_bottom = 140.0
-text = "Scava Catacomba"
+offset_left = 32.0
+offset_top = 125.0
+offset_right = 649.0
+offset_bottom = 223.0
+theme = SubResource("Theme_s8fg0")
+theme_override_fonts/font = ExtResource("12_yo4vf")
+text = "GAYSTON CATACOMB"
 label_settings = SubResource("LabelSettings_titolo")
 
-[node name="Sottotitolo" type="Label" parent="UI/Radice"]
-modulate = Color(1, 1, 1, 0.6)
+[node name="Bottoni" type="VBoxContainer" parent="UI/Radice" unique_id=1045015109]
 layout_mode = 0
-offset_left = 70.0
-offset_top = 140.0
-offset_right = 600.0
-offset_bottom = 170.0
-text = "scava, riempi i secchi, risveglia i morti"
-
-[node name="Bottoni" type="VBoxContainer" parent="UI/Radice"]
-layout_mode = 0
-offset_left = 64.0
+offset_left = 77.0
 offset_top = 210.0
-offset_right = 384.0
+offset_right = 397.0
 offset_bottom = 600.0
 theme_override_constants/separation = 12
 
-[node name="Continua" type="Button" parent="UI/Radice/Bottoni"]
+[node name="Continua" type="Button" parent="UI/Radice/Bottoni" unique_id=962787732]
 layout_mode = 2
-text = "Continua partita"
+text = "Continua"
 
-[node name="Carica" type="Button" parent="UI/Radice/Bottoni"]
+[node name="Carica" type="Button" parent="UI/Radice/Bottoni" unique_id=576139050]
 layout_mode = 2
 text = "Carica partita"
 
-[node name="Nuova" type="Button" parent="UI/Radice/Bottoni"]
+[node name="Nuova" type="Button" parent="UI/Radice/Bottoni" unique_id=1236307873]
 layout_mode = 2
 text = "Nuova partita"
 
-[node name="Coop" type="Button" parent="UI/Radice/Bottoni"]
+[node name="Coop" type="Button" parent="UI/Radice/Bottoni" unique_id=1123364882]
 layout_mode = 2
 text = "Co-op online"
 
-[node name="Impostazioni" type="Button" parent="UI/Radice/Bottoni"]
+[node name="Impostazioni" type="Button" parent="UI/Radice/Bottoni" unique_id=1101136175]
 layout_mode = 2
 text = "Impostazioni"
 
-[node name="Esci" type="Button" parent="UI/Radice/Bottoni"]
+[node name="Esci" type="Button" parent="UI/Radice/Bottoni" unique_id=703107417]
 layout_mode = 2
 text = "Esci"
 
-[node name="Pannello" type="PanelContainer" parent="UI/Radice"]
+[node name="Pannello" type="PanelContainer" parent="UI/Radice" unique_id=624577356]
 visible = false
 layout_mode = 0
 offset_left = 64.0
@@ -178,7 +173,7 @@ offset_top = 185.0
 offset_right = 640.0
 offset_bottom = 300.0
 
-[node name="Messaggio" type="Label" parent="UI/Radice"]
+[node name="Messaggio" type="Label" parent="UI/Radice" unique_id=38476438]
 modulate = Color(1, 0.78, 0.5, 1)
 layout_mode = 1
 anchors_preset = 2
@@ -191,7 +186,7 @@ offset_bottom = -40.0
 grow_vertical = 0
 autowrap_mode = 3
 
-[node name="Versione" type="Label" parent="UI/Radice"]
+[node name="Versione" type="Label" parent="UI/Radice" unique_id=194941652]
 modulate = Color(1, 1, 1, 0.35)
 layout_mode = 1
 anchors_preset = 3
@@ -207,3 +202,8 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "Godot 4.7 · Kenney assets"
 horizontal_alignment = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Radice" unique_id=1454267329]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
