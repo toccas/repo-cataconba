@@ -9,7 +9,7 @@ const LIFT_SIZE := 2.2
 const LEVER_POS := Vector3(-1.45, FLOOR_Y, -3.65)
 const SHOP_POS := Vector3(2.9, FLOOR_Y, -3.4)
 const LIFT_TRAVEL := 5.0
-const MAX_VISIBLE_BUCKETS := 75
+const MAX_VISIBLE_BUCKETS := 125   # 5 x 5 per strato, fino a 5 strati (piattaforma grande)
 const BARREL_SCALE := 0.7
 const DUNGEON := "res://assetpack/kenney_mini-dungeon/Models/GLB format/"
 const GRAVEYARD := "res://assetpack/kenney_graveyard-kit_5.0/Models/GLB format/"
@@ -126,14 +126,12 @@ func build_nodes() -> void:
 	add_child(sign)
 	_lantern("CandeleNegozio", GRAVEYARD + "candle-multiple", SHOP_POS + Vector3(-0.75, 1.0, -0.15), 2.0, 0.9, 5.0)
 	# il negoziante: uno scheletro con il berretto viola, dietro il bancone, che guarda la stanza
-	var keeper: Node3D = (load("res://scenes/scheletro.tscn") as PackedScene).instantiate()
+	# scena scenes/negoziante.tscn: si modifica a mano (es. la posizione del berretto)
+	var keeper: Node3D = (load("res://scenes/negoziante.tscn") as PackedScene).instantiate()
 	keeper.name = "Negoziante"
 	keeper.position = SHOP_POS + Vector3(0.1, 0, -0.8)
 	keeper.rotation.y = 0.15
 	add_child(keeper)
-	var beret: Node3D = (load(MODELLI + "berretto.glb") as PackedScene).instantiate()
-	beret.name = "Berretto"
-	keeper.get_node("Corpo/Testa").add_child(beret)
 
 	# --- barili con le lanterne ---
 	for side in [-1.0, 1.0]:

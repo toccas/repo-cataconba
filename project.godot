@@ -12,12 +12,13 @@ config_version=5
 
 config/name="Scava Catacomba"
 config/description="Fase 0: prova del terreno scavabile"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/menu_principale.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 
 [autoload]
 
 Rete="*res://scripts/rete.gd"
+Impostazioni="*res://scripts/impostazioni.gd"
 
 [display]
 

@@ -23,6 +23,7 @@ const COMANDI := [
 	["Ossa", "btn", "CompletaTomba", "Completa lo scheletro nella tomba"],
 	["Ossa", "btn", "SvuotaTomba", "Svuota la tomba"],
 	["Mondo", "slider", "Tempo", "Velocità del tempo"],
+	["Mondo", "btn", "Salva", "Salva la partita adesso"],
 	["Mondo", "btn", "RigeneraTerra", "Rigenera la terra"],
 	["Mondo", "btn", "Ricomincia", "Ricomincia la partita"],
 ]
@@ -196,6 +197,13 @@ func _do_SvuotaTomba() -> void:
 func _slide_Tempo(v: float) -> void:
 	Engine.time_scale = v
 	$Pannello/Scorri/Colonna/TempoValore.text = "x%.2f" % v
+
+
+func _do_Salva() -> void:
+	if main.salva():
+		_msg("partita salvata in " + ProjectSettings.globalize_path(main.Salvataggi.percorso(Rete.slot)))
+	else:
+		_msg("non salvata (le prove automatiche e chi entra in co-op non salvano)")
 
 
 func _do_RigeneraTerra() -> void:

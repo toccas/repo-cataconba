@@ -1,0 +1,52 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/dinamite.gd" id="1_a8tev"]
+[ext_resource type="PackedScene" path="res://modelli/dinamite.glb" id="2_srm4j"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_qrod6"]
+rough = true
+bounce = 0.02
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gpqu2"]
+radius = 0.06
+height = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ijnqh"]
+shading_mode = 0
+albedo_color = Color(1, 0.8, 0.3, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_thvwe"]
+material = SubResource("StandardMaterial3D_ijnqh")
+radius = 0.008
+height = 0.016
+
+[node name="Dinamite" type="RigidBody3D" unique_id=1952353531]
+mass = 0.5
+physics_material_override = SubResource("PhysicsMaterial_qrod6")
+continuous_cd = true
+linear_damp = 0.6
+angular_damp = 2.0
+script = ExtResource("1_a8tev")
+
+[node name="Modello" type="Node3D" parent="." unique_id=1351662838 instance=ExtResource("2_srm4j")]
+
+[node name="Collisione" type="CollisionShape3D" parent="." unique_id=1765648500]
+shape = SubResource("CapsuleShape3D_gpqu2")
+
+[node name="Scintille" type="CPUParticles3D" parent="." unique_id=713824910]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02, 0.2, 0.01)
+amount = 24
+lifetime = 0.35
+mesh = SubResource("SphereMesh_thvwe")
+direction = Vector3(0, 1, 0)
+spread = 70.0
+gravity = Vector3(0, -2, 0)
+initial_velocity_min = 0.4
+initial_velocity_max = 1.2
+scale_amount_min = 0.5
+
+[node name="Luce" type="OmniLight3D" parent="." unique_id=127126121]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02, 0.2, 0.01)
+light_color = Color(1, 0.65, 0.25, 1)
+light_energy = 0.8
+omni_range = 2.5

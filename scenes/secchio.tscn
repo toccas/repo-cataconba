@@ -22,7 +22,7 @@ rings = 1
 height = 0.33
 radius = 0.17
 
-[node name="Secchio" type="RigidBody3D" unique_id=541008372 groups=["secchi"]]
+[node name="Secchio" type="RigidBody3D" unique_id=1876865936 groups=["secchi"]]
 mass = 6.0
 physics_material_override = SubResource("PhysicsMaterial_gtqpv")
 center_of_mass_mode = 1
@@ -34,10 +34,10 @@ metadata/interact = "secchio"
 [node name="Modello" type="Node3D" parent="." unique_id=483316247 instance=ExtResource("2_xi8kr")]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
 
-[node name="Terra" type="MeshInstance3D" parent="." unique_id=870160635]
+[node name="Terra" type="MeshInstance3D" parent="." unique_id=1346678474]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32, 0)
 mesh = SubResource("CylinderMesh_4dng0")
 
-[node name="Collisione" type="CollisionShape3D" parent="." unique_id=284333920]
+[node name="Collisione" type="CollisionShape3D" parent="." unique_id=625636635]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.168, 0)
 shape = SubResource("CylinderShape3D_rhuhs")

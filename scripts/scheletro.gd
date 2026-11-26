@@ -10,6 +10,16 @@ extends Node3D
 const PARTI := ["Testa", "Torace", "BraccioDestro", "BraccioSinistro", "GambaDestra", "GambaSinistra"]
 const ANCA := 0.9
 
+## Azione dello scheletro lavoratore: "idle", "cammina", "porta" (cammina con un
+## secchio in mano) o "scava". Ha la precedenza su "camminando".
+var azione := "":
+	set(v):
+		if v == azione:
+			return
+		azione = v
+		if is_node_ready():
+			_aggiorna()
+
 ## Cammina (animazione "cammina") invece di stare fermo ("idle"), se è completo.
 @export var camminando := false:
 	set(v):
@@ -87,11 +97,19 @@ func _aggiorna() -> void:
 		return
 	_eyes(1.0 if sveglio and completo() else 0.0)
 	if completo() and sveglio:
-		anim.play("cammina" if camminando else "idle", 0.3)
+		var a := azione if azione in ["idle", "cammina", "porta", "porta_fermo", "scava"] else ("cammina" if camminando else "idle")
+		anim.play(a, 0.25)
 	else:
 		anim.play("RESET")
 		anim.advance(0.0)
 		anim.stop()
+
+
+## Mostra o nasconde il secchio tenuto davanti al petto.
+func porta_secchio(on: bool) -> void:
+	var s := get_node_or_null("Corpo/SecchioInMano") as Node3D
+	if s:
+		s.visible = on
 
 
 ## Luminosità degli occhi (0 = spenti).

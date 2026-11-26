@@ -25,6 +25,12 @@ const ORO := Color(0.95, 0.74, 0.24)
 const CERAMICA := Color(0.42, 0.52, 0.62)
 const VETRO := Color(0.33, 0.55, 0.36)
 const SACCO := Color(0.74, 0.64, 0.44)
+## Colore del mantello dei giocatori: giocatore_remoto.gd lo sostituisce col colore di ognuno.
+const MANTELLO := Color(0.5, 0.5, 0.5)
+const MANTELLO_SCURO := Color(0.35, 0.35, 0.35)
+const PANTALONI := Color(0.24, 0.2, 0.18)
+const BARBA := Color(0.36, 0.24, 0.16)
+const LUCE := Color(1.0, 0.85, 0.45)
 
 const LowPoly := preload("res://tools/low_poly.gd")
 
@@ -57,6 +63,20 @@ func _init() -> void:
 	lp.save_glb(OUT + "tomba.glb", "tomba", [])
 	_beret()
 	lp.save_glb(OUT + "berretto.glb", "berretto", [])
+	_dynamite()
+	lp.save_glb(OUT + "dinamite.glb", "dinamite", [])
+	_digger_body()
+	lp.save_glb(OUT + "becchino_corpo.glb", "becchino_corpo", [FERRO])
+	_digger_head()
+	lp.save_glb(OUT + "becchino_testa.glb", "becchino_testa", [FERRO])
+	_digger_arm()
+	lp.save_glb(OUT + "becchino_braccio.glb", "becchino_braccio", [])
+	_digger_leg()
+	lp.save_glb(OUT + "becchino_gamba.glb", "becchino_gamba", [])
+	_cart_body()
+	lp.save_glb(OUT + "vagone_cassone.glb", "vagone_cassone", [FERRO])
+	_cart_base()
+	lp.save_glb(OUT + "vagone_base.glb", "vagone_base", [FERRO])
 	quit()
 
 
@@ -383,18 +403,146 @@ func _tomb() -> void:
 
 ## Berretto viola (basco) per il teschio dello scheletro: origine nel perno della testa
 ## (base del collo), così va messo come figlio del nodo Testa senza spostarlo.
-## Calotta morbida e schiacciata, inclinata da un lato, fascia più scura e picciolo in cima.
+## Una cupola che avvolge la cima del cranio, una fascia più scura sulla fronte,
+## la parte morbida che ricade da un lato e il picciolo in cima.
 func _beret() -> void:
 	var viola := Color(0.47, 0.22, 0.62)
-	var viola_chiaro := Color(0.58, 0.32, 0.74)
+	var viola_chiaro := Color(0.57, 0.31, 0.72)
 	var viola_scuro := Color(0.30, 0.12, 0.42)
-	var tilt := Transform3D(Basis.from_euler(Vector3(-0.1, 0.0, 0.22)), Vector3(0.0, 0.0, -0.01))
-	var c := Vector3(0, 0.43, -0.015)
-	# fascia sul cranio
-	lp.prism(tilt * (c + Vector3(0, -0.02, 0)), tilt * (c + Vector3(0, 0.035, 0)), 0.168, 0.176, 12, viola_scuro)
-	# calotta gonfia: un ellissoide alto e uno largo spostato di lato
-	lp.ball(tilt * (c + Vector3(0, 0.06, 0)), Vector3(0.2, 0.08, 0.2), 12, 6, viola)
-	var top := tilt * (c + Vector3(0.035, 0.1, 0))
-	lp.ball(top, Vector3(0.23, 0.055, 0.215), 12, 6, viola_chiaro)
+	var tilt := Transform3D(Basis.from_euler(Vector3(-0.08, 0.0, 0.18)), Vector3(0.0, 0.0, 0.0))
+	var c := Vector3(0, 0.36, -0.02)
+	# fascia
+	lp.prism(tilt * (c + Vector3(0, -0.005, 0)), tilt * (c + Vector3(0, 0.035, 0)), 0.2, 0.203, 14, viola_scuro)
+	# cupola sopra il cranio (solo la metà di sopra dell'ellissoide)
+	var dome := Transform3D(tilt.basis, tilt * (c + Vector3(0, 0.03, 0)))
+	_ball_xf(dome, Vector3(0.208, 0.135, 0.208), 14, 5, viola, 0.0)
+	# parte morbida che ricade da un lato
+	var puff := tilt * (c + Vector3(0.07, 0.125, -0.005))
+	lp.ball(puff, Vector3(0.2, 0.058, 0.19), 12, 6, viola_chiaro)
 	# picciolo
-	lp.prism(top + Vector3(0, 0.045, 0), top + Vector3(0.005, 0.085, 0), 0.017, 0.013, 6, viola_scuro)
+	var top := tilt * (c + Vector3(0.03, 0.185, 0))
+	lp.prism(top, top + Vector3(0.006, 0.04, 0), 0.016, 0.012, 6, viola_scuro)
+
+
+## Ellissoide ruotato: ball() con l'orientamento di xf (centro = xf.origin).
+func _ball_xf(xf: Transform3D, r: Vector3, segs: int, rings: int, col: Color, lat_min: float) -> void:
+	var before := {}
+	for k in lp.parts:
+		before[k] = lp.parts[k].size()
+	lp.ball(Vector3.ZERO, r, segs, rings, col, lat_min)
+	# trasforma solo i vertici appena aggiunti
+	var arr: PackedVector3Array = lp.parts[col]
+	var nrm: PackedVector3Array = lp.normals[col]
+	for i in range(before.get(col, 0), arr.size()):
+		arr[i] = xf * arr[i]
+		nrm[i] = (xf.basis * nrm[i]).normalized()
+	lp.parts[col] = arr
+	lp.normals[col] = nrm
+
+
+## Candelotto di dinamite: cilindro rosso lungo Y (0,26 m) centrato nell'origine,
+## fascia di carta con la scritta, tappi scuri e miccia in cima.
+func _dynamite() -> void:
+	var rosso := Color(0.78, 0.15, 0.10)
+	var rosso_scuro := Color(0.55, 0.09, 0.06)
+	var carta := Color(0.92, 0.86, 0.70)
+	var nero := Color(0.12, 0.10, 0.09)
+	lp.prism(Vector3(0, -0.13, 0), Vector3(0, 0.13, 0), 0.036, 0.036, 10, rosso)
+	lp.prism(Vector3(0, -0.135, 0), Vector3(0, -0.12, 0), 0.038, 0.038, 10, rosso_scuro)
+	lp.prism(Vector3(0, 0.12, 0), Vector3(0, 0.135, 0), 0.038, 0.038, 10, rosso_scuro)
+	lp.prism(Vector3(0, -0.035, 0), Vector3(0, 0.035, 0), 0.039, 0.039, 10, carta)
+	lp.cbox(Transform3D(Basis(), Vector3(0, 0, 0.039)), Vector3(0.03, 0.03, 0.004), 0.0, nero)
+	# miccia un po' piegata
+	lp.prism(Vector3(0, 0.135, 0), Vector3(0.006, 0.17, 0.004), 0.006, 0.005, 5, nero)
+	lp.prism(Vector3(0.006, 0.17, 0.004), Vector3(0.02, 0.195, 0.01), 0.005, 0.004, 5, nero)
+
+
+## Cassone del carrello da miniera: origine sul perno di ribaltamento (bordo -X, in basso),
+## il cassone si estende verso +X... centrato: lungo Z (direzione di marcia) 1,0 m,
+## largo X 0,7 m, alto 0,45 m. Il perno è sul lato +X così si ribalta di lato.
+func _cart_body() -> void:
+	var o := Vector3(-0.35, 0, 0)   # il cassone sta a sinistra del perno
+	lp.cbox(Transform3D(Basis(), o + Vector3(0, 0.03, 0)), Vector3(0.7, 0.06, 1.0), 0.02, LEGNO_SCURO)
+	for sx in [-1.0, 1.0]:
+		lp.cbox(Transform3D(Basis(), o + Vector3(sx * 0.33, 0.24, 0)), Vector3(0.05, 0.42, 1.0), 0.015, LEGNO)
+	for sz in [-1.0, 1.0]:
+		lp.cbox(Transform3D(Basis(), o + Vector3(0, 0.24, sz * 0.48)), Vector3(0.62, 0.42, 0.05), 0.015, LEGNO_CHIARO)
+	# fasce e angolari di ferro
+	for y in [0.1, 0.42]:
+		for sx in [-1.0, 1.0]:
+			lp.cbox(Transform3D(Basis(), o + Vector3(sx * 0.36, y, 0)), Vector3(0.02, 0.05, 1.02), 0.005, FERRO)
+		for sz in [-1.0, 1.0]:
+			lp.cbox(Transform3D(Basis(), o + Vector3(0, y, sz * 0.51)), Vector3(0.74, 0.05, 0.02), 0.005, FERRO)
+
+
+## Telaio e ruote del carrello: origine al centro, sul piano dei binari (y = 0).
+func _cart_base() -> void:
+	lp.cbox(Transform3D(Basis(), Vector3(0, 0.2, 0)), Vector3(0.6, 0.08, 0.95), 0.02, FERRO)
+	for sz in [-0.32, 0.32]:
+		lp.prism(Vector3(-0.3, 0.13, sz), Vector3(0.3, 0.13, sz), 0.025, 0.025, 6, FERRO)
+		for sx in [-0.22, 0.22]:
+			lp.prism(Vector3(sx - 0.03, 0.13, sz), Vector3(sx + 0.03, 0.13, sz), 0.12, 0.12, 10, CUOIO)
+			lp.prism(Vector3(sx - 0.035, 0.13, sz), Vector3(sx + 0.035, 0.13, sz), 0.05, 0.05, 8, FERRO)
+	# maniglia per spingere
+	for sx in [-0.25, 0.25]:
+		_beam(Vector3(sx, 0.25, -0.48), Vector3(sx, 0.62, -0.62), 0.04, 0.04, LEGNO_SCURO)
+	lp.prism(Vector3(-0.3, 0.62, -0.62), Vector3(0.3, 0.62, -0.62), 0.025, 0.025, 8, LEGNO)
+
+
+# --- becchino (i giocatori visti dagli altri in co-op) ----------------------------
+# Guarda verso -Z. Perni: anca a y 0,85 (corpo e gambe), spalle a y 1,42, collo a y 1,5.
+
+## Corpo: origine all'anca. Busto, mantello che scende fino alle ginocchia, cintura
+## con fibbia e lanterna appesa al fianco.
+func _digger_body() -> void:
+	lp.cbox(Transform3D(Basis(), Vector3(0, 0.33, 0)), Vector3(0.46, 0.6, 0.3), 0.08, MANTELLO)
+	lp.cbox(Transform3D(Basis(), Vector3(0, 0.58, 0)), Vector3(0.52, 0.12, 0.32), 0.05, MANTELLO_SCURO)
+	# gonna del mantello (aperta davanti)
+	for sx in [-1.0, 1.0]:
+		lp.cbox(Transform3D(Basis(Vector3.BACK, sx * 0.08), Vector3(sx * 0.13, -0.16, 0.02)), Vector3(0.24, 0.42, 0.32), 0.05, MANTELLO)
+	lp.cbox(Transform3D(Basis(), Vector3(0, -0.16, 0.1)), Vector3(0.44, 0.42, 0.12), 0.04, MANTELLO_SCURO)
+	# cintura e fibbia
+	lp.cbox(Transform3D(Basis(), Vector3(0, 0.05, 0)), Vector3(0.5, 0.08, 0.34), 0.02, CUOIO)
+	lp.cbox(Transform3D(Basis(), Vector3(0, 0.05, -0.175)), Vector3(0.09, 0.08, 0.02), 0.01, ORO)
+	# lanterna al fianco destro
+	var lx := 0.27
+	lp.cbox(Transform3D(Basis(), Vector3(lx, -0.08, -0.04)), Vector3(0.11, 0.15, 0.11), 0.015, FERRO)
+	lp.cbox(Transform3D(Basis(), Vector3(lx, -0.08, -0.04)), Vector3(0.08, 0.1, 0.12), 0.0, LUCE)
+	lp.cbox(Transform3D(Basis(), Vector3(lx, 0.01, -0.04)), Vector3(0.03, 0.06, 0.03), 0.005, FERRO)
+
+
+## Testa: origine al collo. Faccia, barba, naso, occhi, cappuccio del mantello
+## e lampada da minatore sul davanti del cappuccio.
+func _digger_head() -> void:
+	lp.cbox(Transform3D(Basis(), Vector3(0, 0.03, 0)), Vector3(0.12, 0.08, 0.12), 0.02, PELLE_SCURA)
+	lp.cbox(Transform3D(Basis(), Vector3(0, 0.17, 0)), Vector3(0.26, 0.26, 0.25), 0.07, PELLE)
+	lp.cbox(Transform3D(Basis(), Vector3(0, 0.15, -0.135)), Vector3(0.05, 0.06, 0.04), 0.012, PELLE_SCURA)
+	for sx in [-1.0, 1.0]:
+		lp.cbox(Transform3D(Basis(), Vector3(sx * 0.06, 0.2, -0.127)), Vector3(0.035, 0.04, 0.01), 0.005, Color(0.08, 0.06, 0.05))
+	# barba
+	lp.cbox(Transform3D(Basis(), Vector3(0, 0.07, -0.1)), Vector3(0.24, 0.12, 0.1), 0.04, BARBA)
+	lp.cbox(Transform3D(Basis(), Vector3(0, 0.02, -0.12)), Vector3(0.14, 0.08, 0.06), 0.03, BARBA)
+	# cappuccio: calotta e bordo, aperto davanti
+	lp.ball(Vector3(0, 0.22, 0.025), Vector3(0.18, 0.17, 0.18), 10, 5, MANTELLO, -0.25)
+	lp.cbox(Transform3D(Basis(), Vector3(0, 0.12, 0.08)), Vector3(0.34, 0.24, 0.16), 0.06, MANTELLO)
+	lp.cbox(Transform3D(Basis(), Vector3(0, 0.36, -0.1)), Vector3(0.28, 0.05, 0.08), 0.02, MANTELLO_SCURO)
+	# lampada da minatore
+	lp.cbox(Transform3D(Basis(), Vector3(0, 0.36, -0.155)), Vector3(0.08, 0.07, 0.04), 0.012, FERRO)
+	lp.prism(Vector3(0, 0.36, -0.17), Vector3(0, 0.36, -0.185), 0.028, 0.028, 8, LUCE)
+
+
+## Braccio: origine alla spalla, scende lungo -Y. Manica del mantello, guanto.
+## La mano è a y -0,6 (lì si attaccano gli attrezzi).
+func _digger_arm() -> void:
+	lp.cbox(Transform3D(Basis(), Vector3(0, -0.02, 0)), Vector3(0.15, 0.14, 0.15), 0.05, MANTELLO_SCURO)
+	lp.prism(Vector3(0, -0.04, 0), Vector3(0, -0.46, 0), 0.065, 0.075, 8, MANTELLO, PI / 8)
+	lp.prism(Vector3(0, -0.44, 0), Vector3(0, -0.5, 0), 0.08, 0.08, 8, MANTELLO_SCURO, PI / 8)
+	lp.cbox(Transform3D(Basis(), Vector3(0, -0.57, 0)), Vector3(0.1, 0.13, 0.11), 0.03, CUOIO)
+
+
+## Gamba: origine all'anca, scende fino a terra (y -0,85). Pantaloni e stivale verso -Z.
+func _digger_leg() -> void:
+	lp.prism(Vector3(0, 0, 0), Vector3(0, -0.6, 0), 0.085, 0.075, 8, PANTALONI, PI / 8)
+	lp.cbox(Transform3D(Basis(), Vector3(0, -0.68, 0.0)), Vector3(0.16, 0.2, 0.17), 0.04, CUOIO)
+	lp.cbox(Transform3D(Basis(), Vector3(0, -0.8, -0.06)), Vector3(0.16, 0.1, 0.27), 0.035, CUOIO)
+	lp.cbox(Transform3D(Basis(), Vector3(0, -0.6, 0)), Vector3(0.19, 0.05, 0.19), 0.02, LEGNO_SCURO)

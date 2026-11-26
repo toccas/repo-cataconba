@@ -11,6 +11,9 @@ extends Node3D
 ## Anche nell'editor la terra viene generata come anteprima: dopo aver spostato,
 ## aggiunto o tolto pezzi premi "Rigenera terra" nell'Inspector.
 
+## Emesso quando si scava (la griglia degli scheletri si aggiorna).
+signal cambiata(centro: Vector3, raggio: float)
+
 @export var stone_path: NodePath
 ## Raggio in metri attorno allo spawn dove non ci sono venature di terra dura e roccia.
 @export var pure_radius := 14.0
@@ -161,11 +164,14 @@ func generate(dirt_boxes: Array, empty_boxes: Array, pure_center := Vector3.ZERO
 						continue
 					density[i] = v
 					var m := MAT_TERRA
-					if Vector2(p.x - pure_center.x, p.z - pure_center.z).length() >= pure_radius:
+					var dist := Vector2(p.x - pure_center.x, p.z - pure_center.z).length()
+					if dist >= pure_radius:
+						# più ci si allontana dallo spawn più terra dura e roccia
+						var duro := clampf((dist - pure_radius) / 20.0, 0.0, 1.0)
 						var n := noise.get_noise_3dv(p)
-						if n > 0.45:
+						if n > 0.45 - 0.3 * duro:
 							m = MAT_ROCCIA
-						elif n > 0.2:
+						elif n > 0.2 - 0.35 * duro:
 							m = MAT_DURA
 					material_id[i] = m
 		_mark_chunks(r)
@@ -238,6 +244,7 @@ func dig(center: Vector3, radius: float, power: float, max_mat: int) -> Vector3:
 				removed[m] += clampf(old, 0.0, 1.0) - clampf(nd, 0.0, 1.0)
 				changed = true
 	if changed:
+		cambiata.emit(center, radius)
 		for cz in range(floori((z0 - 1) / float(CHUNK)), floori((z1 + 1) / float(CHUNK)) + 1):
 			for cy in range(floori((y0 - 1) / float(CHUNK)), floori((y1 + 1) / float(CHUNK)) + 1):
 				for cx in range(floori((x0 - 1) / float(CHUNK)), floori((x1 + 1) / float(CHUNK)) + 1):
@@ -248,15 +255,19 @@ func dig(center: Vector3, radius: float, power: float, max_mat: int) -> Vector3:
 
 
 ## Ricalcola i chunk modificati. Chiamato ogni frame.
-func flush() -> void:
+## Ricalcola i chunk cambiati. Si ferma dopo budget_ms millisecondi: quelli che
+## restano li fa al frame dopo (un'esplosione ne cambia tanti insieme).
+func flush(budget_ms := 12.0) -> void:
 	if dirty.is_empty():
 		return
 	var t0 := Time.get_ticks_usec()
 	var n := 0
 	for c in dirty.keys():
 		_remesh_chunk(c)
+		dirty.erase(c)
 		n += 1
-	dirty.clear()
+		if (Time.get_ticks_usec() - t0) / 1000.0 >= budget_ms:
+			break
 	last_remesh_ms = (Time.get_ticks_usec() - t0) / 1000.0
 	last_remesh_chunks = n
 	max_remesh_ms = maxf(max_remesh_ms, last_remesh_ms)
@@ -401,6 +412,14 @@ func _apply_chunk(c: Vector3i, verts: PackedVector3Array, norms: PackedVector3Ar
 	shape.backface_collision = true
 	shape.set_faces(faces)
 	nodes[1].shape = shape
+
+
+## C'è terra nel punto p?
+func solida(p: Vector3) -> bool:
+	var s := (p / VOXEL).round()
+	if s.x < 0 or s.y < 0 or s.z < 0 or s.x > NX or s.y > NY or s.z > NZ:
+		return false
+	return density[int(s.x) + int(s.y) * SX + int(s.z) * SXY] > 0.0
 
 
 func material_at(p: Vector3) -> int:

@@ -18,6 +18,13 @@ const PORTA := 7777
 const MAX_GIOCATORI := 4
 
 var nome := "Scavatore"
+## Cosa deve fare la scena del gioco quando parte (lo scrive il menu principale):
+## "solo", "ospita", "entra" ("" = scena del gioco aperta direttamente: da solo).
+var modalita := ""
+var slot := 1                # slot di salvataggio (da solo e per chi ospita)
+var indirizzo := ""          # a chi collegarsi ("entra")
+var nuova_partita := false   # true: non carica lo slot e ricomincia da capo
+var errore := ""             # messaggio da mostrare nel menu principale al ritorno
 var giocatori := {}        # id -> nome (compreso me)
 var online := false
 var ip_pubblico := ""

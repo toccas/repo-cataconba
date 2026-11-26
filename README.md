@@ -40,14 +40,39 @@ migliori, fino a liberare tutta la catacomba e trovare l'uscita nella stanza fin
 | Tasto destro | Lanciare il secchio che hai in mano |
 | `E` | Raccogliere un secchio o un osso, posarlo sul montacarichi o nella tomba, tirare la leva, aprire/chiudere il negozio |
 | `1` `2` `3` | Mani, pala, piccone (se comprati) |
-| `Esc` | Liberare il mouse / chiudere il negozio |
+| `Esc` | Menu di pausa / chiudere il negozio |
+| `F` | Prendere in mano un candelotto di dinamite (tasto destro per lanciarlo, esplode dopo 3 s) |
+| `R` | Posare una rotaia sul pavimento che guardi / togliere quella che guardi |
 | `Ctrl+M` | Dev tool: monete, attrezzi, volo, velocità, ossa, tomba, tempo, rigenera terra |
+
+## Novità
+
+- **Negozio a livelli**, diviso in categorie: pala e piccone (4 livelli), sacca (fino a 40 unità),
+  gerla (porti 2-3 secchi insieme), braccia forti (lanci più lontano), piattaforma del montacarichi
+  (fino a 125 secchi), argano (bonus pila più alto), scheletri instancabili, rotaie, carrello, dinamite.
+- **Dinamite**: consumabile, al massimo 4 nell'inventario. `F` per prenderla, tasto destro per lanciarla:
+  dopo 3 s esplode e toglie una grossa sfera di terra, anche la roccia.
+- **Scheletri lavoratori**: ogni scheletro ricomposto nella tomba si mette al lavoro. Se ci sono secchi
+  a terra li porta al montacarichi, altrimenti scava un secchio e lo porta lui.
+- **Rotaie e carrello**: compri pacchi di rotaie e li posi con `R` (si collegano da soli). Nel carrello
+  metti fino a 6 secchi (`E`), lo spingi camminandoci contro e accanto al montacarichi si ribalta.
+- **Prima zona completa**: 9 stanze collegate da un anello di cunicoli, terra più dura lontano dallo
+  spawn, due scheletri da ricomporre e la **chiave** sepolta che apre il cancello verso la prossima zona.
+- **Salvataggio**: 3 slot. Chi gioca da solo o ospita salva ogni minuto, a ogni vendita, dal
+  menu di pausa e alla chiusura.
+- **Menu principale**: Continua partita (l'ultimo slot salvato), Carica partita (scegli o elimina
+  uno slot), Nuova partita (in uno slot, chiede prima di sovrascrivere), Co-op, Impostazioni
+  (volume, sensibilità del mouse, campo visivo, schermo intero, V-Sync), Esci.
+- **Menu di pausa** (`Esc`): Riprendi, Impostazioni, Salva, Menu principale, Esci. Da solo il gioco
+  si ferma; in co-op gli altri continuano.
+- **Co-op**: gli altri giocatori sono becchini-minatori low-poly col mantello di un colore diverso.
 
 ## Come avviarlo
 
 1. Scarica [Godot 4.7](https://godotengine.org/download) (versione standard, non .NET).
 2. Clona il repository e apri `project.godot` con Godot.
-3. Premi **F5** (scena principale: `scenes/main.tscn`).
+3. Premi **F5** (scena di avvio: `scenes/menu_principale.tscn`). Con **F6** su `scenes/main.tscn`
+   si entra subito nel gioco, nell'ultimo slot salvato.
 
 Da riga di comando:
 
@@ -55,8 +80,13 @@ Da riga di comando:
 godot --path .
 ```
 
-All'avvio c'è il menu: **Gioca da solo**, **Ospita una partita online** o **Entra** scrivendo
-l'indirizzo di chi ospita.
+All'avvio c'è il menu principale. In **Co-op online** si ospita una partita (scegliendo lo slot in
+cui salvarla) o si entra scrivendo l'indirizzo di chi ospita.
+
+I salvataggi sono in `user://salvataggi/slot_1.dat` … `slot_3.dat` (su Windows
+`%APPDATA%\Godot\app_userdata\Scava Catacomba\`). Il vecchio `salvataggio.dat`, se c'è, viene
+copiato nello slot 1 la prima volta (l'originale resta). Le impostazioni sono in
+`user://impostazioni.cfg`.
 
 ### Giocare online
 
@@ -108,7 +138,12 @@ scripts/
   hud.gd             interfaccia
   main.gd            collega tutto, multigiocatore (richieste al server, sincronizzazione) + prove automatiche
   rete.gd            autoload "Rete": ospita / entra (ENet, porta 7777, UPnP), elenco dei giocatori
-  lobby.gd           menu iniziale (da solo / ospita / entra)
+  menu_principale.gd menu di avvio (scena scenes/menu_principale.tscn: sfondo e pulsanti si modificano nell'editor)
+  pausa.gd           menu di pausa (Esc)
+  salvataggi.gd      slot di salvataggio (intestazione per il menu + partita intera)
+  impostazioni.gd    autoload "Impostazioni": volume, mouse, campo visivo, schermo intero, V-Sync
+  pannello_impostazioni.gd  il pannello delle impostazioni (menu principale e pausa)
+  tema.gd            stile dei menu (pannelli scuri, bordi in ottone)
   giocatore_remoto.gd  come si vedono gli altri giocatori (corpo, nome, fiamma, attrezzo in mano)
 tools/
   build_scenes.gd    rigenera le scene da codice
@@ -137,8 +172,11 @@ blocchi di tufo con portali ad arco: `cripta-stanza` (12 x 12 m, un portale per 
 > usalo solo se vuoi ripartire dalla pianta definita nello script.
 >
 > ```
-> godot --headless --path . --script res://tools/build_scenes.gd
+> godot --headless --path . res://tools/build_scenes.tscn
 > ```
+
+> Il negoziante (scheletro col berretto) è nella scena `scenes/negoziante.tscn`: aprila per spostare
+> il berretto o cambiare il personaggio. Il builder la crea solo se non esiste e non la sovrascrive.
 
 ## Prossime fasi
 

@@ -3,14 +3,14 @@
 [ext_resource type="PackedScene" path="res://modelli/cripta/cripta-curva.glb" id="1_bq2xk"]
 [ext_resource type="Shape3D" path="res://modelli/cripta/cripta-curva_collisione.res" id="2_jpl51"]
 
-[node name="CriptaCurva" type="Node3D" unique_id=848033193]
+[node name="CriptaCurva" type="Node3D" unique_id=1817255866]
 metadata/volume_size = Vector3(4, 4, 4)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
 [node name="Modello" type="Node3D" parent="." unique_id=2104685749 instance=ExtResource("1_bq2xk")]
 
-[node name="Corpo" type="StaticBody3D" parent="." unique_id=1951117563]
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=361045477]
 
-[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1238614148]
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1122794866]
 shape = ExtResource("2_jpl51")

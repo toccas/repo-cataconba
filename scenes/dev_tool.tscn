@@ -18,11 +18,11 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="DevTool" type="CanvasLayer" unique_id=585760537]
+[node name="DevTool" type="CanvasLayer" unique_id=30783127]
 layer = 10
 script = ExtResource("1_7k6n8")
 
-[node name="Pannello" type="PanelContainer" parent="." unique_id=361666027]
+[node name="Pannello" type="PanelContainer" parent="." unique_id=54663440]
 visible = false
 anchors_preset = 11
 anchor_left = 1.0
@@ -34,52 +34,52 @@ offset_right = -10.0
 offset_bottom = -10.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_etv83")
 
-[node name="Scorri" type="ScrollContainer" parent="Pannello" unique_id=112903181]
+[node name="Scorri" type="ScrollContainer" parent="Pannello" unique_id=1835587290]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="Colonna" type="VBoxContainer" parent="Pannello/Scorri" unique_id=1861918971]
+[node name="Colonna" type="VBoxContainer" parent="Pannello/Scorri" unique_id=347067998]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
-[node name="Titolo" type="Label" parent="Pannello/Scorri/Colonna" unique_id=610083110]
+[node name="Titolo" type="Label" parent="Pannello/Scorri/Colonna" unique_id=1502774365]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 theme_override_colors/font_color = Color(0.45, 0.95, 0.65, 1)
 text = "Dev tool   (Ctrl+M / Esc per chiudere)"
 
-[node name="Info" type="Label" parent="Pannello/Scorri/Colonna" unique_id=692463558]
+[node name="Info" type="Label" parent="Pannello/Scorri/Colonna" unique_id=214029915]
 modulate = Color(1, 1, 1, 0.8)
 layout_mode = 2
 theme_override_font_sizes/font_size = 13
 text = "Posizione ..."
 
-[node name="SezioneGiocatore" type="Label" parent="Pannello/Scorri/Colonna" unique_id=1911156682]
+[node name="SezioneGiocatore" type="Label" parent="Pannello/Scorri/Colonna" unique_id=445962693]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
 text = "Giocatore"
 
-[node name="Volo" type="CheckButton" parent="Pannello/Scorri/Colonna" unique_id=1892258626]
+[node name="Volo" type="CheckButton" parent="Pannello/Scorri/Colonna" unique_id=551333322]
 layout_mode = 2
 focus_mode = 0
 text = "Volo senza collisioni (Spazio su, Shift giù)"
 
-[node name="ScavoPotente" type="CheckButton" parent="Pannello/Scorri/Colonna" unique_id=1766952126]
+[node name="ScavoPotente" type="CheckButton" parent="Pannello/Scorri/Colonna" unique_id=1475195348]
 layout_mode = 2
 focus_mode = 0
 text = "Scavo potente (anche la roccia)"
 
-[node name="RigaVelocita" type="HBoxContainer" parent="Pannello/Scorri/Colonna" unique_id=1476167625]
+[node name="RigaVelocita" type="HBoxContainer" parent="Pannello/Scorri/Colonna" unique_id=1677290671]
 layout_mode = 2
 
-[node name="Etichetta" type="Label" parent="Pannello/Scorri/Colonna/RigaVelocita" unique_id=1034047066]
+[node name="Etichetta" type="Label" parent="Pannello/Scorri/Colonna/RigaVelocita" unique_id=1433202038]
 custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
 text = "Velocità"
 
-[node name="Velocita" type="HSlider" parent="Pannello/Scorri/Colonna/RigaVelocita" unique_id=209683718]
+[node name="Velocita" type="HSlider" parent="Pannello/Scorri/Colonna/RigaVelocita" unique_id=913735721]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
@@ -88,59 +88,59 @@ max_value = 5.0
 step = 0.5
 value = 1.0
 
-[node name="VelocitaValore" type="Label" parent="Pannello/Scorri/Colonna" unique_id=212492299]
+[node name="VelocitaValore" type="Label" parent="Pannello/Scorri/Colonna" unique_id=735470563]
 modulate = Color(1, 1, 1, 0.7)
 layout_mode = 2
 text = "x1.0"
 
-[node name="VaiSpawn" type="Button" parent="Pannello/Scorri/Colonna" unique_id=458002185]
+[node name="VaiSpawn" type="Button" parent="Pannello/Scorri/Colonna" unique_id=890040957]
 layout_mode = 2
 focus_mode = 0
 text = "Vai allo spawn"
 
-[node name="SezioneRisorse" type="Label" parent="Pannello/Scorri/Colonna" unique_id=1204143372]
+[node name="SezioneRisorse" type="Label" parent="Pannello/Scorri/Colonna" unique_id=1943951023]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
 text = "Risorse"
 
-[node name="Monete100" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1475265933]
+[node name="Monete100" type="Button" parent="Pannello/Scorri/Colonna" unique_id=379910137]
 layout_mode = 2
 focus_mode = 0
 text = "+100 monete"
 
-[node name="Monete1000" type="Button" parent="Pannello/Scorri/Colonna" unique_id=320140112]
+[node name="Monete1000" type="Button" parent="Pannello/Scorri/Colonna" unique_id=381941659]
 layout_mode = 2
 focus_mode = 0
 text = "+1000 monete"
 
-[node name="TuttiAttrezzi" type="Button" parent="Pannello/Scorri/Colonna" unique_id=2001129498]
+[node name="TuttiAttrezzi" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1314791223]
 layout_mode = 2
 focus_mode = 0
 text = "Dai tutti gli attrezzi"
 
-[node name="RiempiTerra" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1200449079]
+[node name="RiempiTerra" type="Button" parent="Pannello/Scorri/Colonna" unique_id=265452954]
 layout_mode = 2
 focus_mode = 0
 text = "Riempi l'attrezzo di terra"
 
-[node name="SecchioInMano" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1053645634]
+[node name="SecchioInMano" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1336543682]
 layout_mode = 2
 focus_mode = 0
 text = "Secchio pieno in mano"
 
-[node name="Montacarichi10" type="Button" parent="Pannello/Scorri/Colonna" unique_id=396325323]
+[node name="Montacarichi10" type="Button" parent="Pannello/Scorri/Colonna" unique_id=255442401]
 layout_mode = 2
 focus_mode = 0
 text = "+10 secchi sul montacarichi"
 
-[node name="SezioneOssa" type="Label" parent="Pannello/Scorri/Colonna" unique_id=1548514034]
+[node name="SezioneOssa" type="Label" parent="Pannello/Scorri/Colonna" unique_id=2010736998]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
 text = "Ossa"
 
-[node name="Parte" type="OptionButton" parent="Pannello/Scorri/Colonna" unique_id=1469419153]
+[node name="Parte" type="OptionButton" parent="Pannello/Scorri/Colonna" unique_id=1300091803]
 layout_mode = 2
 focus_mode = 0
 selected = 0
@@ -158,46 +158,46 @@ popup/item_4/id = 4
 popup/item_5/text = "GambaSinistra"
 popup/item_5/id = 5
 
-[node name="DaiOsso" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1430738173]
+[node name="DaiOsso" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1905514917]
 layout_mode = 2
 focus_mode = 0
 text = "Osso scelto in mano"
 
-[node name="VaiOsso" type="Button" parent="Pannello/Scorri/Colonna" unique_id=926463338]
+[node name="VaiOsso" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1508064863]
 layout_mode = 2
 focus_mode = 0
 text = "Vai all'osso scelto (lo scopre)"
 
-[node name="ScopriOssa" type="Button" parent="Pannello/Scorri/Colonna" unique_id=103951196]
+[node name="ScopriOssa" type="Button" parent="Pannello/Scorri/Colonna" unique_id=948250157]
 layout_mode = 2
 focus_mode = 0
 text = "Scopri tutte le ossa sepolte"
 
-[node name="CompletaTomba" type="Button" parent="Pannello/Scorri/Colonna" unique_id=859475976]
+[node name="CompletaTomba" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1682991713]
 layout_mode = 2
 focus_mode = 0
 text = "Completa lo scheletro nella tomba"
 
-[node name="SvuotaTomba" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1646686688]
+[node name="SvuotaTomba" type="Button" parent="Pannello/Scorri/Colonna" unique_id=574231997]
 layout_mode = 2
 focus_mode = 0
 text = "Svuota la tomba"
 
-[node name="SezioneMondo" type="Label" parent="Pannello/Scorri/Colonna" unique_id=1955031396]
+[node name="SezioneMondo" type="Label" parent="Pannello/Scorri/Colonna" unique_id=1519048097]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 theme_override_colors/font_color = Color(0.95, 0.85, 0.55, 1)
 text = "Mondo"
 
-[node name="RigaTempo" type="HBoxContainer" parent="Pannello/Scorri/Colonna" unique_id=105068667]
+[node name="RigaTempo" type="HBoxContainer" parent="Pannello/Scorri/Colonna" unique_id=2000892289]
 layout_mode = 2
 
-[node name="Etichetta" type="Label" parent="Pannello/Scorri/Colonna/RigaTempo" unique_id=1536989010]
+[node name="Etichetta" type="Label" parent="Pannello/Scorri/Colonna/RigaTempo" unique_id=1810838111]
 custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
 text = "Velocità del tempo"
 
-[node name="Tempo" type="HSlider" parent="Pannello/Scorri/Colonna/RigaTempo" unique_id=7383670]
+[node name="Tempo" type="HSlider" parent="Pannello/Scorri/Colonna/RigaTempo" unique_id=949403390]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
@@ -206,17 +206,22 @@ max_value = 3.0
 step = 0.05
 value = 1.0
 
-[node name="TempoValore" type="Label" parent="Pannello/Scorri/Colonna" unique_id=1856183880]
+[node name="TempoValore" type="Label" parent="Pannello/Scorri/Colonna" unique_id=275855909]
 modulate = Color(1, 1, 1, 0.7)
 layout_mode = 2
 text = "x1.0"
 
-[node name="RigeneraTerra" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1207076279]
+[node name="Salva" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1646291469]
+layout_mode = 2
+focus_mode = 0
+text = "Salva la partita adesso"
+
+[node name="RigeneraTerra" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1577230713]
 layout_mode = 2
 focus_mode = 0
 text = "Rigenera la terra"
 
-[node name="Ricomincia" type="Button" parent="Pannello/Scorri/Colonna" unique_id=1159791155]
+[node name="Ricomincia" type="Button" parent="Pannello/Scorri/Colonna" unique_id=2073106056]
 layout_mode = 2
 focus_mode = 0
 text = "Ricomincia la partita"

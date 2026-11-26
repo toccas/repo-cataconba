@@ -12,7 +12,7 @@ signal shop_closed
 @onready var warning: Label = $Avviso
 @onready var debug: Label = $Debug
 @onready var shop: PanelContainer = $Negozio
-@onready var shop_list: VBoxContainer = $Negozio/Colonna/Lista
+@onready var shop_list: VBoxContainer = $Negozio/Colonna/Scorri/Lista
 @onready var shop_coins: Label = $Negozio/Colonna/Monete
 @onready var shop_status: Label = $Negozio/Colonna/Stato
 var message_time := 0.0
@@ -56,25 +56,41 @@ func refresh_shop(state: Node) -> void:
 	shop_coins.text = "Monete: %d" % state.monete
 	for c in shop_list.get_children():
 		c.queue_free()
+	var cat := ""
 	for item in state.NEGOZIO:
+		if item["cat"] != cat:
+			cat = item["cat"]
+			var h := Label.new()
+			h.text = cat
+			h.add_theme_font_size_override("font_size", 18)
+			h.add_theme_color_override("font_color", Color(0.95, 0.75, 0.4))
+			shop_list.add_child(h)
+		var id: String = item["id"]
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 12)
 		var text := Label.new()
-		text.text = "%s\n%s" % [item["nome"], item["desc"]]
+		var prezzo: int = state.prezzo(id)
+		if item["tipo"] == "livelli":
+			var l: int = state.livello(id)
+			var m: int = item["prezzi"].size()
+			var desc: String = item["desc"][l] if l < m else "Al massimo."
+			text.text = "%s   %s\n%s" % [item["nome"], "liv. %d / %d" % [l, m] if l > 0 else "", desc]
+		else:
+			text.text = "%s   %d / %d\n%s" % [item["nome"], state.pezzi(id), item["max"], item["desc"]]
 		text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		row.add_child(text)
-		var b := Button.new()
-		b.custom_minimum_size = Vector2(130, 0)
-		if state.comprati.has(item["id"]):
-			b.text = "Comprato"
-			b.disabled = true
+		var bt := Button.new()
+		bt.custom_minimum_size = Vector2(130, 0)
+		if prezzo < 0:
+			bt.text = "Massimo" if item["tipo"] == "livelli" else "Pieno"
+			bt.disabled = true
 		else:
-			b.text = "%d monete" % item["prezzo"]
-			b.disabled = state.monete < item["prezzo"]
-			var id: String = item["id"]
-			b.pressed.connect(func(): buy_requested.emit(id))
-		row.add_child(b)
+			var verbo := "Compra" if item["tipo"] == "consumabile" or state.livello(id) == 0 else "Migliora"
+			bt.text = "%s  %d" % [verbo, prezzo]
+			bt.disabled = state.monete < prezzo
+			bt.pressed.connect(func(): buy_requested.emit(id))
+		row.add_child(bt)
 		shop_list.add_child(row)
 
 
@@ -132,7 +148,7 @@ func build_nodes() -> void:
 	var panel := PanelContainer.new()
 	panel.name = "Negozio"
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.custom_minimum_size = Vector2(460, 0)
+	panel.custom_minimum_size = Vector2(560, 0)
 	panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	panel.grow_vertical = Control.GROW_DIRECTION_BOTH
 	var style := StyleBoxFlat.new()
@@ -157,10 +173,17 @@ func build_nodes() -> void:
 	coins.name = "Monete"
 	coins.text = "Monete: 0"
 	box.add_child(coins)
+	# l'elenco scorre: le voci del negozio sono tante
+	var scroll := ScrollContainer.new()
+	scroll.name = "Scorri"
+	scroll.custom_minimum_size = Vector2(0, 420)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	box.add_child(scroll)
 	var list := VBoxContainer.new()
 	list.name = "Lista"
+	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	list.add_theme_constant_override("separation", 10)
-	box.add_child(list)
+	scroll.add_child(list)
 	var status := Label.new()
 	status.name = "Stato"
 	status.add_theme_color_override("font_color", Color(1.0, 0.55, 0.4))

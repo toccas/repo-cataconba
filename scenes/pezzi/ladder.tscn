@@ -3,11 +3,11 @@
 [ext_resource type="PackedScene" path="res://assetpack/kenney_modular-cave-kit_1.0/Models/GLB format/ladder.glb" id="1_wdud1"]
 [ext_resource type="Shape3D" path="res://scenes/pezzi/ladder_collisione.res" id="2_qms0r"]
 
-[node name="Ladder" type="Node3D" unique_id=1079998541]
+[node name="Ladder" type="Node3D" unique_id=105537373]
 
 [node name="Modello" type="Node3D" parent="." unique_id=691940345 instance=ExtResource("1_wdud1")]
 
-[node name="Corpo" type="StaticBody3D" parent="." unique_id=1073428830]
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=1386528663]
 
-[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=468774246]
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1223711589]
 shape = ExtResource("2_qms0r")

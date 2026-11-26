@@ -3,14 +3,14 @@
 [ext_resource type="PackedScene" path="res://modelli/cripta/cripta-stanza-spawn.glb" id="1_r2dw7"]
 [ext_resource type="Shape3D" path="res://modelli/cripta/cripta-stanza-spawn_collisione.res" id="2_jle4x"]
 
-[node name="CriptaStanzaSpawn" type="Node3D" unique_id=353391869]
+[node name="CriptaStanzaSpawn" type="Node3D" unique_id=1222718501]
 metadata/volume_size = Vector3(12, 4, 12)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
 [node name="Modello" type="Node3D" parent="." unique_id=535351335 instance=ExtResource("1_r2dw7")]
 
-[node name="Corpo" type="StaticBody3D" parent="." unique_id=835295934]
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=1526101670]
 
-[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=725969968]
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1786951109]
 shape = ExtResource("2_jle4x")

@@ -16,6 +16,9 @@ const BOTTE := "res://assetpack/kenney_mini-dungeon/Models/GLB format/barrel.glb
 const SECCHIO := 3
 ## Indice del modello "osso in mano".
 const OSSO := 4
+## Indice del modello "dinamite in mano".
+const DINAMITE := 5
+const CANDELOTTO := "res://modelli/dinamite.glb"
 const OssoScript := preload("res://scripts/osso.gd")
 
 ## Posa di riposo della mano destra (la sinistra è speculare).
@@ -74,6 +77,13 @@ const ANIM := [
 			[1.0, Vector3.ZERO, Vector3.ZERO, "smooth"],
 		],
 	},
+	{   # dinamite in mano: non scava
+		"impatto": 2.0,
+		"pose": [
+			[0.0, Vector3.ZERO, Vector3.ZERO, "smooth"],
+			[1.0, Vector3.ZERO, Vector3.ZERO, "smooth"],
+		],
+	},
 ]
 
 var models := []
@@ -94,7 +104,7 @@ var last_cam_rot := Vector3.ZERO
 
 func _ready() -> void:
 	position = Vector3.ZERO
-	models = [$Mani, $Pala, $Piccone, $Secchio, $Osso]
+	models = [$Mani, $Pala, $Piccone, $Secchio, $Osso, $Dinamite]
 	hands = [$Mani/ManoDestra, $Mani/ManoSinistra]
 	for m in models:
 		m.visible = false
@@ -298,6 +308,20 @@ func build_nodes() -> void:
 		var grip := _inst(PUGNO, "ManoDestra" if h == 0 else "ManoSinistra")
 		grip.transform = _hand_xf(Vector3(0.2, 0.17, 0.02), Vector3(0.0, 0.0, PI / 2), side)
 		bucket.add_child(grip)
+
+	# candelotto di dinamite nella mano destra, con le scintille della miccia
+	var dyn_node := Node3D.new()
+	dyn_node.name = "Dinamite"
+	dyn_node.position = Vector3(0.22, -0.24, -0.42)
+	dyn_node.rotation = Vector3(0.2, 0.3, -0.35)
+	add_child(dyn_node)
+	var stick := _inst(CANDELOTTO, "Modello")
+	stick.position = Vector3(0, 0.1, 0)
+	dyn_node.add_child(stick)
+	var fist3 := _inst(PUGNO, "Mano")
+	fist3.position = Vector3(0, 0.02, 0.03)
+	fist3.rotation = Vector3(0, 0, PI / 2)
+	dyn_node.add_child(fist3)
 
 	# osso (pezzo di scheletro) tenuto con due mani; il modello si mette con set_bone()
 	var bone := Node3D.new()

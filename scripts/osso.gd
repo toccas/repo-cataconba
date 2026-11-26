@@ -11,14 +11,16 @@ const MODELLI := {
 	"BraccioSinistro": "res://modelli/scheletro/braccio.glb",
 	"GambaDestra": "res://modelli/scheletro/gamba.glb",
 	"GambaSinistra": "res://modelli/scheletro/gamba.glb",
+	"Chiave": "res://assetpack/kenney_mini-dungeon/Models/GLB format/key.glb",
 }
 const NOMI := {
 	"Testa": "Testa", "Torace": "Torace", "BraccioDestro": "Braccio destro",
 	"BraccioSinistro": "Braccio sinistro", "GambaDestra": "Gamba destra", "GambaSinistra": "Gamba sinistra",
+	"Chiave": "Chiave del cancello",
 }
 
 ## Quale pezzo è (Testa, Torace, BraccioDestro, BraccioSinistro, GambaDestra, GambaSinistra).
-@export_enum("Testa", "Torace", "BraccioDestro", "BraccioSinistro", "GambaDestra", "GambaSinistra")
+@export_enum("Testa", "Torace", "BraccioDestro", "BraccioSinistro", "GambaDestra", "GambaSinistra", "Chiave")
 var parte := "Testa"
 
 
@@ -40,6 +42,12 @@ static func nome(p: String) -> String:
 ## Il modello del pezzo (con l'origine nel suo perno).
 static func modello(p: String) -> Node3D:
 	var n: Node3D = (load(MODELLI[p]) as PackedScene).instantiate()
+	if p == "Chiave":
+		# la chiave del Mini Dungeon è piccola: la ingrandisco dentro un nodo contenitore
+		var box := Node3D.new()
+		n.scale = Vector3.ONE * 1.6
+		box.add_child(n)
+		n = box
 	n.name = "Modello"
 	return n
 

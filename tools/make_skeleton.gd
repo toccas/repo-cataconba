@@ -250,12 +250,27 @@ func _build_scene() -> void:
 				pivot.add_child(knee)
 				knee.add_child(_model("gamba_sotto", left))
 
+	# secchio tenuto davanti alla pancia, appoggiato sulle mani (si vede solo quando lo
+	# scheletro lavoratore lo porta). Il barile è largo 0,36 m: passa tra le braccia.
+	var bucket := Node3D.new()
+	bucket.name = "SecchioInMano"
+	bucket.position = Vector3(0, 0.97, 0.36)
+	bucket.visible = false
+	body.add_child(bucket)
+	var barrel: Node3D = (load("res://assetpack/kenney_mini-dungeon/Models/GLB format/barrel.glb") as PackedScene).instantiate()
+	barrel.name = "Modello"
+	barrel.scale = Vector3.ONE * 0.7
+	bucket.add_child(barrel)
+
 	var player := AnimationPlayer.new()
 	player.name = "Animazioni"
 	var lib := AnimationLibrary.new()
 	lib.add_animation("RESET", _reset())
 	lib.add_animation("idle", _idle())
 	lib.add_animation("cammina", _walk())
+	lib.add_animation("porta", _carry())
+	lib.add_animation("porta_fermo", _carry_idle())
+	lib.add_animation("scava", _dig())
 	player.add_animation_library("", lib)
 	player.autoplay = "idle"
 	root.add_child(player)
@@ -384,6 +399,62 @@ func _walk() -> Animation:
 	_track(a, "Corpo/Torace:rotation", [[0.0, Vector3(0.06, 0.13, 0)], [0.5, Vector3(0.06, -0.13, 0)], [1.0, Vector3(0.06, 0.13, 0)]])
 	_track(a, "Corpo/Testa:rotation", [[0.0, Vector3(0.0, -0.1, 0.07)], [0.25, Vector3(0.08, 0, 0)],
 		[0.5, Vector3(0.0, 0.1, -0.07)], [0.75, Vector3(0.08, 0, 0)], [1.0, Vector3(0.0, -0.1, 0.07)]])
+	return a
+
+
+## Braccia che reggono il secchio: scendono lungo i fianchi del barile e le mani lo
+## tengono da sotto, davanti alla pancia. Il torace si piega un po' indietro per il peso.
+func _carry_arms(a: Animation, oscilla: float) -> void:
+	var b := Vector3(-0.5, 0, 0)
+	_track(a, "Corpo/BraccioDestro:rotation", [[0.0, b + Vector3(-oscilla, 0, 0.02)], [0.5, b + Vector3(oscilla, 0, 0.02)], [1.0, b + Vector3(-oscilla, 0, 0.02)]])
+	_track(a, "Corpo/BraccioSinistro:rotation", [[0.0, b + Vector3(oscilla, 0, -0.02)], [0.5, b + Vector3(-oscilla, 0, -0.02)], [1.0, b + Vector3(oscilla, 0, -0.02)]])
+	_track(a, "Corpo/BraccioDestro/Avambraccio:rotation", [[0.0, Vector3(-0.42, 0, 0)]])
+	_track(a, "Corpo/BraccioSinistro/Avambraccio:rotation", [[0.0, Vector3(-0.42, 0, 0)]])
+	_track(a, "Corpo/Torace:rotation", [[0.0, Vector3(-0.07, 0.03, 0)], [0.5, Vector3(-0.07, -0.03, 0)], [1.0, Vector3(-0.07, 0.03, 0)]])
+
+
+## Cammina con un secchio davanti: gambe come "cammina", braccia che reggono il barile.
+func _carry() -> Animation:
+	var a := _walk()
+	for i in range(a.get_track_count() - 1, -1, -1):
+		var path := String(a.track_get_path(i))
+		if path.contains("Braccio") or path.contains("Torace"):
+			a.remove_track(i)
+	_carry_arms(a, 0.03)
+	return a
+
+
+## Fermo con il secchio in mano (aspetta il montacarichi): respiro, braccia che reggono.
+func _carry_idle() -> Animation:
+	var a := Animation.new()
+	a.length = 1.0
+	a.loop_mode = Animation.LOOP_LINEAR
+	_track(a, "Corpo:position", [[0.0, Vector3.ZERO], [0.5, Vector3(0, -0.015, 0)], [1.0, Vector3.ZERO]])
+	_track(a, "Corpo/Testa:rotation", [[0.0, Vector3(0.1, 0, 0)]])
+	for side in ["Destra", "Sinistra"]:
+		_track(a, "Corpo/Gamba%s:rotation" % side, [[0.0, Vector3.ZERO]])
+		_track(a, "Corpo/Gamba%s/Stinco:rotation" % side, [[0.0, Vector3.ZERO]])
+	_carry_arms(a, 0.0)
+	return a
+
+
+## Scava con le mani: alza le braccia e colpisce la terra davanti, chinandosi (0,8 s).
+func _dig() -> Animation:
+	var a := Animation.new()
+	a.length = 0.8
+	a.loop_mode = Animation.LOOP_LINEAR
+	var su := Vector3(-2.3, 0, 0)
+	var giu := Vector3(-0.45, 0, 0)
+	_track(a, "Corpo:position", [[0.0, Vector3.ZERO], [0.45, Vector3(0, -0.06, 0)], [0.8, Vector3.ZERO]])
+	_track(a, "Corpo/Torace:rotation", [[0.0, Vector3(0.0, 0, 0)], [0.45, Vector3(0.38, 0, 0)], [0.8, Vector3(0.0, 0, 0)]])
+	_track(a, "Corpo/Testa:rotation", [[0.0, Vector3(-0.1, 0, 0)], [0.45, Vector3(0.3, 0, 0)], [0.8, Vector3(-0.1, 0, 0)]])
+	_track(a, "Corpo/BraccioDestro:rotation", [[0.0, su + Vector3(0, 0, -0.15)], [0.35, su + Vector3(0.2, 0, -0.15)], [0.45, giu + Vector3(0, 0, -0.1)], [0.8, su + Vector3(0, 0, -0.15)]])
+	_track(a, "Corpo/BraccioSinistro:rotation", [[0.0, su + Vector3(0, 0, 0.15)], [0.35, su + Vector3(0.2, 0, 0.15)], [0.45, giu + Vector3(0, 0, 0.1)], [0.8, su + Vector3(0, 0, 0.15)]])
+	for side in ["Destro", "Sinistro"]:
+		_track(a, "Corpo/Braccio%s/Avambraccio:rotation" % side, [[0.0, Vector3(-0.6, 0, 0)], [0.45, Vector3(-0.1, 0, 0)], [0.8, Vector3(-0.6, 0, 0)]])
+	for side in ["Destra", "Sinistra"]:
+		_track(a, "Corpo/Gamba%s:rotation" % side, [[0.0, Vector3(-0.05, 0, 0)], [0.45, Vector3(-0.3, 0, 0)], [0.8, Vector3(-0.05, 0, 0)]])
+		_track(a, "Corpo/Gamba%s/Stinco:rotation" % side, [[0.0, Vector3(0.1, 0, 0)], [0.45, Vector3(0.45, 0, 0)], [0.8, Vector3(0.1, 0, 0)]])
 	return a
 
 

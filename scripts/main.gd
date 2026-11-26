@@ -27,8 +27,12 @@ extends Node3D
 ## Scena del secchio (creata da tools/build_scenes.gd), caricata all'avvio.
 var secchio_scene: PackedScene
 var osso_scene: PackedScene
+var dinamite_scene: PackedScene
+const RAGGIO_ESPLOSIONE := 2.3
 const OssoScript := preload("res://scripts/osso.gd")
-const LobbyScript := preload("res://scripts/lobby.gd")
+const Salvataggi := preload("res://scripts/salvataggi.gd")
+const PausaScript := preload("res://scripts/pausa.gd")
+const MENU := "res://scenes/menu_principale.tscn"
 const RemotoScript := preload("res://scripts/giocatore_remoto.gd")
 const PARTI := ["Testa", "Torace", "BraccioDestro", "BraccioSinistro", "GambaDestra", "GambaSinistra"]
 const INVIO_S := 0.05        # ogni quanto si mandano posizioni di giocatori e oggetti
@@ -40,6 +44,12 @@ const INVIO_S := 0.05        # ogni quanto si mandano posizioni di giocatori e o
 @onready var hud: CanvasLayer = $HUD
 @onready var secchi: Node3D = $Secchi
 @onready var ossa: Node3D = $Ossa
+@onready var dinamiti: Node3D = $Dinamiti
+@onready var griglia: Node3D = $Griglia
+@onready var binari: Node3D = $Binari
+var _spinta := 0.0                    # metri di spinta al carrello da mandare al server
+var _spinta_dir := Vector3.ZERO
+const LavoratoreScript := preload("res://scripts/lavoratore.gd")
 @onready var lying: Node3D = $Spawn/ScheletroNellaTomba
 
 var bench := false
@@ -60,6 +70,7 @@ var _in_gioco := false
 func _ready() -> void:
 	secchio_scene = load("res://scenes/secchio.tscn")
 	osso_scene = load("res://scenes/osso.tscn")
+	dinamite_scene = load("res://scenes/dinamite.tscn")
 	var args := OS.get_cmdline_user_args()
 	bench = "--bench" in args
 	if bench:
@@ -75,7 +86,10 @@ func _ready() -> void:
 	player.state = state
 	player.interact.connect(_on_interact)
 	player.fill_requested.connect(_on_fill)
+	player.dynamite_requested.connect(_on_dynamite)
+	player.rail_requested.connect(_on_rail)
 	player.throw_requested.connect(_on_throw)
+	player.pausa_richiesta.connect(_apri_pausa)
 	player.scavato.connect(_on_scavato)
 	player.blocked.connect(func(reason: String): hud.show_message(reason))
 	# la collisione della pietra (CSG) viene creata al primo frame: aspetto prima di attivare la gravità
@@ -105,9 +119,29 @@ func _ready() -> void:
 		var j := args.find("--join")
 		Rete.entra(args[j + 1] if j + 1 < args.size() else "127.0.0.1")
 	else:
-		# menu: il giocatore resta fermo finché non sceglie
-		player.ui_open = true
-		add_child(LobbyScript.new())
+		# quello che ha scelto il menu principale
+		var modo := Rete.modalita
+		Rete.modalita = ""
+		if modo == "":
+			# scena aperta direttamente (es. F6 nell'editor): da solo, nell'ultimo slot
+			Salvataggi.migra()
+			Rete.slot = maxi(Salvataggi.ultimo(), 1)
+			modo = "solo"
+		match modo:
+			"solo":
+				Rete.gioca_da_solo()
+			"ospita":
+				var err := Rete.ospita()
+				if err != "":
+					_torna_al_menu(err)
+			"entra":
+				player.ui_open = true
+				Rete.slot = 0   # chi entra non salva: la partita è di chi ospita
+				var err := Rete.entra(Rete.indirizzo)
+				if err != "":
+					_torna_al_menu(err)
+				else:
+					hud.show_message("Mi collego a %s..." % Rete.indirizzo)
 
 	await get_tree().physics_frame
 	await get_tree().physics_frame
@@ -126,6 +160,12 @@ func _on_connesso() -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	if multiplayer.is_server():
 		mondo_ricevuto = true
+		if Rete.nuova_partita:
+			Rete.nuova_partita = false
+			salva()   # lo slot ora contiene la partita nuova
+			hud.show_message("Nuova partita (slot %d)" % Rete.slot)
+		elif not _prova_automatica() and carica():
+			hud.show_message("Partita caricata: bentornato!")
 	else:
 		# due giocatori non partono nello stesso punto
 		var a := randf() * TAU
@@ -137,12 +177,62 @@ func _on_connesso() -> void:
 
 func _on_disconnesso(motivo: String) -> void:
 	if not _in_gioco:
+		_torna_al_menu(motivo)   # non è riuscito a collegarsi
 		return
 	_in_gioco = false
 	hud.show_message(motivo)
 	player.ui_open = true
 	await get_tree().create_timer(2.5).timeout
-	get_tree().reload_current_scene()
+	_torna_al_menu(motivo)
+
+
+## Torna al menu principale mostrando msg (le prove automatiche invece si chiudono).
+func _torna_al_menu(msg := "") -> void:
+	if _prova_automatica() or bench:
+		push_error(msg)
+		get_tree().quit(1)
+		return
+	Rete.errore = msg
+	get_tree().paused = false
+	get_tree().change_scene_to_file.call_deferred(MENU)
+
+
+## Salva e torna al menu principale (dal menu di pausa).
+func esci_al_menu() -> void:
+	salva()
+	_in_gioco = false
+	Rete.esci()
+	_torna_al_menu()
+
+
+# --- menu di pausa ----------------------------------------------------------------
+
+var _pausa: CanvasLayer
+
+
+func _apri_pausa() -> void:
+	if is_instance_valid(_pausa):
+		return
+	player.ui_open = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	_pausa = PausaScript.new()
+	_pausa.main = self
+	_pausa.chiusa.connect(_chiudi_pausa)
+	add_child(_pausa)
+	# da solo il gioco si ferma; in co-op gli altri continuano a giocare
+	get_tree().paused = not Rete.online
+
+
+func _chiudi_pausa() -> void:
+	get_tree().paused = false
+	player.ui_open = false
+	if not bench:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+func _prova_automatica() -> bool:
+	var args := OS.get_cmdline_user_args()
+	return "--loop" in args or "--provarete" in args or "--prova" in args
 
 
 func _process(delta: float) -> void:
@@ -152,15 +242,16 @@ func _process(delta: float) -> void:
 	if multiplayer.is_server():
 		if terrain.last_remesh_chunks > 0:
 			# la terra sotto i secchi può essere stata scavata: li sveglio perché ricadano
-			for b in secchi.get_children() + ossa.get_children():
+			for b in secchi.get_children() + ossa.get_children() + dinamiti.get_children():
 				(b as RigidBody3D).sleeping = false
-		for b in secchi.get_children() + ossa.get_children():
+		for b in secchi.get_children() + ossa.get_children() + dinamiti.get_children():
 			if b.global_position.y < -10.0:
 				# caduto fuori dal mondo: torna vicino al montacarichi
 				b.global_position = spawn.global_position + Vector3(0, 2.5, 0)
 				b.linear_velocity = Vector3.ZERO
 	else:
 		_segui_oggetti(delta)
+		_segui_lavoratori(delta)
 	if bench and terrain.last_remesh_chunks > 0:
 		bench_samples.append(terrain.last_remesh_ms)
 		terrain.last_remesh_chunks = 0
@@ -170,6 +261,21 @@ func _process(delta: float) -> void:
 		if _invio_t >= INVIO_S:
 			_invio_t = 0.0
 			_manda_posizioni()
+			if multiplayer.is_server():
+				_manda_lavoratori()
+				_manda_vagone()
+			elif _spinta > 0.0:
+				req_spingi.rpc_id(1, _spinta, _spinta_dir)
+				_spinta = 0.0
+	_spingi_vagone(delta)
+	if multiplayer.is_server():
+		_controlla_scarico()
+		if _in_gioco:
+			tempo_gioco += delta
+			_autosalva_t += delta
+			if _autosalva_t >= AUTOSALVA_S:
+				_autosalva_t = 0.0
+				salva()
 	_update_hud()
 
 
@@ -211,17 +317,19 @@ func _manda_stato() -> void:
 
 
 func _stato_condiviso() -> Dictionary:
-	return {"monete": state.monete, "pila": state.pila, "comprati": state.comprati,
-		"attrezzi": state.attrezzi, "capienza": state.capienza}
+	var d: Dictionary = state.esporta()
+	d["binari"] = binari.esporta()
+	d["cancello"] = cancello_aperto
+	return d
 
 
 @rpc("authority", "call_remote", "reliable")
 func _stato(d: Dictionary) -> void:
-	state.monete = d["monete"]
-	state.pila.assign(d["pila"])
-	state.comprati = d["comprati"]
-	state.attrezzi = d["attrezzi"]
-	state.capienza = d["capienza"]
+	state.importa(d)
+	if d.get("cancello", false) and not cancello_aperto:
+		_apri_cancello(false)
+	if d.has("binari") and not mondo_ricevuto:
+		binari.importa(d["binari"])
 	spawn.update_pile(state.pila_secchi())
 	if hud.shop.visible:
 		hud.refresh_shop(state)
@@ -248,12 +356,12 @@ func _suono_tutti(kind: String, pos: Vector3, db := 0.0) -> void:
 func _manda_posizioni() -> void:
 	var ogg: int = player.tool_i
 	if player.carrying:
-		ogg = 4 if player.carried_osso != "" else 3
-	_pos_giocatore.rpc(player.global_position, player.rotation.y, player.cam.rotation.x, ogg, player.digging)
+		ogg = 5 if player.carried_dinamite else 4 if player.carried_osso != "" else 3
+	_pos_giocatore.rpc(player.global_position, player.rotation.y, player.cam.rotation.x, ogg, player.digging, player.carried_osso)
 	if multiplayer.is_server() and mondo_ricevuto:
 		var nomi := PackedStringArray()
 		var dati := PackedFloat32Array()
-		for b: RigidBody3D in secchi.get_children() + ossa.get_children():
+		for b: RigidBody3D in secchi.get_children() + ossa.get_children() + dinamiti.get_children():
 			if b.freeze or b.sleeping:
 				continue
 			nomi.append(b.name)
@@ -265,10 +373,13 @@ func _manda_posizioni() -> void:
 
 
 @rpc("any_peer", "call_remote", "unreliable_ordered")
-func _pos_giocatore(pos: Vector3, yaw: float, pitch: float, ogg: int, scava: bool) -> void:
+func _pos_giocatore(pos: Vector3, yaw: float, pitch: float, ogg: int, scava: bool, osso: String) -> void:
 	var id := multiplayer.get_remote_sender_id()
 	var r := _remoto(id)
 	if r:
+		if r.has_meta("osso") == false or r.get_meta("osso") != osso:
+			r.set_meta("osso", osso)
+			r.imposta_osso(osso)
 		r.aggiorna(pos, yaw, pitch, ogg, scava)
 
 
@@ -351,7 +462,7 @@ func _ricevi_mondo(scavi: PackedFloat32Array, oggetti: Array, stato: Dictionary,
 	var nomi := {}
 	for o in oggetti:
 		nomi[o[0]] = true
-	for b in secchi.get_children() + ossa.get_children():
+	for b in secchi.get_children() + ossa.get_children() + dinamiti.get_children():
 		if not nomi.has(String(b.name)):
 			_togli(b)
 	for o in oggetti:
@@ -380,7 +491,10 @@ func _ricevi_mondo(scavi: PackedFloat32Array, oggetti: Array, stato: Dictionary,
 ## Sul server cade con la fisica; sugli altri è fermo e segue le posizioni del server.
 func _crea_oggetto(nome: String, tipo: String, dato: Variant, pos: Vector3, vel: Vector3, rot: Vector3) -> RigidBody3D:
 	var b: RigidBody3D
-	if tipo == "s":
+	if tipo == "d":
+		b = dinamite_scene.instantiate()
+		b.esplodi.connect(_on_dinamite_esplode)
+	elif tipo == "s":
 		b = secchio_scene.instantiate()
 		b.valore = dato
 	else:
@@ -389,7 +503,7 @@ func _crea_oggetto(nome: String, tipo: String, dato: Variant, pos: Vector3, vel:
 	b.name = nome
 	b.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
 	b.freeze = not multiplayer.is_server()
-	(secchi if tipo == "s" else ossa).add_child(b)
+	(secchi if tipo == "s" else ossa if tipo == "o" else dinamiti).add_child(b)
 	b.global_position = pos
 	b.rotation = rot
 	if multiplayer.is_server():
@@ -413,9 +527,7 @@ func _togli(b: Node) -> void:
 
 @rpc("authority", "call_remote", "reliable")
 func _rimuovi_oggetto(nome: String) -> void:
-	var b := secchi.get_node_or_null(NodePath(nome))
-	if b == null:
-		b = ossa.get_node_or_null(NodePath(nome))
+	var b := _trova_oggetto(nome)
 	if b:
 		_togli(b)
 
@@ -423,9 +535,7 @@ func _rimuovi_oggetto(nome: String) -> void:
 @rpc("authority", "call_remote", "unreliable_ordered")
 func _pos_oggetti(nomi: PackedStringArray, dati: PackedFloat32Array) -> void:
 	for i in nomi.size():
-		var b := secchi.get_node_or_null(NodePath(nomi[i]))
-		if b == null:
-			b = ossa.get_node_or_null(NodePath(nomi[i]))
+		var b := _trova_oggetto(nomi[i])
 		if b == null:
 			continue
 		var k := i * 7
@@ -433,13 +543,85 @@ func _pos_oggetti(nomi: PackedStringArray, dati: PackedFloat32Array) -> void:
 		b.set_meta("bersaglio", Transform3D(Basis(q), Vector3(dati[k], dati[k + 1], dati[k + 2])))
 
 
+func _trova_oggetto(nome: String) -> Node:
+	for c in [secchi, ossa, dinamiti]:
+		var b: Node = c.get_node_or_null(NodePath(nome))
+		if b:
+			return b
+	return null
+
+
 ## Sui client gli oggetti scivolano verso l'ultima posizione mandata dal server.
 func _segui_oggetti(delta: float) -> void:
 	var k := 1.0 - exp(-delta * 18.0)
-	for b: Node3D in secchi.get_children() + ossa.get_children():
+	for b: Node3D in secchi.get_children() + ossa.get_children() + dinamiti.get_children():
 		if b.has_meta("bersaglio"):
 			var t: Transform3D = b.get_meta("bersaglio")
 			b.global_transform = b.global_transform.interpolate_with(t, k)
+
+
+# --- dinamite ------------------------------------------------------------------
+
+## F: prende in mano un candelotto (la dinamite è della squadra: passa dal server).
+func _on_dynamite() -> void:
+	if player.ui_open:
+		return
+	if player.carrying:
+		hud.show_message("Hai già qualcosa in mano")
+	elif state.pezzi("dinamite") <= 0:
+		hud.show_message("Non hai dinamite: comprala al negozio")
+	else:
+		_server("req_dinamite")
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func req_dinamite() -> void:
+	if not multiplayer.is_server():
+		return
+	var chi := _chi()
+	if not state.usa("dinamite"):
+		_a(chi, "_messaggio", ["La dinamite è finita"])
+		return
+	_manda_stato()
+	_a(chi, "_in_mano", ["d", 0, Vector3.ZERO])
+
+
+## La miccia è finita: il server fa esplodere il candelotto per tutti.
+func _on_dinamite_esplode(b: RigidBody3D) -> void:
+	if not multiplayer.is_server() or not is_instance_valid(b):
+		return
+	var pos := b.global_position
+	scava_rete(pos, RAGGIO_ESPLOSIONE, 60.0, 2)
+	_tutti("_rimuovi_oggetto", [String(b.name)])
+	_tutti("_boom", [pos])
+	# l'onda d'urto spinge via secchi, ossa (non sepolte) e altri candelotti
+	for o: RigidBody3D in secchi.get_children() + ossa.get_children() + dinamiti.get_children():
+		if o.freeze or o == b:
+			continue
+		var d := o.global_position - pos
+		if d.length() < RAGGIO_ESPLOSIONE * 2.0:
+			o.apply_central_impulse((d.normalized() + Vector3(0, 0.6, 0)) * o.mass * 5.0 * (1.0 - d.length() / (RAGGIO_ESPLOSIONE * 2.0)))
+
+
+## Effetti dell'esplosione su ogni computer: boato, lampo, schegge, scossa.
+@rpc("authority", "call_remote", "reliable")
+func _boom(pos: Vector3) -> void:
+	player.sfx.play("boom", pos, 8.0)
+	player.sfx.play("roccia", pos, 2.0)
+	for i in 4:
+		var dir := Vector3(randf_range(-1, 1), randf_range(0.2, 1), randf_range(-1, 1)).normalized()
+		player._burst(pos, dir, terrain.MAT_COLOR[i % 3], 40)
+	var flash := OmniLight3D.new()
+	flash.light_color = Color(1.0, 0.75, 0.4)
+	flash.light_energy = 12.0
+	flash.omni_range = 12.0
+	add_child(flash)
+	flash.global_position = pos
+	var tw := create_tween()
+	tw.tween_property(flash, "light_energy", 0.0, 0.6).set_ease(Tween.EASE_OUT)
+	tw.tween_callback(flash.queue_free)
+	var dist := player.global_position.distance_to(pos)
+	player._add_trauma(clampf(1.3 - dist / 10.0, 0.0, 1.0))
 
 
 # --- secchi --------------------------------------------------------------------
@@ -449,8 +631,8 @@ func _segui_oggetti(delta: float) -> void:
 func _on_fill() -> void:
 	if player.ui_open:
 		return
-	if player.carrying:
-		hud.show_message("Hai già un secchio in mano: lancialo o posalo")
+	if not player.posso_prendere_secchio():
+		hud.show_message("Hai già le mani piene: lancia o posa quello che porti")
 	elif not state.puo_riempire():
 		hud.show_message("Servono %d unità di terra (ne hai %d)" % [state.UNITA_SECCHIO, floori(state.terra_unita())])
 	else:
@@ -473,8 +655,11 @@ func _on_throw() -> void:
 		if d < 1.0:
 			start = cam.global_position + fwd * maxf(d - 0.4, 0.15) + Vector3(0, -0.2, 0)
 			speed = 1.5
+	speed *= state.forza_lancio()
 	var v := fwd * speed + Vector3(0, 1.8, 0) + player.velocity
-	if player.carried_osso != "":
+	if player.carried_dinamite:
+		_server("req_lancia", ["d", 0, start, v])
+	elif player.carried_osso != "":
 		_server("req_lancia", ["o", player.carried_osso, start, v])
 	else:
 		_server("req_lancia", ["s", player.carried_valore, start, v])
@@ -484,9 +669,9 @@ func _on_throw() -> void:
 
 @rpc("any_peer", "call_remote", "reliable")
 func req_lancia(tipo: String, dato: Variant, pos: Vector3, vel: Vector3) -> void:
-	if not multiplayer.is_server() or not tipo in ["s", "o"]:
+	if not multiplayer.is_server() or not tipo in ["s", "o", "d"]:
 		return
-	if tipo == "o" and not dato in PARTI:
+	if tipo == "o" and not (dato in PARTI or dato == "Chiave"):
 		return
 	_prossimo_oggetto += 1
 	var nome := "N%d" % _prossimo_oggetto
@@ -496,8 +681,8 @@ func req_lancia(tipo: String, dato: Variant, pos: Vector3, vel: Vector3) -> void
 
 ## E su un secchio o un osso a terra: chiede al server di prenderlo.
 func _pick_bucket(b: RigidBody3D) -> void:
-	if player.carrying:
-		hud.show_message("Hai già un secchio in mano")
+	if not player.posso_prendere_secchio():
+		hud.show_message("Hai già le mani piene")
 		return
 	_server("req_raccogli", [String(b.name)])
 
@@ -531,7 +716,10 @@ func req_raccogli(nome: String) -> void:
 ## Il server mi dà in mano quello che ho raccolto.
 @rpc("authority", "call_remote", "reliable")
 func _in_mano(tipo: String, dato: Variant, pos: Vector3) -> void:
-	if tipo == "o":
+	if tipo == "d":
+		player.carry_dynamite()
+		hud.show_message("Dinamite in mano: tasto destro per lanciarla")
+	elif tipo == "o":
 		player.carry_bone(dato)
 		player.sfx.play("dura", pos, -6.0)
 		hud.show_message("Hai trovato: %s" % OssoScript.nome(dato))
@@ -555,6 +743,9 @@ func _place_in_tomb() -> void:
 		return
 	if player.carried_osso == "":
 		hud.show_message("Nella tomba vanno le ossa, la terra va al montacarichi")
+		return
+	if player.carried_osso == "Chiave":
+		hud.show_message("La chiave apre il cancello della stanza est")
 		return
 	_server("req_tomba", [player.carried_osso])
 
@@ -607,12 +798,329 @@ func _alza_scheletro(con_suoni: bool) -> void:
 	var n := holder.get_child_count() - 1
 	var dest: Vector3 = spawn.TOMB_POS + Vector3(-0.6 + 0.9 * (n % 3), 0, -1.35 - 0.9 * (n / 3))
 	risen.alzati(spawn.TOMB_HIP, spawn.TOMB_YAW, dest, PI - 0.25)
+	# sul server lo scheletro diventa un lavoratore (dopo che si è alzato)
+	if multiplayer.is_server():
+		if not griglia.pronto:
+			griglia.costruisci(terrain, [terrain.body.get_rid(), player.get_rid()] as Array[RID])
+		var w: Node = LavoratoreScript.new()
+		w.name = "Lavoratore"
+		w.main = self
+		w.griglia = griglia
+		risen.add_child(w)
 	if not con_suoni:
 		return
 	hud.show_message("Lo scheletro è completo!")
 	player.sfx.play("dura", spawn.to_global(spawn.TOMB_POS), -6.0)
 	get_tree().create_timer(1.0).timeout.connect(func(): player.sfx.play("pietra", spawn.to_global(spawn.TOMB_POS), -4.0))
 	get_tree().create_timer(3.9).timeout.connect(func(): player.sfx.play("pietra", spawn.to_global(dest), -2.0))
+
+
+# --- scheletri lavoratori (li comanda il server) --------------------------------
+
+## Centro del montacarichi (globale).
+func lift_pos() -> Vector3:
+	return spawn.to_global(spawn.LIFT_POS)
+
+
+## Uno scheletro raccoglie un secchio da terra.
+func lavoratore_prende(b: RigidBody3D) -> void:
+	_tutti("_rimuovi_oggetto", [String(b.name)])
+
+
+## Uno scheletro posa un secchio sul montacarichi. false se è in viaggio o pieno.
+func lavoratore_impila(valore: int) -> bool:
+	if spawn.busy or not state.impila(valore):
+		return false
+	spawn.update_pile(state.pila_secchi())
+	_manda_stato()
+	_suono_tutti("secchi", spawn.lift_sound_pos(), -3.0)
+	return true
+
+
+## Suono e schegge di un colpo dello scheletro (qui; sugli altri li fa _scavo).
+func lavoratore_suono(pos: Vector3, v: Vector3) -> void:
+	if v.x + v.y + v.z > 0.002 and player.global_position.distance_to(pos) < 25.0:
+		var m: int = terrain.material_at(pos)
+		player.sfx.play(player.SOUND_BY_MAT[m], pos, -6.0)
+		player._burst(pos, Vector3.UP, terrain.MAT_COLOR[m], 8)
+
+
+## Il server manda a tutti dove sono gli scheletri risorti e cosa fanno.
+func _manda_lavoratori() -> void:
+	var dati := []
+	for sk: Node3D in spawn.get_node("ScheletriRiparati").get_children():
+		dati.append([sk.global_position, sk.global_rotation.y, sk.azione, sk.get_node("Corpo/SecchioInMano").visible])
+	if not dati.is_empty():
+		_pos_lavoratori.rpc(dati)
+
+
+@rpc("authority", "call_remote", "unreliable_ordered")
+func _pos_lavoratori(dati: Array) -> void:
+	var lista := spawn.get_node("ScheletriRiparati").get_children()
+	for i in mini(dati.size(), lista.size()):
+		var sk: Node3D = lista[i]
+		if sk.rising:
+			continue
+		sk.set_meta("bersaglio", [dati[i][0], dati[i][1]])
+		sk.azione = dati[i][2]
+		sk.porta_secchio(dati[i][3])
+
+
+func _segui_lavoratori(delta: float) -> void:
+	var k := 1.0 - exp(-delta * 12.0)
+	for sk: Node3D in spawn.get_node("ScheletriRiparati").get_children():
+		if sk.has_meta("bersaglio") and not sk.rising:
+			var b: Array = sk.get_meta("bersaglio")
+			sk.global_position = sk.global_position.lerp(b[0], k)
+			sk.global_rotation.y = lerp_angle(sk.global_rotation.y, b[1], k)
+
+
+# --- cancello della zona --------------------------------------------------------
+
+var cancello_aperto := false
+
+# --- salvataggio (solo chi ospita o gioca da solo) -------------------------------
+
+const AUTOSALVA_S := 60.0
+var _autosalva_t := 0.0
+var tempo_gioco := 0.0       # secondi giocati in questa partita (si salvano)
+
+
+## Salva la partita nello slot Rete.slot (scripts/salvataggi.gd): soldi e livelli, rotaie
+## e carrello, cancello, tutta la terra scavata, secchi e ossa a terra, tomba, scheletri
+## risorti, posizione del giocatore, tempo di gioco. true se ha salvato.
+func salva() -> bool:
+	if not multiplayer.is_server() or bench or Rete.slot <= 0:
+		return false
+	if _prova_automatica():
+		return false   # le prove automatiche non toccano le partite salvate
+	var oggetti := []
+	for b: RigidBody3D in secchi.get_children():
+		oggetti.append(["s", b.valore, b.global_transform, false, String(b.name)])
+	for b: RigidBody3D in ossa.get_children():
+		oggetti.append(["o", b.parte, b.global_transform, b.freeze, String(b.name)])
+	var tomba := []
+	for p in PARTI:
+		if lying.ha_parte(p):
+			tomba.append(p)
+	var d := {
+		"versione": 1,
+		"stato": _stato_condiviso(),
+		"scavi": dig_log,
+		"oggetti": oggetti,
+		"tomba": tomba,
+		"risorti": spawn.get_node("ScheletriRiparati").get_child_count(),
+		"giocatore": player.global_transform,
+		"tempo": tempo_gioco,
+	}
+	return Salvataggi.scrivi(Rete.slot, d)
+
+
+## Carica la partita dello slot Rete.slot (se c'è). Restituisce true se l'ha caricata.
+func carica() -> bool:
+	var d := Salvataggi.leggi(Rete.slot)
+	if d.get("versione", 0) != 1:
+		return false
+	tempo_gioco = d.get("tempo", 0.0)
+	dig_log = d["scavi"]
+	for k in range(0, dig_log.size() - 5, 6):
+		terrain.dig(Vector3(dig_log[k], dig_log[k + 1], dig_log[k + 2]), dig_log[k + 3], dig_log[k + 4], int(dig_log[k + 5]))
+	for b in secchi.get_children() + ossa.get_children() + dinamiti.get_children():
+		_togli(b)
+	for o in d["oggetti"]:
+		_prossimo_oggetto += 1
+		var nome: String = o[4] if o.size() > 4 else "N%d" % _prossimo_oggetto
+		var b := _crea_oggetto(nome, o[0], o[1], (o[2] as Transform3D).origin, Vector3.ZERO, Vector3.ZERO)
+		b.global_transform = o[2]
+		b.freeze = o[3]
+	binari.importa(d["stato"].get("binari", {}))
+	_stato(d["stato"])
+	for p in PARTI:
+		if p in d["tomba"]:
+			lying.metti_parte(p)
+	for i in d["risorti"]:
+		_alza_scheletro(false)
+	player.global_transform = d["giocatore"]
+	return true
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		salva()
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func req_cancello() -> void:
+	if not multiplayer.is_server() or cancello_aperto:
+		return
+	_a(_chi(), "_posato")
+	_tutti("_apri_cancello", [true])
+	_manda_stato()
+
+
+## Apre il cancello: le sbarre salgono e il passaggio si libera.
+@rpc("authority", "call_remote", "reliable")
+func _apri_cancello(animato: bool) -> void:
+	cancello_aperto = true
+	var g := get_node_or_null("Cancello")
+	if g == null:
+		return
+	var bars := g.get_node("Sbarre") as Node3D
+	(g.get_node("Blocco/Collisione") as CollisionShape3D).set_deferred("disabled", true)
+	g.get_node("Blocco").remove_meta("interact")
+	g.get_node("Scritta").text = "Prossima zona: in arrivo"
+	if animato:
+		var tw := create_tween()
+		tw.tween_property(bars, "position:y", 3.0, 2.5).set_trans(Tween.TRANS_SINE)
+		player.sfx.play("pietra", g.global_position + Vector3(0, 1, 0), 2.0)
+		player.sfx.play("roccia", g.global_position + Vector3(0, 2, 0), 0.0)
+		hud.show_message("Il cancello si apre!")
+	else:
+		bars.position.y = 3.0
+
+
+# --- rotaie e carrello ----------------------------------------------------------
+
+## R: posa una rotaia sul pavimento che guardi, o toglie quella che guardi.
+func _on_rail() -> void:
+	if player.ui_open:
+		return
+	var hit: Dictionary = player._aim()
+	if hit.is_empty():
+		return
+	var c: Vector2i = binari.cella(hit.position)
+	if binari.celle.has(c):
+		_server("req_rotaia", [c, false])
+	elif hit.position.y < binari.PAV + 0.35 and hit.normal.y > 0.7:
+		if state.pezzi("rotaie") <= 0:
+			hud.show_message("Non hai rotaie: comprale al negozio")
+		else:
+			_server("req_rotaia", [c, true])
+	else:
+		hud.show_message("Le rotaie vanno sul pavimento")
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func req_rotaia(c: Vector2i, metti: bool) -> void:
+	if not multiplayer.is_server():
+		return
+	if metti:
+		if binari.celle.has(c) or not state.usa("rotaie"):
+			return
+		_tutti("_rotaia", [c, true])
+		if state.livello("vagone") > 0 and binari.vagone == null:
+			binari.crea_vagone(lift_pos())
+			_manda_vagone()
+	else:
+		if not binari.celle.has(c):
+			return
+		if binari.vagone and (c == binari.a or c == binari.b):
+			_a(_chi(), "_messaggio", ["C'è sopra il carrello"])
+			return
+		state.rendi("rotaie")
+		_tutti("_rotaia", [c, false])
+	_manda_stato()
+	_suono_tutti("pietra", binari.centro(c), -8.0)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rotaia(c: Vector2i, metti: bool) -> void:
+	if metti:
+		binari.metti(c)
+	else:
+		binari.togli(c)
+
+
+## Spinta: se cammino contro il carrello, lo spingo nella direzione in cui vado.
+func _spingi_vagone(delta: float) -> void:
+	if binari.vagone == null or player.dev_volo:
+		return
+	var v := Vector3(player.velocity.x, 0, player.velocity.z)
+	if v.length() < 0.5:
+		return
+	var d: Vector3 = binari.vagone.global_position - player.global_position
+	d.y = 0
+	if d.length() > 1.1 or d.dot(v) <= 0.0:
+		return
+	var s := v.length() * delta
+	if multiplayer.is_server():
+		binari.spingi(s, v.normalized())
+	else:
+		_spinta += s
+		_spinta_dir = v.normalized()
+
+
+@rpc("any_peer", "call_remote", "unreliable_ordered")
+func req_spingi(s: float, dir: Vector3) -> void:
+	if multiplayer.is_server():
+		binari.spingi(clampf(s, 0.0, 1.0), dir)
+
+
+func _manda_vagone() -> void:
+	if Rete.online and binari.vagone:
+		_pos_vagone.rpc(binari.a, binari.b, binari.u, binari.carico.size())
+
+
+@rpc("authority", "call_remote", "unreliable_ordered")
+func _pos_vagone(a: Vector2i, b: Vector2i, u: float, n: int) -> void:
+	if binari.vagone == null:
+		binari.vagone = (load("res://scenes/vagone.tscn") as PackedScene).instantiate()
+		binari.add_child(binari.vagone)
+	binari.a = a
+	binari.b = b
+	binari.u = u
+	binari._posiziona()
+	binari.mostra_carico(n)
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func req_carica(valori: Array) -> void:
+	if not multiplayer.is_server():
+		return
+	var chi := _chi()
+	var n: int = binari.carica(valori.slice(0, 3))
+	if n == 0:
+		_a(chi, "_messaggio", ["Il carrello è pieno"])
+		return
+	for i in n:
+		_a(chi, "_posato")
+	_suono_tutti("secchi", binari.vagone.global_position, -4.0)
+	_manda_vagone()
+
+
+var _scarico_t := 0.0
+
+
+## Carrello fermo accanto al montacarichi con dei secchi: si ribalta e li scarica.
+func _controlla_scarico() -> void:
+	if binari.vagone == null or binari.carico.is_empty() or binari.ribaltando > 0.0 or spawn.busy:
+		return
+	var d := Vector2(binari.vagone.global_position.x - lift_pos().x, binari.vagone.global_position.z - lift_pos().z)
+	if d.length() > 2.6:
+		_scarico_t = 0.0
+		return
+	_scarico_t += get_process_delta_time()
+	if _scarico_t < 0.6:
+		return
+	_scarico_t = 0.0
+	var n := 0
+	while not binari.carico.is_empty() and state.impila(binari.carico[0]):
+		binari.carico.remove_at(0)
+		n += 1
+	if n == 0:
+		return
+	_tutti("_ribalta")
+	spawn.update_pile(state.pila_secchi())
+	_manda_stato()
+	_manda_vagone()
+	get_tree().create_timer(0.6).timeout.connect(func(): binari.mostra_carico(binari.carico.size()))
+
+
+@rpc("authority", "call_remote", "reliable")
+func _ribalta() -> void:
+	binari.ribalta()
+	player.sfx.play("secchi", binari.vagone.global_position, 0.0)
+	player.sfx.play("dura", binari.vagone.global_position, -4.0)
 
 
 ## Usato dal dev tool: completa la tomba (passa dal server).
@@ -640,7 +1148,7 @@ func _on_interact(id: String) -> void:
 			elif player.carried_osso != "":
 				hud.show_message("Le ossa vanno nella tomba")
 			else:
-				_server("req_impila", [player.carried_valore])
+				_server("req_impila_tutti", [player.secchi_in_mano.duplicate()])
 		"leva":
 			if spawn.busy:
 				hud.show_message("Il montacarichi è in viaggio")
@@ -648,6 +1156,18 @@ func _on_interact(id: String) -> void:
 				hud.show_message("Non c'è niente da mandare su")
 			else:
 				_server("req_leva")
+		"cancello":
+			if cancello_aperto:
+				pass
+			elif player.carried_osso == "Chiave":
+				_server("req_cancello")
+			else:
+				hud.show_message("Il cancello è chiuso: serve la chiave. Scava per trovarla")
+		"vagone":
+			if not player.carrying or player.carried_osso != "" or player.carried_dinamite:
+				hud.show_message("Metti nel carrello i secchi pieni (fino a %d)" % binari.CAPIENZA)
+			else:
+				_server("req_carica", [player.secchi_in_mano.duplicate()])
 		"negozio":
 			_open_shop()
 		"chiudi":
@@ -668,6 +1188,32 @@ func req_impila(valore: int) -> void:
 		spawn.update_pile(state.pila_secchi())
 		_manda_stato()
 		_suono_tutti("secchi", spawn.lift_sound_pos())
+
+
+## Posa sul montacarichi tutti i secchi che il giocatore porta (finché c'è posto).
+@rpc("any_peer", "call_remote", "reliable")
+func req_impila_tutti(valori: Array) -> void:
+	if not multiplayer.is_server():
+		return
+	var chi := _chi()
+	if spawn.busy:
+		_a(chi, "_messaggio", ["Il montacarichi è in viaggio"])
+		return
+	var n := 0
+	for v in valori.slice(0, 3):
+		if not state.impila(clampi(int(v), 0, 1000)):
+			break
+		n += 1
+	if n == 0:
+		_a(chi, "_messaggio", ["Il montacarichi è pieno: tira la leva"])
+		return
+	for i in n:
+		_a(chi, "_posato")
+	spawn.update_pile(state.pila_secchi())
+	_manda_stato()
+	_suono_tutti("secchi", spawn.lift_sound_pos())
+	if n < valori.size():
+		_a(chi, "_messaggio", ["Il montacarichi è pieno: tira la leva"])
 
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -693,6 +1239,7 @@ func _on_lift_top() -> void:
 	if not multiplayer.is_server():
 		return
 	var coins: int = state.vendi_pila()
+	get_tree().create_timer(0.1).timeout.connect(salva)
 	spawn.update_pile(0)
 	_manda_stato()
 	_tutti("_monete_guadagnate", [coins])
@@ -729,6 +1276,8 @@ func req_compra(id: String) -> void:
 	var chi := _chi()
 	var err: String = state.compra(id)
 	if err == "":
+		if id == "vagone" and binari.vagone == null and binari.crea_vagone(lift_pos()):
+			_manda_vagone()
 		_manda_stato()
 		if Rete.online:
 			for altro in Rete.giocatori:
@@ -738,10 +1287,12 @@ func req_compra(id: String) -> void:
 
 
 func _nome_oggetto(id: String) -> String:
-	for it in state.NEGOZIO:
-		if it["id"] == id:
-			return it["nome"]
-	return id
+	var it: Dictionary = state.voce(id)
+	if it.is_empty():
+		return id
+	if it["tipo"] == "livelli":
+		return "%s (livello %d)" % [it["nome"], state.livello(id)]
+	return it["nome"]
 
 
 @rpc("authority", "call_remote", "reliable")
@@ -750,9 +1301,9 @@ func _esito_compra(id: String, err: String) -> void:
 		hud.set_shop_status(err)
 		return
 	player.sfx.play("monete", player.global_position + Vector3(0, 1.5, 0), -3.0)
-	if id == "pala":
+	if id == "pala" and state.livello("pala") == 1:
 		player.tool_i = 1
-	elif id == "piccone":
+	elif id == "piccone" and state.livello("piccone") == 1:
 		player.tool_i = 2
 	hud.set_shop_status("")
 	hud.refresh_shop(state)
@@ -769,10 +1320,9 @@ func req_dev(cmd: String) -> void:
 		"monete1000":
 			state.monete += 1000
 		"attrezzi":
-			state.attrezzi = [true, true, true]
 			for id in ["pala", "piccone", "contenitore"]:
-				state.comprati[id] = true
-			state.capienza = 20
+				state.livelli[id] = maxi(state.livello(id), 1)
+			state._applica()
 		"montacarichi10":
 			for i in 10:
 				state.impila(10)
@@ -797,13 +1347,25 @@ func _update_hud() -> void:
 	var pila: int = state.pila_secchi()
 	var text := "Monete: %d\nTerra: %d / %d unità\nAttrezzo: %s" % [
 		state.monete, floori(state.terra_unita()), state.capienza, player.tool_name()]
-	if player.carrying and player.carried_osso != "":
+	if state.pezzi("dinamite") > 0 or player.carried_dinamite:
+		text += "\nDinamite: %d / 4" % state.pezzi("dinamite")
+	if player.carried_dinamite:
+		text += "\nIn mano: dinamite"
+	elif player.carried_osso == "Chiave":
+		text += "\nIn mano: la chiave (portala al cancello della stanza est)"
+	elif player.carrying and player.carried_osso != "":
 		text += "\nIn mano: %s (portalo nella tomba)" % OssoScript.nome(player.carried_osso)
 	elif player.carrying:
-		text += "\nSecchio in mano: vale %d monete" % player.carried_valore
+		var tot := 0
+		for v in player.secchi_in_mano:
+			tot += v
+		if player.secchi_in_mano.size() > 1:
+			text += "\nSecchi in mano: %d / %d (valgono %d monete)" % [player.secchi_in_mano.size(), state.gerla(), tot]
+		else:
+			text += "\nSecchio in mano: vale %d monete" % player.carried_valore
 	text += "\nScheletro: %d / %d pezzi nella tomba" % [_pezzi_in_tomba(), PARTI.size()]
 	if pila >= 1:
-		text += "\nMontacarichi: %d / %d secchi (vale %d monete)" % [pila, state.PILA_MAX, state.valore_pila()]
+		text += "\nMontacarichi: %d / %d secchi (vale %d monete)" % [pila, state.pila_max(), state.valore_pila()]
 	hud.info.text = text
 
 	var w := ""
@@ -819,7 +1381,7 @@ func _update_hud() -> void:
 			elif player.carrying and player.carried_osso != "":
 				p = "Le ossa vanno nella tomba"
 			elif player.carrying:
-				p = "E  posa il secchio (%d / %d)" % [pila, state.PILA_MAX]
+				p = "E  posa %s (%d / %d)" % ["i secchi" if player.secchi_in_mano.size() > 1 else "il secchio", pila, state.pila_max()]
 			else:
 				p = "Porta qui i secchi pieni"
 		"leva":
@@ -830,7 +1392,7 @@ func _update_hud() -> void:
 			else:
 				p = "Il montacarichi è vuoto"
 		"secchio":
-			p = "Hai già qualcosa in mano" if player.carrying else "E  raccogli il secchio"
+			p = "E  raccogli il secchio" if player.posso_prendere_secchio() else "Hai già le mani piene"
 		"osso":
 			if player.carrying:
 				p = "Hai già qualcosa in mano"
@@ -843,11 +1405,24 @@ func _update_hud() -> void:
 				p = "Tomba: %d / %d pezzi dello scheletro" % [_pezzi_in_tomba(), PARTI.size()]
 		"negozio":
 			p = "E  apri il negozio"
+		"cancello":
+			p = "E  apri il cancello con la chiave" if player.carried_osso == "Chiave" else "Cancello chiuso: serve la chiave"
+		"vagone":
+			if player.carrying and player.carried_osso == "" and not player.carried_dinamite:
+				p = "E  metti i secchi nel carrello (%d / %d)" % [binari.carico.size(), binari.CAPIENZA]
+			else:
+				p = "Carrello: %d / %d secchi. Spingilo camminandoci contro" % [binari.carico.size(), binari.CAPIENZA]
 		_:
 			if player.carrying:
-				p = "Tasto destro  lancia " + ("l'osso" if player.carried_osso != "" else "il secchio")
+				p = "Tasto destro  lancia " + ("la dinamite (esplode dopo 3 s)" if player.carried_dinamite else "la chiave" if player.carried_osso == "Chiave" else "l'osso" if player.carried_osso != "" else "il secchio")
 			elif state.puo_riempire():
 				p = "Q  riempi un secchio"
+			elif state.pezzi("dinamite") > 0:
+				p = "F  prendi la dinamite"
+			if p == "" and state.pezzi("rotaie") > 0:
+				p = "R  posa una rotaia (%d)" % state.pezzi("rotaie")
+			if player.carrying and player.carried_osso == "" and player.posso_prendere_secchio() and state.puo_riempire():
+				p += "   Q  riempine un altro"
 	hud.prompt.text = p if not player.ui_open else ""
 
 	hud.debug.text = "FPS %d   ricalcolo %.1f ms (picco %.1f)   attrezzi: 1 mani%s%s" % [

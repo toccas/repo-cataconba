@@ -116,13 +116,14 @@ func arch(center: Vector3, span: Vector3, depth_dir: Vector3, ri: float, ro: flo
 
 
 ## Ellissoide sfaccettato (stile low-poly): centro c, semiassi r, segs spicchi, rings fasce.
-func ball(c: Vector3, r: Vector3, segs: int, rings: int, col: Color) -> void:
+## lat_min: latitudine da cui parte (-PI/2 = sfera intera, 0 = solo la metà di sopra).
+func ball(c: Vector3, r: Vector3, segs: int, rings: int, col: Color, lat_min := -PI / 2.0) -> void:
 	var pt := func(lat: float, lon: float) -> Vector3:
 		return c + Vector3(cos(lat) * cos(lon) * r.x, sin(lat) * r.y, cos(lat) * sin(lon) * r.z)
 	var xf := Transform3D()
 	for i in rings:
-		var la0 := -PI / 2.0 + PI * i / rings
-		var la1 := -PI / 2.0 + PI * (i + 1) / rings
+		var la0 := lat_min + (PI / 2.0 - lat_min) * i / rings
+		var la1 := lat_min + (PI / 2.0 - lat_min) * (i + 1) / rings
 		for j in segs:
 			var lo0 := TAU * j / segs
 			var lo1 := TAU * (j + 1) / segs

@@ -4,7 +4,7 @@ extends Node3D
 ## nelle liste dell'Inspector del nodo Sfx.
 
 const RATE := 22050
-const KINDS := ["terra", "dura", "roccia", "pietra", "monete", "secchi"]
+const KINDS := ["terra", "dura", "roccia", "pietra", "monete", "secchi", "boom"]
 
 ## Varianti di ogni suono. Si possono sostituire trascinando file audio veri nell'Inspector.
 @export var terra: Array[AudioStream] = []
@@ -13,6 +13,7 @@ const KINDS := ["terra", "dura", "roccia", "pietra", "monete", "secchi"]
 @export var pietra: Array[AudioStream] = []
 @export var monete: Array[AudioStream] = []
 @export var secchi: Array[AudioStream] = []
+@export var boom: Array[AudioStream] = []
 
 var players := []
 var next_player := 0
@@ -51,6 +52,7 @@ func generate_banks() -> Dictionary:
 		"pietra": _variants(0.18, 30.0, 0.60, 0.010, 2600.0, 0.30, 40),
 		"monete": _variants(0.35, 9.0, 0.75, 0.02, 2300.0, 0.55, 50),
 		"secchi": _variants(0.30, 10.0, 0.12, 0.010, 0.0, 0.0, 60),
+		"boom": _variants(1.4, 3.2, 0.05, 0.03, 0.0, 0.0, 70),
 	}
 
 

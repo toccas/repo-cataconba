@@ -1,0 +1,52 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://modelli/vagone_base.glb" id="1_hm2sq"]
+[ext_resource type="PackedScene" path="res://modelli/vagone_cassone.glb" id="2_37ryr"]
+[ext_resource type="PackedScene" path="res://assetpack/kenney_mini-dungeon/Models/GLB format/barrel.glb" id="3_a4awg"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_42w4h"]
+size = Vector3(0.8, 0.8, 1.1)
+
+[node name="Vagone" type="Node3D" unique_id=1466649492]
+
+[node name="Base" type="Node3D" parent="." unique_id=1636613916 instance=ExtResource("1_hm2sq")]
+
+[node name="Cassone" type="Node3D" parent="." unique_id=614347690]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.24, 0)
+
+[node name="Modello" type="Node3D" parent="Cassone" unique_id=1457117834 instance=ExtResource("2_37ryr")]
+
+[node name="Carico" type="Node3D" parent="Cassone" unique_id=765558582]
+
+[node name="Secchio0" type="Node3D" parent="Cassone/Carico" unique_id=483316247 instance=ExtResource("3_a4awg")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -0.5, 0.07, -0.2)
+visible = false
+
+[node name="Secchio1" type="Node3D" parent="Cassone/Carico" unique_id=1084043674 instance=ExtResource("3_a4awg")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -0.2, 0.07, -0.2)
+visible = false
+
+[node name="Secchio2" type="Node3D" parent="Cassone/Carico" unique_id=1994744859 instance=ExtResource("3_a4awg")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -0.5, 0.07, 0.2)
+visible = false
+
+[node name="Secchio3" type="Node3D" parent="Cassone/Carico" unique_id=1355804598 instance=ExtResource("3_a4awg")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -0.2, 0.07, 0.2)
+visible = false
+
+[node name="Secchio4" type="Node3D" parent="Cassone/Carico" unique_id=1660218959 instance=ExtResource("3_a4awg")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -0.5, 0.41, 0)
+visible = false
+
+[node name="Secchio5" type="Node3D" parent="Cassone/Carico" unique_id=1396112866 instance=ExtResource("3_a4awg")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -0.2, 0.41, 0)
+visible = false
+
+[node name="Area" type="StaticBody3D" parent="." unique_id=1649006423]
+collision_layer = 2
+collision_mask = 0
+metadata/interact = "vagone"
+
+[node name="Collisione" type="CollisionShape3D" parent="Area" unique_id=2013281543]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+shape = SubResource("BoxShape3D_42w4h")

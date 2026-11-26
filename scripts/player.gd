@@ -25,7 +25,10 @@ const INTERACT_DIST := 2.8
 signal interact(id: String)
 signal blocked(reason: String)
 signal fill_requested
+signal dynamite_requested
+signal rail_requested
 signal throw_requested
+signal pausa_richiesta
 ## Ho tolto terra: main.gd lo manda agli altri giocatori.
 signal scavato(pos: Vector3, raggio: float, forza: float, max_mat: int, normale: Vector3)
 
@@ -42,8 +45,10 @@ var look_target := ""
 var look_collider: Object = null
 var terra_piena := false
 var carrying := false        # ha in mano un secchio pieno o un osso
-var carried_valore := 0      # monete che vale il secchio in mano
+var carried_valore := 0      # monete che vale il secchio in cima (quello che si lancia)
+var secchi_in_mano: Array[int] = []   # tutti i secchi portati (gerla: più di uno)
 var carried_osso := ""       # pezzo di scheletro in mano ("" = secchio)
+var carried_dinamite := false   # candelotto di dinamite in mano
 var digging := false
 var force_dig := false   # usato dalla prova automatica
 # comandi del dev tool (Ctrl+M)
@@ -65,6 +70,8 @@ func _ready() -> void:
 		if c is CPUParticles3D:
 			bursts.append(c)
 	viewmodel.set_tool(tool_i)
+	cam.fov = Impostazioni.fov
+	Impostazioni.cambiate.connect(func(): cam.fov = Impostazioni.fov)
 
 
 ## Crea i nodi del giocatore. Usato solo da tools/build_scenes.gd per salvare la scena.
@@ -140,14 +147,37 @@ func tool_name() -> String:
 
 
 ## Prende in mano un secchio pieno che vale v monete.
+## Con la gerla si possono portare più secchi: si aggiungono in cima.
 func carry(v: int) -> void:
+	if not carrying or carried_osso != "" or carried_dinamite:
+		secchi_in_mano.clear()
+	carried_dinamite = false
+	secchi_in_mano.append(v)
 	carrying = true
 	carried_valore = v
 	carried_osso = ""
 
 
+## Posso prendere un altro secchio? (mani libere, o secchi in mano e posto nella gerla)
+func posso_prendere_secchio() -> bool:
+	if not carrying:
+		return true
+	return carried_osso == "" and not carried_dinamite and secchi_in_mano.size() < state.gerla()
+
+
+## Prende in mano un candelotto di dinamite.
+func carry_dynamite() -> void:
+	secchi_in_mano.clear()
+	carrying = true
+	carried_valore = 0
+	carried_osso = ""
+	carried_dinamite = true
+
+
 ## Prende in mano un pezzo di scheletro.
 func carry_bone(parte: String) -> void:
+	secchi_in_mano.clear()
+	carried_dinamite = false
 	carrying = true
 	carried_valore = 0
 	carried_osso = parte
@@ -155,16 +185,24 @@ func carry_bone(parte: String) -> void:
 
 
 ## Lascia quello che ha in mano (lanciato o posato).
+## Lascia l'oggetto in cima (lanciato o posato). Con più secchi in mano ne toglie uno.
 func drop_carry() -> void:
+	if carried_osso == "" and not carried_dinamite and secchi_in_mano.size() > 1:
+		secchi_in_mano.pop_back()
+		carried_valore = secchi_in_mano[-1]
+		return
+	secchi_in_mano.clear()
 	carrying = false
 	carried_valore = 0
 	carried_osso = ""
+	carried_dinamite = false
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		rotate_y(-event.relative.x * SENS)
-		cam.rotate_x(-event.relative.y * SENS)
+		var sens := SENS * Impostazioni.sensibilita
+		rotate_y(-event.relative.x * sens)
+		cam.rotate_x(-event.relative.y * sens)
 		cam.rotation.x = clampf(cam.rotation.x, -1.5, 1.5)
 	elif event is InputEventMouseButton and event.pressed and not ui_open and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -177,12 +215,16 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 		match event.physical_keycode:
 			KEY_ESCAPE:
-				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+				pausa_richiesta.emit()
 			KEY_E:
 				if look_target != "":
 					interact.emit(look_target)
 			KEY_Q:
 				fill_requested.emit()
+			KEY_F:
+				dynamite_requested.emit()
+			KEY_R:
+				rail_requested.emit()
 			KEY_1:
 				tool_i = 0
 			KEY_2:
@@ -259,7 +301,10 @@ func _update_aim() -> void:
 
 func _process(delta: float) -> void:
 	if carrying:
-		viewmodel.set_tool(viewmodel.OSSO if carried_osso != "" else viewmodel.SECCHIO)
+		if carried_dinamite:
+			viewmodel.set_tool(viewmodel.DINAMITE)
+		else:
+			viewmodel.set_tool(viewmodel.OSSO if carried_osso != "" else viewmodel.SECCHIO)
 	else:
 		viewmodel.set_tool(tool_i)
 	var t: Dictionary = TOOLS[tool_i]
@@ -309,8 +354,10 @@ func _on_impact() -> void:
 	var t: Dictionary = TOOLS[tool_i]
 	var removed := 0.0
 	if last_hit["terra"]:
-		var raggio: float = t["raggio"] * (2.0 if dev_scavo else 1.0)
-		var forza: float = t["potenza"] * t["periodo"] * (10.0 if dev_scavo else 1.0)
+		# i livelli comprati al negozio rendono i colpi più ampi e più forti
+		var lv: float = state.forza_attrezzo(tool_i)
+		var raggio: float = t["raggio"] * sqrt(lv) * (2.0 if dev_scavo else 1.0)
+		var forza: float = t["potenza"] * t["periodo"] * lv * (10.0 if dev_scavo else 1.0)
 		var v: Vector3 = terrain.dig(pos, raggio, forza, 2 if dev_scavo else t["max_mat"])
 		if v.x + v.y + v.z > 0.0:
 			scavato.emit(pos, raggio, forza, 2 if dev_scavo else t["max_mat"], n)

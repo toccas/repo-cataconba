@@ -3,14 +3,14 @@
 [ext_resource type="PackedScene" path="res://assetpack/kenney_modular-cave-kit_1.0/Models/GLB format/corridor-wide-intersection.glb" id="1_n1upc"]
 [ext_resource type="Shape3D" path="res://scenes/pezzi/corridor-wide-intersection_collisione.res" id="2_2s3ko"]
 
-[node name="CorridorWideIntersection" type="Node3D" unique_id=2044040830]
+[node name="CorridorWideIntersection" type="Node3D" unique_id=693094350]
 metadata/volume_size = Vector3(8, 4, 8)
 metadata/volume_offset = Vector3(0, 2, 0)
 metadata/terra = true
 
 [node name="Modello" type="Node3D" parent="." unique_id=1253482495 instance=ExtResource("1_n1upc")]
 
-[node name="Corpo" type="StaticBody3D" parent="." unique_id=1687269815]
+[node name="Corpo" type="StaticBody3D" parent="." unique_id=279731873]
 
-[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=577968787]
+[node name="Collisione" type="CollisionShape3D" parent="Corpo" unique_id=1514689177]
 shape = ExtResource("2_2s3ko")
